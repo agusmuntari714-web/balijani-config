@@ -1167,5 +1167,66 @@
 
     App.init();
   </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const subscribeBtn = document.getElementById("subscribeBtn");
+    
+    if (subscribeBtn) {
+      subscribeBtn.addEventListener("click", function() {
+        // Membuat modal pop-up dengan form input email
+        let modalBox = document.createElement("div");
+        modalBox.id = "subModal";
+        modalBox.innerHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(3px);">
+            <div style="background: white; padding: 25px; border-radius: 16px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); font-family: sans-serif;">
+              <div style="font-size: 32px; margin-bottom: 10px;">📬</div>
+              <h3 style="font-weight: bold; font-size: 18px; margin-bottom: 6px; color: #111;">Berlangganan Warta</h3>
+              <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Dapatkan info warta pilihan Bali Jani langsung ke inbox Anda.</p>
+              
+              <input type="email" id="subscriberEmail" placeholder="Masukkan alamat email..." style="width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; box-sizing: border-box; outline: none;" />
+              
+              <button id="submitSub" style="width: 100%; background: #dc2626; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; margin-bottom: 8px;">Daftar Sekarang</button>
+              <button id="closeSub" style="background: transparent; color: #888; border: none; padding: 6px; font-size: 12px; cursor: pointer;">Nanti Saja</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modalBox);
+
+        // Fokus otomatis ke input email
+        document.getElementById("subscriberEmail").focus();
+
+        // Tombol Tutup / Batal
+        document.getElementById("closeSub").addEventListener("click", function() {
+          modalBox.remove();
+        });
+
+        // Aksi saat tombol "Daftar Sekarang" diklik
+        document.getElementById("submitSub").addEventListener("click", function() {
+          let emailInput = document.getElementById("subscriberEmail").value;
+          if(emailInput.trim() === "" || !emailInput.includes("@")) {
+            alert("Mohon masukkan alamat email yang valid.");
+            return;
+          }
+
+          // Ubah isi modal menjadi pesan sukses seolah-olah data tersimpan
+          modalBox.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(3px);">
+              <div style="background: white; padding: 25px; border-radius: 16px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); font-family: sans-serif;">
+                <div style="font-size: 36px; margin-bottom: 10px;">🎉</div>
+                <h3 style="font-weight: bold; font-size: 18px; margin-bottom: 6px; color: #111;">Berhasil Terdaftar!</h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 18px;">Terima kasih, <b>${emailInput}</b>. Anda resmi terdaftar sebagai pelanggan setia Warta Bali Jani.</p>
+                <button id="finishSub" style="width: 100%; background: #16a34a; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer;">Tutup</button>
+              </div>
+            </div>
+          `;
+
+          document.getElementById("finishSub").addEventListener("click", function() {
+            modalBox.remove();
+          });
+        });
+      });
+    }
+  });
+</script>
 </body>
 </html>
