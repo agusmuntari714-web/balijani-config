@@ -129,7 +129,7 @@
     </div>
   </div>
 
-  <!-- HEADER UTAMA -->
+  <!-- HEADER UTAMA (Tombol Home di header telah dihilangkan) -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     
     <div class="absolute top-0 left-0 right-0 w-full bg-[#ffffff] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
@@ -176,17 +176,13 @@
       </div>
     </div>
     
+    <!-- (Catatan: Tombol "Home" di bar navigasi horizontal bawah logo sudah dihapus bersih, kini hanya menyisakan kategori utama Hukum, Politik, Pariwisata, Opini Publik) -->
     <div class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] relative z-10">
-      <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold" id="topNavContainer">
-        <div class="sticky left-0 z-20 bg-gradient-to-r from-white via-white to-transparent dark:from-[#0f172a] dark:via-[#0f172a] dark:to-transparent py-2.5 pl-4 pr-6">
-          <button onclick="App.navigate('home')" class="cat-tab active-tab px-4 py-1.5 rounded-full bg-brand-600 text-white transition whitespace-nowrap shadow-sm">Home</button>
-        </div>
-        <div class="flex items-center gap-2 py-2.5 pr-4 -ml-2">
-          <button onclick="App.navigate('category', 'Hukum')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Hukum</button>
-          <button onclick="App.navigate('category', 'Politik')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Politik</button>
-          <button onclick="App.navigate('category', 'Pariwisata')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Pariwisata</button>
-          <button onclick="App.navigate('category', 'Opini Publik')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Opini Publik</button>
-        </div>
+      <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold px-4 py-2.5 gap-2" id="topNavContainer">
+        <button onclick="App.navigate('category', 'Hukum')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Hukum</button>
+        <button onclick="App.navigate('category', 'Politik')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Politik</button>
+        <button onclick="App.navigate('category', 'Pariwisata')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Pariwisata</button>
+        <button onclick="App.navigate('category', 'Opini Publik')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Opini Publik</button>
       </nav>
     </div>
 
@@ -544,7 +540,6 @@
         this.startNotificationPolling();
         this.initNewsletterModal();
         
-        // MENGAKTIFKAN GAYA IKON MODERN (STYLING STROKE KETEBALAN 2.25)
         lucide.createIcons({ attrs: { 'stroke-width': 2.25 } });
       },
 
@@ -954,8 +949,6 @@
         const opiniBannerContainer = document.getElementById('opiniBannerContainer');
         if (view === 'home') {
           document.getElementById('homeView').classList.remove('hidden');
-          const firstTab = document.querySelector('.cat-tab');
-          if(firstTab) { firstTab.classList.add('bg-brand-600', 'text-white', 'shadow-sm'); firstTab.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300'); }
         } 
         else if (view === 'bookmarks') { document.getElementById('bookmarkView').classList.remove('hidden'); this.renderBookmarks(); }
         else if (view === 'category') {
