@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#0f172a" id="themeColorMeta">
+  <!-- Mengatur warna status bar HP agar selaras secara native -->
+  <meta name="theme-color" content="#dc2626" id="themeColorMeta">
   <title>BALIJANI - Portal Warta Premium</title>
 
   <!-- Tailwind CSS & Lucide Icons -->
@@ -67,13 +68,10 @@
     .bg-tt { background-color: #000000; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative pt-6">
-
-  <!-- STATUS BAR GELAP FIXED DI ATAS (Agar jam & baterai HP terlihat jelas) -->
-  <div class="fixed top-0 left-0 right-0 h-6 bg-slate-900 dark:bg-black z-50"></div>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative">
 
   <!-- TOAST NOTIFICATION IN-APP -->
-  <div id="inAppToast" class="fixed top-10 left-4 right-4 z-[150] transition-transform duration-500 transform -translate-y-28">
+  <div id="inAppToast" class="fixed top-4 left-4 right-4 z-[150] transition-transform duration-500 transform -translate-y-28">
     <div class="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-l-4 border-brand-500 p-4 flex items-start gap-3 cursor-pointer" onclick="App.openLatestPostFromToast()">
       <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0">
         <i data-lucide="bell-ring" class="w-5 h-5 animate-pulse"></i>
@@ -90,12 +88,12 @@
     <div class="w-6 h-6 border-2 border-brand-600 border-t-transparent rounded-full animate-spin"></div>
   </div>
 
-  <div id="progressBarContainer" class="fixed top-[68px] left-0 w-full h-1 bg-slate-200/50 dark:bg-slate-800/50 z-50 hidden">
+  <div id="progressBarContainer" class="fixed top-12 left-0 w-full h-1 bg-slate-200/50 dark:bg-slate-800/50 z-50 hidden">
     <div id="progressBar" class="h-full bg-brand-600 w-0 transition-all duration-75"></div>
   </div>
 
-  <!-- HEADER UTAMA -->
-  <header class="sticky top-6 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+  <!-- HEADER UTAMA DENGAN JARAK AMAN BERSIH (SAFE AREA) -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800" style="padding-top: max(env(safe-area-inset-top), 24px);">
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
       
       <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
@@ -154,7 +152,7 @@
   <!-- PUSAT NOTIFIKASI (DRAWER / PANEL) -->
   <div id="notifPanel" class="hidden fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm flex justify-end">
     <div class="bg-white dark:bg-slate-900 w-full max-w-sm h-full flex flex-col shadow-2xl animate-slide-left">
-      <div class="h-14 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 bg-slate-50 dark:bg-slate-900 pt-6">
+      <div class="h-14 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 bg-slate-50 dark:bg-slate-900" style="padding-top: max(env(safe-area-inset-top), 16px);">
         <h2 class="font-extrabold text-lg text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bell" class="w-5 h-5 text-brand-600"></i> Notifikasi</h2>
         <button onclick="App.toggleNotifPanel()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition bg-slate-200 dark:bg-slate-800 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
