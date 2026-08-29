@@ -29,7 +29,9 @@
     .view-enter { animation: slideIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
     @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes slideLeft { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    @keyframes slideRight { from { transform: translateX(-100%); } to { transform: translateX(0); } }
     .animate-slide-left { animation: slideLeft 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+    .animate-slide-right { animation: slideRight 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 
     .article-body p, .article-body span, .article-body li { line-height: 1.85; color: #334155; margin-bottom: 1.25rem; font-size: 1.05rem; }
     .dark .article-body p, .dark .article-body span:not([class*="text-brand"]), .dark .article-body li { color: #cbd5e1 !important; }
@@ -46,7 +48,6 @@
     .snap-item { scroll-snap-align: start; }
     .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
 
-    /* Indikator Refresh diposisikan mutlak secara aman */
     #pullRefreshIndicator {
       position: fixed;
       left: 50%;
@@ -92,22 +93,67 @@
     </svg>
   </div>
 
+  <!-- MENU HAMBURGER (DRAWER KIRI) -->
+  <div id="hamburgerDrawer" class="hidden fixed inset-0 z-[160] bg-black/60 backdrop-blur-sm flex justify-start">
+    <div class="bg-white dark:bg-slate-900 w-4/5 max-w-xs h-full flex flex-col shadow-2xl animate-slide-right">
+      <!-- Header Drawer -->
+      <div class="h-16 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-5 bg-slate-50 dark:bg-slate-900" style="padding-top: env(safe-area-inset-top);">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-base">B</div>
+          <span class="font-black text-lg tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
+        </div>
+        <button onclick="App.toggleHamburger()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition bg-slate-200 dark:bg-slate-800 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <!-- Kategori Menu -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-6">
+        <div>
+          <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Menu Utama</h3>
+          <div class="space-y-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <button onclick="App.navigate('home'); App.toggleHamburger();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left"><i data-lucide="home" class="w-4 h-4 text-brand-600"><span>Beranda</span></i></button>
+            <button onclick="App.navigate('category', 'Hukum'); App.toggleHamburger();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left"><i data-lucide="scale" class="w-4 h-4 text-brand-600"><span>Hukum</span></i></button>
+            <button onclick="App.navigate('category', 'Politik'); App.toggleHamburger();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left"><i data-lucide="landmark" class="w-4 h-4 text-brand-600"><span>Politik</span></i></button>
+            <button onclick="App.navigate('category', 'Pariwisata'); App.toggleHamburger();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left"><i data-lucide="palmtree" class="w-4 h-4 text-brand-600"><span>Pariwisata</span></i></button>
+            <button onclick="App.navigate('category', 'Opini Publik'); App.toggleHamburger();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left"><i data-lucide="message-square-quote" class="w-4 h-4 text-brand-600"><span>Opini Publik</span></i></button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Rubrik & Lainnya</h3>
+          <div class="space-y-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <button onclick="App.navigate('category', 'Ekonomi'); App.toggleHamburger();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left"><i data-lucide="trending-up" class="w-4 h-4 text-brand-600"><span>Ekonomi & Bisnis</span></i></button>
+            <button onclick="App.navigate('category', 'Budaya'); App.toggleHamburger();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left"><i data-lucide="sparkles" class="w-4 h-4 text-brand-600"><span>Seni & Budaya</span></i></button>
+            <button onclick="App.navigate('bookmarks'); App.toggleHamburger();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left"><i data-lucide="bookmark" class="w-4 h-4 text-brand-600"><span>Warta Tersimpan</span></i></button>
+            <button onclick="App.showOpiniModal(); App.toggleHamburger();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left"><i data-lucide="pen-tool" class="w-4 h-4 text-brand-600"><span>Kirim Opini</span></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- HEADER UTAMA -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     
     <div class="absolute top-0 left-0 right-0 w-full bg-[#ffffff] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
 
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
-      <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
-        <div class="flex items-center gap-2 mt-0.5">
-          <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
-          <div class="relative flex items-center justify-center">
-            <span class="absolute inline-flex h-full w-full rounded bg-brand-500 opacity-40 scale-110 animate-pulse"></span>
-            <span class="relative inline-flex bg-brand-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest shadow-sm">APPS</span>
+      <div class="flex items-center gap-3">
+        <!-- Tombol Hamburger -->
+        <button onclick="App.toggleHamburger()" class="p-2 -ml-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+
+        <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
+            <div class="relative flex items-center justify-center">
+              <span class="absolute inline-flex h-full w-full rounded bg-brand-500 opacity-40 scale-110 animate-pulse"></span>
+              <span class="relative inline-flex bg-brand-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest shadow-sm">APPS</span>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
 
       <div class="flex items-center gap-1">
         <button id="subscribeBtn" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative">
@@ -368,12 +414,26 @@
     </article>
   </main>
 
+  <!-- FOOTER LEGALITAS & COPYRIGHT -->
+  <footer class="bg-white dark:bg-[#0f172a] border-t border-slate-200 dark:border-slate-800 py-8 px-4 text-center text-xs text-slate-500 dark:text-slate-400 mb-16 md:mb-0">
+    <div class="max-w-md md:max-w-7xl mx-auto space-y-4">
+      <div class="flex flex-wrap justify-center gap-4 font-semibold text-slate-700 dark:text-slate-300">
+        <a href="https://balijani.id/privacy-policy/" target="_blank" class="hover:text-brand-600 transition">Kebijakan Privasi</a>
+        <span>•</span>
+        <a href="https://balijani.id/kode-etik/" target="_blank" class="hover:text-brand-600 transition">Kode Etik Jurnalistik</a>
+        <span>•</span>
+        <a href="https://balijani.id/pedoman-media-siber/" target="_blank" class="hover:text-brand-600 transition">Pedoman Media Siber</a>
+      </div>
+      <p>&copy; 2026 <b>BALIJANI.ID</b>. Hak Cipta Dilindungi Undang-Undang.</p>
+    </div>
+  </footer>
+
   <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 pb-safe">
     <div class="flex items-center justify-around h-16 text-[10px] font-semibold text-slate-500 dark:text-slate-400" id="bottomNav">
-      <button onclick="App.navigate('home')" class="nav-btn w-1/4 text-brand-600 flex flex-col items-center gap-1 transition"><i data-lucide="home" class="w-5 h-5"></i><span>Beranda</span></button>
-      <button onclick="App.navigate('category', 'all')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="layout-grid" class="w-5 h-5"></i><span>Arsip</span></button>
-      <button onclick="App.navigate('bookmarks')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="bookmark" class="w-5 h-5"></i><span>Tersimpan</span></button>
-      <button onclick="App.showOpiniModal()" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="pen-tool" class="w-5 h-5"></i><span>Kirim Opini</span></button>
+      <button onclick="App.navigate('home')" class="nav-btn w-1/4 text-brand-600 flex flex-col items-center gap-1 transition"><i data-lucide="home" class="w-5 h-5"><span>Beranda</span></i></button>
+      <button onclick="App.navigate('category', 'all')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="layout-grid" class="w-5 h-5"><span>Arsip</span></i></button>
+      <button onclick="App.navigate('bookmarks')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="bookmark" class="w-5 h-5"><span>Tersimpan</span></i></button>
+      <button onclick="App.showOpiniModal()" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="pen-tool" class="w-5 h-5"><span>Kirim Opini</span></i></button>
     </div>
   </nav>
 
@@ -440,8 +500,14 @@
         }
       },
 
+      // FUNGSI TOGGLE MENU HAMBURGER
+      toggleHamburger() {
+        if('vibrate' in navigator) navigator.vibrate(20);
+        const drawer = document.getElementById('hamburgerDrawer');
+        drawer.classList.toggle('hidden');
+      },
+
       async init() {
-        // SINKRONISASI 2 ARAH: Mendeteksi tema dari Sistem HP secara real-time
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
         const applySystemTheme = (e) => {
@@ -458,10 +524,7 @@
           }
         };
 
-        // Jalankan saat pertama kali dibuka
         applySystemTheme(prefersDark);
-
-        // Pantau jika sewaktu-waktu tema HP diubah di tengah jalan
         prefersDark.addEventListener('change', applySystemTheme);
 
         window.addEventListener('popstate', (e) => {
@@ -484,6 +547,7 @@
         await this.loadData();
         this.startNotificationPolling();
         this.initNewsletterModal();
+        lucide.createIcons();
       },
 
       showNewsletter() {
@@ -505,83 +569,56 @@
           </div>
         `;
         document.body.appendChild(modalBox);
-
         document.getElementById("subscriberEmail").focus();
-
-        document.getElementById("closeSub").addEventListener("click", function() {
-          modalBox.remove();
-        });
-
-        document.getElementById("submitSub").addEventListener("click", function() {
+        document.getElementById("closeSub").addEventListener("click", () => modalBox.remove());
+        document.getElementById("submitSub").addEventListener("click", () => {
           let emailInput = document.getElementById("subscriberEmail").value;
           if(emailInput.trim() === "" || !emailInput.includes("@")) {
             alert("Mohon masukkan alamat email yang valid.");
             return;
           }
-
           modalBox.innerHTML = `
             <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(3px);">
               <div style="background: white; padding: 25px; border-radius: 16px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); font-family: sans-serif;">
                 <div style="font-size: 36px; margin-bottom: 10px;">🎉</div>
                 <h3 style="font-weight: bold; font-size: 18px; margin-bottom: 6px; color: #111;">Berhasil Terdaftar!</h3>
-                <p style="font-size: 13px; color: #666; margin-bottom: 18px;">Terima kasih, <b>${emailInput}</b>. Anda resmi terdaftar sebagai pelanggan setia Warta Bali Jani.</p>
+                <p style="font-size: 13px; color: #666; margin-bottom: 18px;">Terima kasih, <b>${emailInput}</b>. Anda resmi terdaftar.</p>
                 <button id="finishSub" style="width: 100%; background: #16a34a; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer;">Tutup</button>
               </div>
             </div>
           `;
-
-          document.getElementById("finishSub").addEventListener("click", function() {
-            modalBox.remove();
-          });
+          document.getElementById("finishSub").addEventListener("click", () => modalBox.remove());
         });
       },
 
       initNewsletterModal() {
         const subscribeBtn = document.getElementById("subscribeBtn");
-        if (subscribeBtn) {
-          subscribeBtn.addEventListener("click", () => {
-            this.showNewsletter();
-          });
-        }
+        if (subscribeBtn) subscribeBtn.addEventListener("click", () => this.showNewsletter());
       },
 
       startNotificationPolling() {
-        this.notificationInterval = setInterval(() => {
-            this.checkNewPosts();
-        }, 20000); 
+        this.notificationInterval = setInterval(() => this.checkNewPosts(), 20000); 
       },
 
       async checkNewPosts() {
         try {
           if (!this.lastKnownPostId) return; 
-
           const checkUrl = "https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=5";
           const res = await fetch(checkUrl, { cache: "no-store" });
           if (!res.ok) return;
           const latestData = await res.json();
-          
           if (!latestData || latestData.length === 0) return;
 
           const newPosts = latestData.filter(post => parseInt(post.id) > parseInt(this.lastKnownPostId));
-
           if (newPosts.length > 0) {
             newPosts.reverse().forEach(post => {
-                this.notifications.unshift({
-                    id: post.id,
-                    title: post.title.rendered,
-                    date: post.date,
-                    isRead: false
-                });
+                this.notifications.unshift({ id: post.id, title: post.title.rendered, date: post.date, isRead: false });
             });
-
             this.lastKnownPostId = newPosts[newPosts.length - 1].id;
             localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
             localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
-            
             this.updateNotifBadge();
-            if(!document.getElementById('notifPanel').classList.contains('hidden')) {
-                this.renderNotifPanel();
-            }
+            if(!document.getElementById('notifPanel').classList.contains('hidden')) this.renderNotifPanel();
             
             const newestPost = newPosts[newPosts.length - 1];
             document.getElementById('toastTitle').textContent = newestPost.title.rendered;
@@ -590,68 +627,36 @@
             const toast = document.getElementById('inAppToast');
             toast.style.transform = 'translateY(16px)'; 
             toast.style.opacity = '1';
-
             if('vibrate' in navigator) navigator.vibrate([100, 50, 100]); 
-            
-            setTimeout(() => { 
-                toast.style.transform = 'translateY(-200%)';
-                toast.style.opacity = '0';
-            }, 8000);
-
-            if ("Notification" in window && Notification.permission === "granted") {
-                new Notification("Warta Baru Balijani", {
-                    body: newestPost.title.rendered.replace(/(<([^>]+)>)/gi, ""),
-                    icon: "https://balijani.id/wp-content/uploads/2026/08/favicon.png"
-                });
-            }
+            setTimeout(() => { toast.style.transform = 'translateY(-200%)'; toast.style.opacity = '0'; }, 8000);
             this.loadDataSilently();
           }
-        } catch (e) {
-          console.error("Gagal memuat notifikasi", e);
-        }
+        } catch (e) { console.error(e); }
       },
 
       updateNotifBadge() {
         const unreadCount = this.notifications.filter(n => !n.isRead).length;
         const badge = document.getElementById('notifBadge');
-        if (unreadCount > 0) {
-            badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-            badge.classList.remove('hidden');
-        } else {
-            badge.classList.add('hidden');
-        }
+        if (unreadCount > 0) { badge.textContent = unreadCount > 99 ? '99+' : unreadCount; badge.classList.remove('hidden'); }
+        else { badge.classList.add('hidden'); }
       },
 
       toggleNotifPanel() {
         if('vibrate' in navigator) navigator.vibrate(20);
         const panel = document.getElementById('notifPanel');
-        if (panel.classList.contains('hidden')) {
-            panel.classList.remove('hidden');
-            this.renderNotifPanel();
-        } else {
-            panel.classList.add('hidden');
-        }
+        panel.classList.toggle('hidden');
+        if(!panel.classList.contains('hidden')) this.renderNotifPanel();
       },
 
       renderNotifPanel() {
         const container = document.getElementById('notifListContainer');
         container.innerHTML = '';
-
         if (this.notifications.length === 0) {
-            container.innerHTML = `
-              <div class="py-16 text-center text-slate-400">
-                <i data-lucide="bell-off" class="w-10 h-10 mx-auto mb-3 opacity-30"></i>
-                <p class="text-xs font-medium">Belum ada notifikasi baru.</p>
-              </div>`;
+            container.innerHTML = `<div class="py-16 text-center text-slate-400"><i data-lucide="bell-off" class="w-10 h-10 mx-auto mb-3 opacity-30"></i><p class="text-xs font-medium">Belum ada notifikasi.</p></div>`;
         } else {
             this.notifications.forEach(notif => {
-                const bgClass = notif.isRead 
-                    ? 'bg-transparent opacity-60' 
-                    : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm';
-                const dot = notif.isRead 
-                    ? '' 
-                    : '<span class="w-2.5 h-2.5 rounded-full bg-brand-500 shrink-0 mt-1 shadow-sm shadow-brand-500/50"></span>';
-                
+                const bgClass = notif.isRead ? 'bg-transparent opacity-60' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm';
+                const dot = notif.isRead ? '' : '<span class="w-2.5 h-2.5 rounded-full bg-brand-500 shrink-0 mt-1 shadow-sm"></span>';
                 container.innerHTML += `
                   <div onclick="App.openNotifPost(${notif.id})" class="flex items-start gap-3 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition ${bgClass}">
                     ${dot}
@@ -659,8 +664,7 @@
                       <h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2">${notif.title}</h4>
                       <span class="text-[9px] text-slate-400 mt-1 block font-medium">${new Date(notif.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                     </div>
-                  </div>
-                `;
+                  </div>`;
             });
         }
         lucide.createIcons();
@@ -684,60 +688,27 @@
         }
       },
 
-      openNotifPost(id) {
-        this.toggleNotifPanel();
-        this.openPost(id);
-      },
+      openNotifPost(id) { this.toggleNotifPanel(); this.openPost(id); },
 
       markAsRead(id) {
         let changed = false;
-        this.notifications.forEach(n => {
-            if (n.id === id && !n.isRead) {
-                n.isRead = true;
-                changed = true;
-            }
-        });
-        if (changed) {
-            localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
-            this.updateNotifBadge();
-        }
+        this.notifications.forEach(n => { if (n.id === id && !n.isRead) { n.isRead = true; changed = true; } });
+        if (changed) { localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications)); this.updateNotifBadge(); }
       },
 
       async loadDataSilently() {
-        try {
-          const res = await fetch(this.API_URL);
-          if (res.ok) { this.data = await res.json(); }
-        } catch(e){}
+        try { const res = await fetch(this.API_URL); if (res.ok) this.data = await res.json(); } catch(e){}
       },
 
       closeToast() {
         const toast = document.getElementById('inAppToast');
-        toast.style.transform = 'translateY(-200%)';
-        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-200%)'; toast.style.opacity = '0';
       },
 
       openLatestPostFromToast() {
         this.closeToast();
-        if(this.latestUnreadPostId) {
-            this.openPost(this.latestUnreadPostId);
-        } else {
-            this.navigate('home');
-        }
-      },
-
-      requestNotification() {
-        if('vibrate' in navigator) navigator.vibrate(20);
-        if (!("Notification" in window)) {
-            alert("Sistem Anda tidak mendukung Notifikasi.");
-        } else if (Notification.permission === "granted") {
-            alert("Notifikasi Balijani sudah aktif!");
-        } else if (Notification.permission !== "denied") {
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") alert("Notifikasi berhasil diaktifkan.");
-            });
-        } else {
-            alert("Notifikasi diblokir. Aktifkan dari pengaturan perangkat Anda.");
-        }
+        if(this.latestUnreadPostId) this.openPost(this.latestUnreadPostId);
+        else this.navigate('home');
       },
 
       async loadData() {
@@ -745,12 +716,10 @@
           const res = await fetch(this.API_URL);
           if (!res.ok) throw new Error();
           this.data = await res.json();
-
           if (!this.lastKnownPostId && this.data.length > 0) {
               this.lastKnownPostId = this.data[0].id;
               localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
           }
-
           this.renderHome();
           document.getElementById('loadingView').classList.add('hidden');
           this.navigate('home', '', true);
@@ -764,22 +733,13 @@
           const singleView = document.getElementById('singlePostView');
           const progressBarContainer = document.getElementById('progressBarContainer');
           const progressBar = document.getElementById('progressBar');
-          
           if (!singleView.classList.contains('hidden')) {
             progressBarContainer.classList.remove('hidden');
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            
-            if(height <= 0) {
-                progressBar.style.width = '100%';
-            } else {
-                const scrolled = (winScroll / height) * 100;
-                progressBar.style.width = Math.min(scrolled, 100) + '%';
-            }
-          } else {
-            progressBarContainer.classList.add('hidden');
-            progressBar.style.width = '0%';
-          }
+            if(height <= 0) progressBar.style.width = '100%';
+            else progressBar.style.width = Math.min((winScroll / height) * 100, 100) + '%';
+          } else { progressBarContainer.classList.add('hidden'); progressBar.style.width = '0%'; }
         });
       },
 
@@ -787,24 +747,13 @@
         let touchstartY = 0;
         const indicator = document.getElementById('pullRefreshIndicator');
         const iconSvg = document.getElementById('refreshIconSvg');
-
-        window.addEventListener('touchstart', e => {
-          if (window.scrollY === 0) {
-            touchstartY = e.touches[0].clientY;
-          }
-        }, {passive: true});
-
+        window.addEventListener('touchstart', e => { if (window.scrollY === 0) touchstartY = e.touches[0].clientY; }, {passive: true});
         window.addEventListener('touchmove', e => {
           if (window.scrollY === 0 && touchstartY > 0) {
-            const currentY = e.touches[0].clientY;
-            const diff = currentY - touchstartY;
-            if (diff > 0 && diff < 150) {
-              indicator.style.top = `${diff - 60}px`; 
-              iconSvg.style.transform = `rotate(${diff * 2}deg)`;
-            }
+            const diff = e.touches[0].clientY - touchstartY;
+            if (diff > 0 && diff < 150) { indicator.style.top = `${diff - 60}px`; iconSvg.style.transform = `rotate(${diff * 2}deg)`; }
           }
         }, {passive: true});
-
         window.addEventListener('touchend', async e => {
           if (window.scrollY === 0 && touchstartY > 0) {
             const diff = e.changedTouches[0].clientY - touchstartY;
@@ -812,21 +761,11 @@
               indicator.style.top = `max(env(safe-area-inset-top), 24px)`; 
               iconSvg.classList.add('animate-spin');
               if('vibrate' in navigator) navigator.vibrate(50);
-              
               document.getElementById('loadingView').classList.remove('hidden');
-              ['homeView', 'categoryView', 'bookmarkView', 'singlePostView'].forEach(id => {
-                  document.getElementById(id).classList.add('hidden');
-              });
-
+              ['homeView', 'categoryView', 'bookmarkView', 'singlePostView'].forEach(id => document.getElementById(id).classList.add('hidden'));
               await this.loadData();
-              
-              setTimeout(() => {
-                indicator.style.top = `-100px`;
-                iconSvg.classList.remove('animate-spin');
-              }, 500);
-            } else {
-              indicator.style.top = `-100px`; 
-            }
+              setTimeout(() => { indicator.style.top = `-100px`; iconSvg.classList.remove('animate-spin'); }, 500);
+            } else { indicator.style.top = `-100px`; }
           }
           touchstartY = 0;
         }, {passive: true});
@@ -837,12 +776,8 @@
       toggleSearch() {
         this.isSearchOpen = !this.isSearchOpen;
         const bar = document.getElementById('searchOverlay');
-        if(this.isSearchOpen) {
-          bar.classList.remove('hidden');
-          document.getElementById('searchInput').focus();
-        } else {
-          bar.classList.add('hidden');
-        }
+        bar.classList.toggle('hidden');
+        if(this.isSearchOpen) document.getElementById('searchInput').focus();
       },
       executeSearch(e) {
         if (e.key === 'Enter') {
@@ -862,31 +797,19 @@
           modal.className = 'fixed inset-0 z-[120] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4';
           modal.innerHTML = `
             <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-center">
-              <div class="w-12 h-12 bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-2">
-                <i data-lucide="external-link" class="w-6 h-6"></i>
-              </div>
+              <div class="w-12 h-12 bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-2"><i data-lucide="external-link" class="w-6 h-6"></i></div>
               <h3 class="font-bold text-lg text-slate-900 dark:text-white">Buka <span id="socialPlatformName"></span>?</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Anda akan diarahkan ke aplikasi tujuan atau browser bawaan perangkat Anda.</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Anda akan diarahkan ke aplikasi tujuan atau browser.</p>
               <div class="flex gap-2 pt-2">
-                <button onclick="document.getElementById('socialConfirmModal').style.display='none'" class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl transition">Batal</button>
-                <button id="socialConfirmBtn" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md">Ya, Lanjut</button>
+                <button onclick="document.getElementById('socialConfirmModal').style.display='none'" class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl">Batal</button>
+                <button id="socialConfirmBtn" class="flex-1 bg-brand-600 text-white font-bold text-xs py-3 rounded-xl shadow-md">Ya, Lanjut</button>
               </div>
-            </div>
-          `;
+            </div>`;
           document.body.appendChild(modal);
           lucide.createIcons();
-          
-          modal.onclick = (e) => {
-            if (e.target === modal) modal.style.display = 'none';
-          };
         }
-        
         document.getElementById('socialPlatformName').textContent = platform;
-        document.getElementById('socialConfirmBtn').onclick = () => {
-           modal.style.display = 'none';
-           window.open(url, '_system') || (window.location.href = url);
-        };
-        
+        document.getElementById('socialConfirmBtn').onclick = () => { modal.style.display = 'none'; window.open(url, '_system') || (window.location.href = url); };
         modal.style.display = 'flex';
       },
 
@@ -899,43 +822,26 @@
           modal.className = 'fixed inset-0 z-[110] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4';
           modal.innerHTML = `
             <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-center">
-              <div class="w-12 h-12 bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full flex items-center justify-center mx-auto">
-                <i data-lucide="pen-tool" class="w-6 h-6"></i>
-              </div>
+              <div class="w-12 h-12 bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full flex items-center justify-center mx-auto"><i data-lucide="pen-tool" class="w-6 h-6"></i></div>
               <h3 class="font-bold text-base text-slate-900 dark:text-white">Kirim Opini Publik</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Pilih lokasi pengisian formulir opini resmi Bali Jani:</p>
               <div class="flex gap-2 pt-2">
-                <button id="stayInAppBtn" class="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl transition">Tetap di Aplikasi</button>
-                <button id="goToWebBtn" onclick="App.confirmSocial('Browser', 'https://balijani.id/form-opini/')" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center text-center">Lanjut ke Web</button>
+                <button id="stayInAppBtn" class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl">Tetap di Aplikasi</button>
+                <button onclick="App.confirmSocial('Browser', 'https://balijani.id/form-opini/')" class="flex-1 bg-brand-600 text-white font-bold text-xs py-3 rounded-xl shadow-md">Lanjut ke Web</button>
               </div>
-            </div>
-          `;
+            </div>`;
           document.body.appendChild(modal);
           lucide.createIcons();
-
-          document.getElementById('stayInAppBtn').onclick = () => {
-            modal.style.display = 'none';
-            App.openInAppForm();
-          };
-          
-          modal.onclick = (e) => {
-            if (e.target === modal) modal.style.display = 'none';
-          };
-        } else {
-          modal.style.display = 'flex';
-        }
+          document.getElementById('stayInAppBtn').onclick = () => { modal.style.display = 'none'; App.openInAppForm(); };
+        } else { modal.style.display = 'flex'; }
       },
 
       openInAppForm() {
         const webView = document.getElementById('webFormView');
         const iframe = document.getElementById('webFormIframe');
         const loader = document.getElementById('iframeLoader');
-        
         webView.classList.remove('hidden');
-        setTimeout(() => {
-          webView.classList.remove('translate-y-full');
-        }, 10);
-        
+        setTimeout(() => webView.classList.remove('translate-y-full'), 10);
         if (!iframe.src || iframe.src === window.location.href) {
             iframe.style.opacity = '0';
             loader.style.display = 'flex';
@@ -947,14 +853,11 @@
         if('vibrate' in navigator) navigator.vibrate(20);
         const webView = document.getElementById('webFormView');
         webView.classList.add('translate-y-full');
-        setTimeout(() => {
-          webView.classList.add('hidden');
-        }, 300);
+        setTimeout(() => webView.classList.add('hidden'), 300);
       },
 
       renderHome() {
         if (!this.data.length) return;
-        
         const hero = this.data[0];
         document.getElementById('mainHeroCard').innerHTML = this.buildHeroHTML(hero);
         document.getElementById('mainHeroCard').onclick = () => this.openPost(hero.id);
@@ -963,7 +866,6 @@
         const track = document.getElementById('carouselTrack');
         const dots = document.getElementById('carouselDots');
         track.innerHTML = ''; dots.innerHTML = '';
-        
         carouselData.forEach((p, i) => {
           track.innerHTML += this.buildCarouselCard(p);
           dots.innerHTML += `<button class="w-1.5 h-1.5 rounded-full transition-all ${i===0 ? 'bg-brand-600 w-3' : 'bg-slate-300 dark:bg-slate-700'}" id="dot-${i}"></button>`;
@@ -985,8 +887,7 @@
           <div class="relative z-10 p-5 md:p-8 space-y-2 w-full">
             <span class="bg-brand-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-sm">${cat}</span>
             <h2 class="text-xl md:text-3xl font-bold text-white leading-snug drop-shadow-md">${post.title.rendered}</h2>
-          </div>
-        `;
+          </div>`;
       },
 
       buildCarouselCard(post) {
@@ -997,8 +898,7 @@
             <div class="p-3 flex-1 flex flex-col justify-center">
               <h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${post.title.rendered}</h3>
             </div>
-          </div>
-        `;
+          </div>`;
       },
 
       buildGridCard(post, isGallery) {
@@ -1012,8 +912,7 @@
           <div class="p-3 md:p-4">
             <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${post.title.rendered}</h3>
             <span class="text-[9px] text-slate-500 font-medium">${author}</span>
-          </div>
-        `;
+          </div>`;
         return el;
       },
 
@@ -1026,7 +925,6 @@
           index = (index + 1) % total;
           const itemWidth = track.children[0]?.clientWidth || 0;
           track.scrollTo({ left: index * (itemWidth + 16), behavior: 'smooth' });
-          
           for(let i=0; i<total; i++){
             const dot = document.getElementById(`dot-${i}`);
             if(dot) dot.className = `w-1.5 h-1.5 rounded-full transition-all ${i===index ? 'bg-brand-600 w-3' : 'bg-slate-300 dark:bg-slate-700'}`;
@@ -1038,59 +936,38 @@
         const grid = document.getElementById('bookmarkGridContainer');
         const emptyState = document.getElementById('emptyBookmarkState');
         grid.innerHTML = '';
-        
-        if (this.savedArticles.length === 0) {
-          emptyState.classList.remove('hidden');
-        } else {
-          emptyState.classList.add('hidden');
-          this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
-        }
+        if (this.savedArticles.length === 0) emptyState.classList.remove('hidden');
+        else { emptyState.classList.add('hidden'); this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true))); }
       },
 
       navigate(view, query = '', fromPopState = false) {
         if('vibrate' in navigator && !fromPopState) navigator.vibrate(20);
-
         if (!fromPopState) {
             const urlHash = view === 'category' && query && query !== 'all' ? '#arsip-' + query.replace(/\s+/g, '-') : '#' + view;
             history.pushState({ view: view, query: query }, '', urlHash);
         }
         
-        ['homeView', 'categoryView', 'bookmarkView', 'singlePostView'].forEach(id => {
-          document.getElementById(id).classList.add('hidden');
-        });
-        
+        ['homeView', 'categoryView', 'bookmarkView', 'singlePostView'].forEach(id => document.getElementById(id).classList.add('hidden'));
         document.querySelectorAll('.cat-tab').forEach(el => { 
           el.classList.remove('bg-brand-600', 'text-white', 'shadow-sm'); 
           el.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300'); 
         });
         
         const opiniBannerContainer = document.getElementById('opiniBannerContainer');
-        
         if (view === 'home') {
           document.getElementById('homeView').classList.remove('hidden');
           const firstTab = document.querySelector('.cat-tab');
-          if(firstTab) {
-            firstTab.classList.add('bg-brand-600', 'text-white', 'shadow-sm');
-            firstTab.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-          }
+          if(firstTab) { firstTab.classList.add('bg-brand-600', 'text-white', 'shadow-sm'); firstTab.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300'); }
         } 
-        else if (view === 'bookmarks') {
-          document.getElementById('bookmarkView').classList.remove('hidden');
-          this.renderBookmarks();
-        }
+        else if (view === 'bookmarks') { document.getElementById('bookmarkView').classList.remove('hidden'); this.renderBookmarks(); }
         else if (view === 'category') {
           document.getElementById('categoryView').classList.remove('hidden');
-          
           let filtered = this.data;
           let subText = "Hasil pencarian arsip data.";
-          
           if (query === 'Opini Publik') {
               opiniBannerContainer.innerHTML = `<img src="https://balijani.id/wp-content/uploads/2026/08/bn-opini-e1787673933513.jpg" alt="Kirim Opini" class="w-full h-auto rounded-2xl shadow-sm cursor-pointer hover:opacity-90 transition active:scale-[0.98]" onclick="App.showOpiniModal()">`;
               opiniBannerContainer.classList.remove('hidden');
-          } else {
-              opiniBannerContainer.innerHTML = '';
-              opiniBannerContainer.classList.add('hidden');
-          }
+          } else { opiniBannerContainer.innerHTML = ''; opiniBannerContainer.classList.add('hidden'); }
 
           if (query !== 'all') {
             const q = query.toLowerCase();
@@ -1098,22 +975,15 @@
               const terms = p._embedded?.['wp:term']?.[0] || [];
               return terms.some(t => t.name.toLowerCase().includes(q)) || p.title.rendered.toLowerCase().includes(q) || p.content.rendered.toLowerCase().includes(q);
             });
-            if (filtered.length === 0) {
-                filtered = this.data.slice(0, 8);
-                subText = `Arsip tidak ditemukan. Menampilkan berita lain.`;
-            }
+            if (filtered.length === 0) { filtered = this.data.slice(0, 8); subText = `Arsip tidak ditemukan. Menampilkan berita lain.`; }
           }
-          
           document.getElementById('categoryViewTitle').textContent = query === 'all' ? 'Semua Berita' : query.charAt(0).toUpperCase() + query.slice(1);
           document.getElementById('categoryViewSubtitle').textContent = subText;
-
           const grid = document.getElementById('archiveGridContainer');
           grid.innerHTML = '';
           filtered.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
         } 
-        else if (view === 'single') {
-          document.getElementById('singlePostView').classList.remove('hidden');
-        }
+        else if (view === 'single') document.getElementById('singlePostView').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'instant' });
       },
 
@@ -1121,21 +991,14 @@
         let post = this.data.find(p => p.id === id) || this.savedArticles.find(p => p.id === id);
         if (!post) return;
         this.currentPost = post;
-
         this.markAsRead(id);
-
-        if (!this.postStats[id]) {
-          this.postStats[id] = { views: 0, likes: 0, userLiked: false };
-        }
+        if (!this.postStats[id]) this.postStats[id] = { views: 0, likes: 0, userLiked: false };
         this.postStats[id].views += 1;
 
         document.getElementById('postHeadline').innerHTML = post.title.rendered;
         document.getElementById('postCategoryBadge').textContent = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Berita Tersimpan';
         document.getElementById('postAuthor').textContent = this.getAuthorName(post); 
-        
-        const dateObj = new Date(post.date);
-        document.getElementById('postDate').textContent = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-        
+        document.getElementById('postDate').textContent = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
         document.getElementById('postViewsCount').textContent = this.postStats[id].views.toLocaleString('id-ID');
         document.getElementById('postLikesCountStat').textContent = this.postStats[id].likes.toLocaleString('id-ID');
         this.updateInteractionUI();
@@ -1144,24 +1007,7 @@
         document.getElementById('postFeaturedImg').src = imgUrl || '';
         document.getElementById('postImageWrapper').style.display = imgUrl ? 'block' : 'none';
 
-        let html = post.content.rendered
-          .replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '')
-          .replace(/color:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black);?/gi, '')
-          .replace(/background(-color)?:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black|#f1f5f9);?/gi, '');
-
-        const paragraphs = html.split('</p>');
-        if (paragraphs.length > 4 && this.data.length > 1) {
-          const midIndex = Math.floor(paragraphs.length / 2);
-          const randomPost = this.data.find(p => p.id !== id) || this.data[0];
-          const bacaJugaHtml = `
-            <div class="my-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border-l-4 border-brand-500 shadow-sm cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" onclick="App.openPost(${randomPost.id})">
-              <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider mb-1 block">Baca Juga</span>
-              <h4 class="font-bold text-sm text-slate-900 dark:text-white line-clamp-2">${randomPost.title.rendered}</h4>
-            </div>
-          `;
-          paragraphs.splice(midIndex, 0, bacaJugaHtml);
-          html = paragraphs.join('</p>');
-        }
+        let html = post.content.rendered.replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '').replace(/color:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black);?/gi, '').replace(/background(-color)?:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black|#f1f5f9);?/gi, '');
         document.getElementById('postRenderedContent').innerHTML = html;
 
         if (window.twttr) window.twttr.widgets.load();
@@ -1177,14 +1023,10 @@
             <div class="flex gap-3 items-center cursor-pointer group active:scale-95 transition" onclick="App.openPost(${p.id})">
               <img src="${p._embedded?.['wp:featuredmedia']?.[0]?.source_url}" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0">
               <h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-600 transition">${p.title.rendered}</h4>
-            </div>
-          `;
+            </div>`;
         });
 
-        if (!fromPopState) {
-            history.pushState({ view: 'single', id: id }, '', '#post-' + id);
-        }
-        
+        if (!fromPopState) history.pushState({ view: 'single', id: id }, '', '#post-' + id);
         this.navigate('single', '', true);
         lucide.createIcons();
       },
@@ -1193,13 +1035,8 @@
         if (!this.currentPost) return;
         if('vibrate' in navigator) navigator.vibrate(30);
         const stats = this.postStats[this.currentPost.id];
-        if (stats.userLiked) {
-          stats.userLiked = false;
-          stats.likes -= 1;
-        } else {
-          stats.userLiked = true;
-          stats.likes += 1;
-        }
+        if (stats.userLiked) { stats.userLiked = false; stats.likes -= 1; }
+        else { stats.userLiked = true; stats.likes += 1; }
         document.getElementById('postLikesCountStat').textContent = stats.likes.toLocaleString('id-ID');
         this.updateInteractionUI();
       },
@@ -1207,22 +1044,9 @@
       toggleBookmark() {
         if (!this.currentPost) return;
         if('vibrate' in navigator) navigator.vibrate(30);
-        
         const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
-        
-        if (isSaved) {
-          this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id);
-        } else {
-          this.savedArticles.unshift({
-            id: this.currentPost.id,
-            title: { rendered: this.currentPost.title.rendered },
-            _embedded: this.currentPost._embedded,
-            content: { rendered: this.currentPost.content.rendered },
-            date: this.currentPost.date,
-            link: this.currentPost.link
-          });
-        }
-        
+        if (isSaved) this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id);
+        else this.savedArticles.unshift({ id: this.currentPost.id, title: { rendered: this.currentPost.title.rendered }, _embedded: this.currentPost._embedded, content: { rendered: this.currentPost.content.rendered }, date: this.currentPost.date, link: this.currentPost.link });
         localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
         this.updateInteractionUI();
       },
@@ -1230,44 +1054,25 @@
       updateInteractionUI() {
         if (!this.currentPost) return;
         const stats = this.postStats[this.currentPost.id];
-        
         const likeBtn = document.getElementById('likeButton');
         const likeIcon = document.getElementById('likeIcon');
         const bookmarkBtn = document.getElementById('bookmarkButton');
         const bookmarkIcon = document.getElementById('bookmarkIcon');
         const bookmarkText = document.getElementById('bookmarkText');
 
-        if (stats.userLiked) {
-          likeBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-bold text-xs transition active:scale-95 border border-brand-500/30";
-          likeIcon.classList.add('fill-brand-500', 'text-brand-500');
-        } else {
-          likeBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95";
-          likeIcon.classList.remove('fill-brand-500', 'text-brand-500');
-        }
+        if (stats.userLiked) { likeBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-bold text-xs transition active:scale-95 border border-brand-500/30"; likeIcon.classList.add('fill-brand-500', 'text-brand-500'); }
+        else { likeBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95"; likeIcon.classList.remove('fill-brand-500', 'text-brand-500'); }
 
         const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
-        if (isSaved) {
-          bookmarkBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-bold text-xs transition active:scale-95 border border-brand-500/30";
-          bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500');
-          bookmarkText.textContent = "Tersimpan";
-        } else {
-          bookmarkBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95";
-          bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500');
-          bookmarkText.textContent = "Simpan";
-        }
+        if (isSaved) { bookmarkBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-bold text-xs transition active:scale-95 border border-brand-500/30"; bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500'); bookmarkText.textContent = "Tersimpan"; }
+        else { bookmarkBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95"; bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500'); bookmarkText.textContent = "Simpan"; }
       },
 
       async share() {
         if (!this.currentPost) return;
         if('vibrate' in navigator) navigator.vibrate(20);
-        const shareUrl = this.currentPost.link;
-        const shareTitle = this.currentPost.title.rendered;
-
-        if (typeof AndroidBridge !== "undefined") {
-            AndroidBridge.bagikanBerita(shareTitle, shareUrl);
-            return; 
-        }
-
+        if (typeof AndroidBridge !== "undefined") { AndroidBridge.bagikanBerita(this.currentPost.title.rendered, this.currentPost.link); return; }
+        
         let modal = document.getElementById('customShareModal');
         if (!modal) {
           modal = document.createElement('div');
@@ -1276,47 +1081,30 @@
           modal.innerHTML = `
             <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
               <h3 class="font-bold text-lg text-slate-900 dark:text-white">Bagikan Berita</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">${shareTitle}</p>
               <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
-                <input type="text" id="shareUrlInput" value="${shareUrl}" readonly class="bg-transparent text-xs text-slate-700 dark:text-slate-300 w-full outline-none select-all">
+                <input type="text" id="shareUrlInput" value="${this.currentPost.link}" readonly class="bg-transparent text-xs text-slate-700 dark:text-slate-300 w-full outline-none select-all">
               </div>
               <div class="flex gap-2 pt-2">
-                <button id="copyLinkBtn" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md">Salin Link</button>
-                <button id="closeModalBtn" class="px-4 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl transition">Tutup</button>
+                <button id="copyLinkBtn" class="flex-1 bg-brand-600 text-white font-bold text-xs py-3 rounded-xl shadow-md">Salin Link</button>
+                <button onclick="document.getElementById('customShareModal').style.display='none'" class="px-4 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl">Tutup</button>
               </div>
-            </div>
-          `;
+            </div>`;
           document.body.appendChild(modal);
-
           document.getElementById('copyLinkBtn').onclick = () => {
-            const input = document.getElementById('shareUrlInput');
-            input.select();
+            document.getElementById('shareUrlInput').select();
             document.execCommand('copy');
-            alert('Tautan berhasil disalin!');
+            alert('Tautan disalin!');
             modal.style.display = 'none';
           };
-
-          document.getElementById('closeModalBtn').onclick = () => {
-            modal.style.display = 'none';
-          };
-          
-          modal.onclick = (e) => {
-            if (e.target === modal) modal.style.display = 'none';
-          };
-        } else {
-          document.getElementById('shareUrlInput').value = shareUrl;
-          modal.style.display = 'flex';
-        }
+        } else { document.getElementById('shareUrlInput').value = this.currentPost.link; modal.style.display = 'flex'; }
       },
 
       toggleTheme() {
         if('vibrate' in navigator) navigator.vibrate(20);
         document.documentElement.classList.toggle('dark');
-        
         const isDark = document.documentElement.classList.contains('dark');
         const color = isDark ? '#0b0f19' : '#ffffff';
         document.getElementById('themeColorMeta').setAttribute('content', color);
-        
         this.updateAndroidStatusBar(color, isDark);
       }
     };
