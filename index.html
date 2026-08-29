@@ -443,6 +443,13 @@
       },
 
       async init() {
+        // Otomatis aktifkan Dark mode jika HP Anda menggunakan mode gelap
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.classList.add('dark');
+          const metaColor = document.getElementById('themeColorMeta');
+          if(metaColor) metaColor.setAttribute('content', '#0b0f19');
+        }
+
         await this.fetchRemoteConfig();
         this.initPullToRefresh();
         this.initReadingProgress();
