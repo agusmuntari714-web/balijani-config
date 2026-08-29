@@ -450,15 +450,23 @@
         }
       },
 
+      updateAndroidStatusBar(color) {
+        if (typeof AndroidBridge !== "undefined") {
+            AndroidBridge.ubahWarnaStatusBar(color);
+        }
+      },
+
       async init() {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
           document.documentElement.classList.add('dark');
           const metaColor = document.getElementById('themeColorMeta');
           if(metaColor) metaColor.setAttribute('content', '#0b0f19');
+          this.updateAndroidStatusBar('#0b0f19');
         } else {
           // Kunci warna gelap di mode terang agar ikon HP tidak hilang
           const metaColor = document.getElementById('themeColorMeta');
           if(metaColor) metaColor.setAttribute('content', '#0f172a');
+          this.updateAndroidStatusBar('#0f172a');
         }
 
         window.addEventListener('popstate', (e) => {
@@ -1262,6 +1270,13 @@
         const shareUrl = this.currentPost.link;
         const shareTitle = this.currentPost.title.rendered;
 
+        // CEK: Apakah sedang dibuka di aplikasi Android Studio (APK)?
+        if (typeof AndroidBridge !== "undefined") {
+            AndroidBridge.bagikanBerita(shareTitle, shareUrl);
+            return; // Berhenti di sini, memanggil Kotlin
+        }
+
+        // FALLBACK: Untuk browser biasa atau aplikasi versi lama
         let modal = document.getElementById('customShareModal');
         if (!modal) {
           modal = document.createElement('div');
@@ -1308,6 +1323,9 @@
         document.documentElement.classList.toggle('dark');
         const color = document.documentElement.classList.contains('dark') ? '#0b0f19' : '#0f172a';
         document.getElementById('themeColorMeta').setAttribute('content', color);
+        
+        // Memanggil Kotlin untuk mengubah warna status bar Android
+        this.updateAndroidStatusBar(color);
       }
     };
 
