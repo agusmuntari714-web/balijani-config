@@ -93,13 +93,11 @@
   </div>
 
   <!-- HEADER UTAMA -->
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#ffffff]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     
-    <!-- BLOK WARNA GELAP KHUSUS UNTUK AREA STATUS BAR HP (Mengunci warna di Poni HP) -->
     <div class="absolute top-0 left-0 right-0 w-full bg-[#ffffff] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
 
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
-      
       <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
         <div class="flex items-center gap-2 mt-0.5">
@@ -118,12 +116,10 @@
         <button onclick="App.toggleSearch()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition">
           <i data-lucide="search" class="w-5 h-5"></i>
         </button>
-        
         <button onclick="App.toggleNotifPanel()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 relative transition">
           <i data-lucide="bell" class="w-5 h-5"></i>
           <span id="notifBadge" class="absolute top-0 right-0 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center rounded-full hidden border border-white dark:border-[#0f172a]">0</span>
         </button>
-
         <button onclick="App.toggleTheme()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
           <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i><i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
         </button>
@@ -174,14 +170,11 @@
         </button>
       </div>
       
-      <div id="notifListContainer" class="flex-1 overflow-y-auto p-3 space-y-2 bg-slate-50 dark:bg-[#0b0f19]">
-        <!-- Dirender lewat JavaScript -->
-      </div>
+      <div id="notifListContainer" class="flex-1 overflow-y-auto p-3 space-y-2 bg-slate-50 dark:bg-[#0b0f19]"></div>
     </div>
   </div>
 
   <main class="max-w-md md:max-w-7xl mx-auto w-full pb-20 md:pb-8 flex-1 mt-2">
-    
     <div id="loadingView" class="py-6 px-4 md:px-0 max-w-7xl mx-auto w-full">
       <div class="animate-pulse flex flex-col gap-6">
         <div class="w-full aspect-square md:aspect-[21/9] bg-slate-200 dark:bg-slate-800 rounded-2xl"></div>
@@ -227,7 +220,6 @@
           <i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          
           <a href="javascript:void(0)" onclick="alert('Fitur Hotel & Villa akan segera hadir!');" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
             <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
@@ -237,7 +229,6 @@
               <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
             </div>
           </a>
-
           <a href="javascript:void(0)" onclick="alert('Fitur Tiket Pesawat akan segera hadir!');" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
             <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
@@ -247,7 +238,6 @@
               <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
             </div>
           </a>
-
           <a href="javascript:void(0)" onclick="alert('Fitur Destinasi Wisata akan segera hadir!');" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
             <img src="https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
@@ -257,7 +247,6 @@
               <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
             </div>
           </a>
-
           <a href="javascript:void(0)" onclick="alert('Fitur Kuliner Khas akan segera hadir!');" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
             <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
@@ -267,7 +256,6 @@
               <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
             </div>
           </a>
-
         </div>
       </div>
 
@@ -305,7 +293,6 @@
     </section>
 
     <article id="singlePostView" class="hidden view-enter max-w-4xl mx-auto bg-white dark:bg-[#0f172a] md:mt-6 md:rounded-2xl md:border border-slate-100 dark:border-slate-800 pb-8 flex flex-col md:flex-row gap-6">
-      
       <div class="flex-1 w-full relative">
         <div id="postImageWrapper" class="relative w-full aspect-[4/3] md:aspect-video md:rounded-tl-2xl overflow-hidden bg-slate-100 dark:bg-slate-800">
           <button onclick="history.back()" class="absolute top-4 left-4 z-10 w-9 h-9 rounded-full bg-black/40 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/60 transition"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
@@ -315,7 +302,6 @@
         <div class="px-5 pt-6 pb-4 border-b border-slate-100 dark:border-slate-800/80">
           <span id="postCategoryBadge" class="inline-block px-2.5 py-1 text-[10px] font-bold uppercase rounded bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400 mb-3"></span>
           <h1 id="postHeadline" class="text-2xl md:text-3xl font-extrabold font-serif leading-snug text-slate-900 dark:text-white mb-4"></h1>
-          
           <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
             <div class="flex items-center gap-3">
               <span class="flex items-center gap-1.5"><i data-lucide="user" class="w-3.5 h-3.5 text-brand-600"></i> <span id="postAuthor" class="font-bold">Redaksi</span></span>
@@ -335,7 +321,6 @@
         <div id="postRenderedContent" class="article-body px-5 pt-4 text-[17px]"></div>
 
         <div class="px-5 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
-          
           <div class="flex items-center gap-2 mb-8">
             <button id="likeButton" onclick="App.toggleLike()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95">
               <i data-lucide="thumbs-up" id="likeIcon" class="w-4 h-4 transition-colors"></i> <span id="likeCountText" class="hidden sm:inline">Suka</span>
@@ -451,7 +436,8 @@
 
       updateAndroidStatusBar(color, isDarkMode) {
         if (typeof AndroidBridge !== "undefined") {
-            AndroidBridge.ubahWarnaStatusBar(color, isDarkMode);
+            // MENGIRIM SEBAGAI STRING AGAR 100% AMAN DARI BUG HYPEROS
+            AndroidBridge.ubahWarnaStatusBar(color, isDarkMode ? "dark" : "light");
         }
       },
 
@@ -1269,13 +1255,11 @@
         const shareUrl = this.currentPost.link;
         const shareTitle = this.currentPost.title.rendered;
 
-        // CEK: Apakah sedang dibuka di aplikasi Android Studio (APK)?
         if (typeof AndroidBridge !== "undefined") {
             AndroidBridge.bagikanBerita(shareTitle, shareUrl);
-            return; // Berhenti di sini, memanggil Kotlin
+            return; 
         }
 
-        // FALLBACK: Untuk browser biasa atau aplikasi versi lama
         let modal = document.getElementById('customShareModal');
         if (!modal) {
           modal = document.createElement('div');
@@ -1325,7 +1309,6 @@
         const color = isDark ? '#0b0f19' : '#ffffff';
         document.getElementById('themeColorMeta').setAttribute('content', color);
         
-        // Memanggil Kotlin untuk mengubah warna status bar Android
         this.updateAndroidStatusBar(color, isDark);
       }
     };
