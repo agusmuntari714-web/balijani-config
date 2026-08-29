@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <!-- Memerintahkan sistem HP untuk menyesuaikan warna ikon Sinyal/Baterai secara otomatis -->
+  <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#ffffff" id="themeColorMeta">
+  
   <title>BALIJANI - Portal Warta Premium</title>
 
   <!-- Tailwind CSS & Lucide Icons -->
@@ -46,22 +49,23 @@
     .snap-item { scroll-snap-align: start; }
     .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
 
-    /* Indikator Refresh dipaksa jauh -100px agar tidak mengintip */
+    /* Indikator Refresh diposisikan mutlak secara aman */
     #pullRefreshIndicator {
       position: fixed;
-      top: max(env(safe-area-inset-top), 24px); 
-      left: 0;
-      right: 0;
-      height: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(220, 38, 38, 0.1);
-      backdrop-filter: blur(4px);
-      z-index: 30;
-      transition: transform 0.2s ease;
-      transform: translateY(-100px); 
+      z-index: 50;
+      transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    .dark #pullRefreshIndicator { background: #1e293b; }
 
     .bg-ig-gradient { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
     .bg-fb { background-color: #1877F2; }
@@ -71,9 +75,9 @@
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative pt-0">
 
-  <!-- TOAST NOTIFICATION (Ditarik Jauh -translate-y-48 agar tidak bocor) -->
-  <div id="inAppToast" class="fixed top-4 left-4 right-4 z-[150] transition-transform duration-500 transform -translate-y-48">
-    <div class="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-l-4 border-brand-500 p-4 flex items-start gap-3 cursor-pointer" onclick="App.openLatestPostFromToast()">
+  <!-- TOAST NOTIFICATION (Disembunyikan absolut -200% agar mustahil bocor) -->
+  <div id="inAppToast" class="fixed left-4 right-4 z-[150] transition-all duration-500" style="top: -200%;">
+    <div class="max-w-md mx-auto bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-xl shadow-2xl rounded-2xl p-4 flex items-start gap-3 cursor-pointer border border-slate-200/50 dark:border-slate-700/50" onclick="App.openLatestPostFromToast()">
       <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0">
         <i data-lucide="bell-ring" class="w-5 h-5 animate-pulse"></i>
       </div>
@@ -85,15 +89,17 @@
     </div>
   </div>
 
-  <div id="pullRefreshIndicator">
-    <div class="w-6 h-6 border-2 border-brand-600 border-t-transparent rounded-full animate-spin"></div>
+  <div id="pullRefreshIndicator" style="top: -100px;">
+    <svg id="refreshIconSvg" class="w-6 h-6 text-brand-600 transition-transform duration-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+    </svg>
   </div>
 
   <!-- HEADER UTAMA -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
-    <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+    <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
       
-      <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5 relative z-10">
+      <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
         <div class="flex items-center gap-2 mt-0.5">
           <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
@@ -104,7 +110,7 @@
         </div>
       </a>
 
-      <div class="flex items-center gap-1 relative z-10">
+      <div class="flex items-center gap-1">
         <button id="subscribeBtn" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative">
           <i data-lucide="mail-open" class="w-5 h-5"></i>
         </button>
@@ -215,7 +221,6 @@
         </div>
       </div>
 
-      <!-- EKSPLORASI BALI -->
       <div id="adsBlock" class="bg-slate-100 dark:bg-slate-800/40 rounded-2xl p-4 md:p-6 border border-slate-200 dark:border-slate-800">
         <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 mb-4">
           <i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali
@@ -444,14 +449,12 @@
       },
 
       async init() {
-        // Otomatis aktifkan Dark mode jika HP menggunakan mode gelap
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
           document.documentElement.classList.add('dark');
           const metaColor = document.getElementById('themeColorMeta');
           if(metaColor) metaColor.setAttribute('content', '#0b0f19');
         }
 
-        // PENANGANAN TOMBOL BACK HARDWARE (HISTORY API)
         window.addEventListener('popstate', (e) => {
             if (e.state) {
                 if (e.state.view === 'single') {
@@ -463,7 +466,6 @@
                 this.navigate('home', '', true);
             }
         });
-        // Set kondisi history awal
         history.replaceState({ view: 'home', query: '' }, '', window.location.pathname);
 
         await this.fetchRemoteConfig();
@@ -535,7 +537,6 @@
       },
 
       startNotificationPolling() {
-        // Interval pengecekan dipercepat menjadi setiap 20 detik
         this.notificationInterval = setInterval(() => {
             this.checkNewPosts();
         }, 20000); 
@@ -543,9 +544,8 @@
 
       async checkNewPosts() {
         try {
-          if (!this.lastKnownPostId) return; // Tunggu data awal termuat dulu
+          if (!this.lastKnownPostId) return; 
 
-          // Bypass cache agar selalu memanggil berita terbaru
           const checkUrl = "https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=5";
           const res = await fetch(checkUrl, { cache: "no-store" });
           if (!res.ok) return;
@@ -553,11 +553,9 @@
           
           if (!latestData || latestData.length === 0) return;
 
-          // Cek secara ketat ID yang lebih besar (berita baru)
           const newPosts = latestData.filter(post => parseInt(post.id) > parseInt(this.lastKnownPostId));
 
           if (newPosts.length > 0) {
-            // Sortir urutan agar notifikasi masuk dari yang tertua ke terbaru di antrean
             newPosts.reverse().forEach(post => {
                 this.notifications.unshift({
                     id: post.id,
@@ -567,7 +565,6 @@
                 });
             });
 
-            // Update memori sistem dengan ID terbaru
             this.lastKnownPostId = newPosts[newPosts.length - 1].id;
             localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
             localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
@@ -577,17 +574,21 @@
                 this.renderNotifPanel();
             }
             
-            // Munculkan UI In-App Toast
             const newestPost = newPosts[newPosts.length - 1];
             document.getElementById('toastTitle').textContent = newestPost.title.rendered;
             this.latestUnreadPostId = newestPost.id;
             
             const toast = document.getElementById('inAppToast');
-            toast.classList.remove('-translate-y-48');
-            if('vibrate' in navigator) navigator.vibrate([100, 50, 100]); 
-            setTimeout(() => { toast.classList.add('-translate-y-48'); }, 8000);
+            toast.style.transform = 'translateY(16px)'; // Animasi turun presisi
+            toast.style.opacity = '1';
 
-            // Web Push Notification sistem HP
+            if('vibrate' in navigator) navigator.vibrate([100, 50, 100]); 
+            
+            setTimeout(() => { 
+                toast.style.transform = 'translateY(-200%)';
+                toast.style.opacity = '0';
+            }, 8000);
+
             if ("Notification" in window && Notification.permission === "granted") {
                 new Notification("Warta Baru Balijani", {
                     body: newestPost.title.rendered.replace(/(<([^>]+)>)/gi, ""),
@@ -701,7 +702,9 @@
       },
 
       closeToast() {
-        document.getElementById('inAppToast').classList.add('-translate-y-48');
+        const toast = document.getElementById('inAppToast');
+        toast.style.transform = 'translateY(-200%)';
+        toast.style.opacity = '0';
       },
 
       openLatestPostFromToast() {
@@ -734,7 +737,6 @@
           if (!res.ok) throw new Error();
           this.data = await res.json();
 
-          // PENTING: Rekam ID pertama kali agar notifikasi tidak error/diam
           if (!this.lastKnownPostId && this.data.length > 0) {
               this.lastKnownPostId = this.data[0].id;
               localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
@@ -759,7 +761,6 @@
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             
-            // Perbaikan logika kalkulasi persentase agar bar tidak keluar jalur
             if(height <= 0) {
                 progressBar.style.width = '100%';
             } else {
@@ -776,6 +777,7 @@
       initPullToRefresh() {
         let touchstartY = 0;
         const indicator = document.getElementById('pullRefreshIndicator');
+        const iconSvg = document.getElementById('refreshIconSvg');
 
         window.addEventListener('touchstart', e => {
           if (window.scrollY === 0) {
@@ -788,7 +790,8 @@
             const currentY = e.touches[0].clientY;
             const diff = currentY - touchstartY;
             if (diff > 0 && diff < 150) {
-              indicator.style.transform = `translateY(${diff - 100}px)`; // Disesuaikan animasi agar mulus
+              indicator.style.top = `${diff - 60}px`; 
+              iconSvg.style.transform = `rotate(${diff * 2}deg)`;
             }
           }
         }, {passive: true});
@@ -796,15 +799,24 @@
         window.addEventListener('touchend', async e => {
           if (window.scrollY === 0 && touchstartY > 0) {
             const diff = e.changedTouches[0].clientY - touchstartY;
-            if (diff > 100) {
-              indicator.style.transform = `translateY(0px)`;
+            if (diff > 90) {
+              indicator.style.top = `max(env(safe-area-inset-top), 24px)`; 
+              iconSvg.classList.add('animate-spin');
               if('vibrate' in navigator) navigator.vibrate(50);
+              
+              document.getElementById('loadingView').classList.remove('hidden');
+              ['homeView', 'categoryView', 'bookmarkView', 'singlePostView'].forEach(id => {
+                  document.getElementById(id).classList.add('hidden');
+              });
+
               await this.loadData();
+              
               setTimeout(() => {
-                indicator.style.transform = `translateY(-100px)`;
-              }, 300);
+                indicator.style.top = `-100px`;
+                iconSvg.classList.remove('animate-spin');
+              }, 500);
             } else {
-              indicator.style.transform = `translateY(-100px)`;
+              indicator.style.top = `-100px`; 
             }
           }
           touchstartY = 0;
