@@ -436,23 +436,33 @@
 
       updateAndroidStatusBar(color, isDarkMode) {
         if (typeof AndroidBridge !== "undefined") {
-            // MENGIRIM SEBAGAI STRING AGAR 100% AMAN DARI BUG HYPEROS
             AndroidBridge.ubahWarnaStatusBar(color, isDarkMode ? "dark" : "light");
         }
       },
 
       async init() {
-        const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (isDark) {
-          document.documentElement.classList.add('dark');
-          const metaColor = document.getElementById('themeColorMeta');
-          if(metaColor) metaColor.setAttribute('content', '#0b0f19');
-          this.updateAndroidStatusBar('#0b0f19', true);
-        } else {
-          const metaColor = document.getElementById('themeColorMeta');
-          if(metaColor) metaColor.setAttribute('content', '#ffffff');
-          this.updateAndroidStatusBar('#ffffff', false);
-        }
+        // SINKRONISASI 2 ARAH: Mendeteksi tema dari Sistem HP secara real-time
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+        const applySystemTheme = (e) => {
+          if (e.matches) {
+            document.documentElement.classList.add('dark');
+            const metaColor = document.getElementById('themeColorMeta');
+            if(metaColor) metaColor.setAttribute('content', '#0b0f19');
+            this.updateAndroidStatusBar('#0b0f19', true);
+          } else {
+            document.documentElement.classList.remove('dark');
+            const metaColor = document.getElementById('themeColorMeta');
+            if(metaColor) metaColor.setAttribute('content', '#ffffff');
+            this.updateAndroidStatusBar('#ffffff', false);
+          }
+        };
+
+        // Jalankan saat pertama kali dibuka
+        applySystemTheme(prefersDark);
+
+        // Pantau jika sewaktu-waktu tema HP diubah di tengah jalan
+        prefersDark.addEventListener('change', applySystemTheme);
 
         window.addEventListener('popstate', (e) => {
             if (e.state) {
@@ -893,7 +903,7 @@
                 <i data-lucide="pen-tool" class="w-6 h-6"></i>
               </div>
               <h3 class="font-bold text-base text-slate-900 dark:text-white">Kirim Opini Publik</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Pilih lokasi pengisian formulir opini resmi Balijani:</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Pilih lokasi pengisian formulir opini resmi Bali Jani:</p>
               <div class="flex gap-2 pt-2">
                 <button id="stayInAppBtn" class="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl transition">Tetap di Aplikasi</button>
                 <button id="goToWebBtn" onclick="App.confirmSocial('Browser', 'https://balijani.id/form-opini/')" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center text-center">Lanjut ke Web</button>
@@ -1040,7 +1050,6 @@
       navigate(view, query = '', fromPopState = false) {
         if('vibrate' in navigator && !fromPopState) navigator.vibrate(20);
 
-        // History API Push untuk deteksi tombol back Android
         if (!fromPopState) {
             const urlHash = view === 'category' && query && query !== 'all' ? '#arsip-' + query.replace(/\s+/g, '-') : '#' + view;
             history.pushState({ view: view, query: query }, '', urlHash);
@@ -1172,7 +1181,6 @@
           `;
         });
 
-        // Push state untuk Android Back Button
         if (!fromPopState) {
             history.pushState({ view: 'single', id: id }, '', '#post-' + id);
         }
