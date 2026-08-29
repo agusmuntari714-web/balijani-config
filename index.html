@@ -129,7 +129,7 @@
     </div>
   </div>
 
-  <!-- HEADER UTAMA (Tombol Home di header telah dihilangkan) -->
+  <!-- HEADER UTAMA -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     
     <div class="absolute top-0 left-0 right-0 w-full bg-[#ffffff] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
@@ -176,7 +176,6 @@
       </div>
     </div>
     
-    <!-- (Catatan: Tombol "Home" di bar navigasi horizontal bawah logo sudah dihapus bersih, kini hanya menyisakan kategori utama Hukum, Politik, Pariwisata, Opini Publik) -->
     <div class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] relative z-10">
       <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold px-4 py-2.5 gap-2" id="topNavContainer">
         <button onclick="App.navigate('category', 'Hukum')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Hukum</button>
@@ -230,6 +229,7 @@
       </div>
     </div>
 
+    <!-- BERANDA DENGAN LAYOUT MULTI-VARIASI -->
     <section id="homeView" class="hidden view-enter space-y-8 px-4 md:px-0">
       <div id="dynamicAdBannerContainer" class="hidden">
         <a id="dynamicAdLink" href="#" target="_blank" class="block relative rounded-2xl overflow-hidden shadow-md group border border-slate-200 dark:border-slate-800 aspect-[21/9] md:aspect-[3/1]">
@@ -244,6 +244,7 @@
         </a>
       </div>
 
+      <!-- HERO UTAMA & CAROUSEL -->
       <div class="space-y-4">
         <div id="mainHeroCard" class="cursor-pointer relative rounded-2xl overflow-hidden bg-slate-900 shadow-lg aspect-square md:aspect-[21/9] flex items-end"></div>
         <div>
@@ -298,12 +299,8 @@
         </div>
       </div>
 
-      <div>
-        <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
-          <span class="w-1.5 h-5 bg-brand-600 rounded-full"></span> Kabar Terkini
-        </h2>
-        <div id="homeGridFeed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-      </div>
+      <!-- KONTTAINER BERANDA BERVARIASI (DIRENDER DINAMIS OLEH JAVASCRIPT) -->
+      <div id="dynamicHomeFeed" class="space-y-8"></div>
     </section>
 
     <section id="categoryView" class="hidden view-enter pt-4 px-4 md:px-0">
@@ -449,7 +446,8 @@
 
   <script>
     const App = {
-      API_URL: "https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=50",
+      // Mengambil data hingga 100 berita untuk mencakup arsip 1 bulan terakhir
+      API_URL: "https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=100",
       CONFIG_URL: "https://raw.githubusercontent.com/agusmuntari714-web/balijani-config/main/config.json", 
 
       data: [],
@@ -849,8 +847,10 @@
         setTimeout(() => webView.classList.add('hidden'), 300);
       },
 
+      // RENDER BERANDA DENGAN POLA SUSUNAN BERVARIASI (2 Kolom -> 3 Kolom Petak -> 2 Kolom dst)
       renderHome() {
         if (!this.data.length) return;
+        
         const hero = this.data[0];
         document.getElementById('mainHeroCard').innerHTML = this.buildHeroHTML(hero);
         document.getElementById('mainHeroCard').onclick = () => this.openPost(hero.id);
@@ -865,9 +865,42 @@
         });
         this.startCarousel();
 
-        const grid = document.getElementById('homeGridFeed');
-        grid.innerHTML = '';
-        this.data.slice(6, 18).forEach(p => grid.appendChild(this.buildGridCard(p, false)));
+        // Menyusun sisa berita (dari indeks 6 hingga akhir/1 bulan terakhir) dengan pola bervariasi
+        const remainingPosts = this.data.slice(6);
+        const feedContainer = document.getElementById('dynamicHomeFeed');
+        feedContainer.innerHTML = '';
+
+        let pointer = 0;
+        let sectionIndex = 0;
+
+        while (pointer < remainingPosts.length) {
+          if (sectionIndex % 2 === 0) {
+            // Pola A: 2 Kolom Berjajar (Grid 2 Kolom)
+            const chunk = remainingPosts.slice(pointer, pointer + 2);
+            if (chunk.length > 0) {
+              const wrapper = document.createElement('div');
+              wrapper.className = "grid grid-cols-1 md:grid-cols-2 gap-5";
+              chunk.forEach(p => wrapper.appendChild(this.buildGridCard(p, false)));
+              feedContainer.appendChild(wrapper);
+            }
+            pointer += 2;
+          } else {
+            // Pola B: 3 Petak Berjajar (Grid 3 Kolom)
+            const chunk = remainingPosts.slice(pointer, pointer + 3);
+            if (chunk.length > 0) {
+              const wrapper = document.createElement('div');
+              wrapper.innerHTML = `<h2 class="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">Warta Pilihan Lainnya</h2>`;
+              const grid = document.createElement('div');
+              grid.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4";
+              chunk.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
+              wrapper.appendChild(grid);
+              feedContainer.appendChild(wrapper);
+            }
+            pointer += 3;
+          }
+          sectionIndex++;
+        }
+
         lucide.createIcons({ attrs: { 'stroke-width': 2.25 } });
       },
 
@@ -894,16 +927,16 @@
           </div>`;
       },
 
-      buildGridCard(post, isGallery) {
+      buildGridCard(post, isCompact) {
         const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
         const author = this.getAuthorName(post);
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
         el.innerHTML = `
-          <div class="w-full ${isGallery ? 'aspect-square' : 'aspect-video'} overflow-hidden"><img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>
-          <div class="p-3 md:p-4">
-            <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${post.title.rendered}</h3>
+          <div class="w-full ${isCompact ? 'aspect-video' : 'aspect-video md:aspect-[16/10]'} overflow-hidden"><img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>
+          <div class="p-3.5 md:p-4 flex-1 flex flex-col justify-between">
+            <h3 class="text-xs md:text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${post.title.rendered}</h3>
             <span class="text-[9px] text-slate-500 font-medium">${author}</span>
           </div>`;
         return el;
