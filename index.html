@@ -46,9 +46,10 @@
     .snap-item { scroll-snap-align: start; }
     .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
 
+    /* Pull to Refresh Indicator */
     #pullRefreshIndicator {
-      position: absolute;
-      top: -50px;
+      position: fixed;
+      top: max(env(safe-area-inset-top), 28px); 
       left: 0;
       right: 0;
       height: 50px;
@@ -57,8 +58,9 @@
       justify-content: center;
       background: rgba(220, 38, 38, 0.1);
       backdrop-filter: blur(4px);
-      z-index: 100;
+      z-index: 30;
       transition: transform 0.2s ease;
+      transform: translateY(-100px);
     }
 
     .bg-ig-gradient { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
@@ -69,9 +71,9 @@
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative">
 
-  <!-- TOAST NOTIFICATION IN-APP -->
-  <div id="inAppToast" class="fixed top-24 left-4 right-4 z-[150] transition-transform duration-500 transform -translate-y-40">
-    <div class="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-l-4 border-brand-500 p-4 flex items-start gap-3 cursor-pointer" onclick="App.openLatestPostFromToast()">
+  <!-- TOAST NOTIFICATION IN-APP (Posisi Disesuaikan) -->
+  <div id="inAppToast" class="fixed top-32 left-4 right-4 z-[150] transition-transform duration-500 transform -translate-y-56">
+    <div class="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border-l-4 border-brand-500 p-4 flex items-start gap-3 cursor-pointer" onclick="App.openLatestPostFromToast()">
       <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0">
         <i data-lucide="bell-ring" class="w-5 h-5 animate-pulse"></i>
       </div>
@@ -87,11 +89,11 @@
     <div class="w-6 h-6 border-2 border-brand-600 border-t-transparent rounded-full animate-spin"></div>
   </div>
 
-  <!-- HEADER UTAMA DENGAN SAFE AREA YANG STABIL -->
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative" style="padding-top: max(env(safe-area-inset-top), 24px);">
+  <!-- HEADER UTAMA (Sistem Area Aman Native & Garis Merah Terkunci) -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative" style="padding-top: max(env(safe-area-inset-top), 28px);">
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
       
-      <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
+      <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5 relative z-10">
         <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
         <div class="flex items-center gap-2 mt-0.5">
           <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
@@ -102,7 +104,8 @@
         </div>
       </a>
 
-      <div class="flex items-center gap-1">
+      <div class="flex items-center gap-1 relative z-10">
+        <!-- Tombol Langganan Email -->
         <button id="subscribeBtn" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative">
           <i data-lucide="mail-open" class="w-5 h-5"></i>
         </button>
@@ -121,14 +124,14 @@
       </div>
     </div>
 
-    <div id="searchOverlay" class="hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 py-3 shadow-inner">
+    <div id="searchOverlay" class="hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 py-3 shadow-inner relative z-10">
       <div class="relative max-w-md md:max-w-7xl mx-auto flex items-center">
         <i data-lucide="search" class="absolute left-3 w-4 h-4 text-slate-400"></i>
         <input type="text" id="searchInput" placeholder="Cari warta, opini, atau tokoh..." class="w-full bg-slate-100 dark:bg-slate-800/50 text-sm text-slate-900 dark:text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 outline-none border border-transparent focus:border-brand-500 transition" onkeypress="App.executeSearch(event)">
       </div>
     </div>
     
-    <div class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] relative">
+    <div class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] relative z-10">
       <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold" id="topNavContainer">
         <div class="sticky left-0 z-20 bg-gradient-to-r from-white via-white to-transparent dark:from-[#0f172a] dark:via-[#0f172a] dark:to-transparent py-2.5 pl-4 pr-6">
           <button onclick="App.navigate('home')" class="cat-tab active-tab px-4 py-1.5 rounded-full bg-brand-600 text-white transition whitespace-nowrap shadow-sm">Home</button>
@@ -142,8 +145,8 @@
       </nav>
     </div>
 
-    <!-- PROGRESS BAR BERADA TEPAT DI BAWAH NAVIGASI (Terkunci) -->
-    <div id="progressBarContainer" class="absolute bottom-0 left-0 w-full h-1 bg-slate-200/50 dark:bg-slate-800/50 hidden">
+    <!-- PROGRESS BAR: Kini Menggunakan absolute bottom-0 di dalam Header -->
+    <div id="progressBarContainer" class="absolute bottom-0 left-0 w-full h-[3px] bg-slate-200/50 dark:bg-slate-800/50 z-50 hidden pointer-events-none">
       <div id="progressBar" class="h-full bg-brand-600 w-0 transition-all duration-75"></div>
     </div>
   </header>
@@ -171,7 +174,7 @@
     </div>
   </div>
 
-  <main class="max-w-md md:max-w-7xl mx-auto w-full pb-20 md:pb-8 flex-1">
+  <main class="max-w-md md:max-w-7xl mx-auto w-full pb-20 md:pb-8 flex-1 mt-2">
     
     <div id="loadingView" class="py-6 px-4 md:px-0 max-w-7xl mx-auto w-full">
       <div class="animate-pulse flex flex-col gap-6">
@@ -189,7 +192,7 @@
       </div>
     </div>
 
-    <section id="homeView" class="hidden view-enter space-y-8 pt-4 px-4 md:px-0">
+    <section id="homeView" class="hidden view-enter space-y-8 px-4 md:px-0">
       <div id="dynamicAdBannerContainer" class="hidden">
         <a id="dynamicAdLink" href="#" target="_blank" class="block relative rounded-2xl overflow-hidden shadow-md group border border-slate-200 dark:border-slate-800 aspect-[21/9] md:aspect-[3/1]">
           <img id="dynamicAdImage" src="" alt="Iklan Sponsor" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
@@ -454,7 +457,7 @@
         this.initReadingProgress();
         this.updateNotifBadge();
         await this.loadData();
-        this.startNotificationPolling();
+        this.startNotificationPolling(); // Pengecekan notifikasi dimulai
         this.initNewsletterModal();
       },
 
@@ -518,36 +521,40 @@
       },
 
       startNotificationPolling() {
+        // Interval pengecekan dipercepat menjadi setiap 20 detik
         this.notificationInterval = setInterval(() => {
             this.checkNewPosts();
-        }, 60000); 
+        }, 20000); 
       },
 
       async checkNewPosts() {
         try {
-          const checkUrl = this.API_URL.replace('per_page=50', 'per_page=5');
-          const res = await fetch(checkUrl);
+          if (!this.lastKnownPostId) return; // Tunggu data awal termuat dulu
+
+          // Bypass cache agar selalu memanggil berita terbaru
+          const checkUrl = "https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=5";
+          const res = await fetch(checkUrl, { cache: "no-store" });
           if (!res.ok) return;
           const latestData = await res.json();
           
-          let hasNew = false;
-          let newestPost = null;
+          if (!latestData || latestData.length === 0) return;
 
-          latestData.reverse().forEach(post => {
-            if (this.lastKnownPostId && parseInt(post.id) > parseInt(this.lastKnownPostId)) {
-                hasNew = true;
-                newestPost = post;
+          // Cek secara ketat ID yang lebih besar (berita baru)
+          const newPosts = latestData.filter(post => parseInt(post.id) > parseInt(this.lastKnownPostId));
+
+          if (newPosts.length > 0) {
+            // Sortir urutan agar notifikasi masuk dari yang tertua ke terbaru di antrean
+            newPosts.reverse().forEach(post => {
                 this.notifications.unshift({
                     id: post.id,
                     title: post.title.rendered,
                     date: post.date,
                     isRead: false
                 });
-            }
-          });
+            });
 
-          if (hasNew && newestPost) {
-            this.lastKnownPostId = newestPost.id;
+            // Update memori sistem dengan ID terbaru
+            this.lastKnownPostId = newPosts[newPosts.length - 1].id;
             localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
             localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
             
@@ -556,26 +563,28 @@
                 this.renderNotifPanel();
             }
             
+            // Munculkan UI In-App Toast
+            const newestPost = newPosts[newPosts.length - 1];
             document.getElementById('toastTitle').textContent = newestPost.title.rendered;
             this.latestUnreadPostId = newestPost.id;
+            
             const toast = document.getElementById('inAppToast');
-            toast.classList.remove('-translate-y-28');
+            toast.classList.remove('-translate-y-40');
             if('vibrate' in navigator) navigator.vibrate([100, 50, 100]); 
-            setTimeout(() => { this.closeToast(); }, 8000);
+            setTimeout(() => { toast.classList.add('-translate-y-40'); }, 8000);
 
+            // Web Push Notification sistem HP
             if ("Notification" in window && Notification.permission === "granted") {
-                new Notification("Balijani: Warta Baru", {
+                new Notification("Warta Baru Balijani", {
                     body: newestPost.title.rendered.replace(/(<([^>]+)>)/gi, ""),
                     icon: "https://balijani.id/wp-content/uploads/2026/08/favicon.png"
                 });
             }
             this.loadDataSilently();
-            
-          } else if (!this.lastKnownPostId && latestData.length > 0) {
-              this.lastKnownPostId = latestData[latestData.length - 1].id;
-              localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
           }
-        } catch (e) {}
+        } catch (e) {
+          console.error("Gagal memuat notifikasi", e);
+        }
       },
 
       updateNotifBadge() {
@@ -678,7 +687,7 @@
       },
 
       closeToast() {
-        document.getElementById('inAppToast').classList.add('-translate-y-28');
+        document.getElementById('inAppToast').classList.add('-translate-y-40');
       },
 
       openLatestPostFromToast() {
@@ -710,6 +719,13 @@
           const res = await fetch(this.API_URL);
           if (!res.ok) throw new Error();
           this.data = await res.json();
+
+          // PENTING: Rekam ID pertama kali agar notifikasi tidak error/diam
+          if (!this.lastKnownPostId && this.data.length > 0) {
+              this.lastKnownPostId = this.data[0].id;
+              localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
+          }
+
           this.renderHome();
           document.getElementById('loadingView').classList.add('hidden');
           this.navigate('home');
@@ -729,7 +745,6 @@
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             
-            // Perbaikan logika kalkulasi persentase agar bar tidak keluar jalur
             if(height <= 0) {
                 progressBar.style.width = '100%';
             } else {
@@ -758,7 +773,7 @@
             const currentY = e.touches[0].clientY;
             const diff = currentY - touchstartY;
             if (diff > 0 && diff < 150) {
-              indicator.style.transform = `translateY(${diff}px)`; // Disesuaikan
+              indicator.style.transform = `translateY(${diff - 100}px)`; // Disesuaikan animasi agar mulus
             }
           }
         }, {passive: true});
@@ -767,14 +782,14 @@
           if (window.scrollY === 0 && touchstartY > 0) {
             const diff = e.changedTouches[0].clientY - touchstartY;
             if (diff > 100) {
-              indicator.style.transform = `translateY(50px)`; // Disesuaikan
+              indicator.style.transform = `translateY(0px)`;
               if('vibrate' in navigator) navigator.vibrate(50);
               await this.loadData();
               setTimeout(() => {
-                indicator.style.transform = `translateY(-50px)`; // Disesuaikan
+                indicator.style.transform = `translateY(-100px)`;
               }, 300);
             } else {
-              indicator.style.transform = `translateY(-50px)`; // Disesuaikan
+              indicator.style.transform = `translateY(-100px)`;
             }
           }
           touchstartY = 0;
