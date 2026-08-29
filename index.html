@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<!-- Kunci warna dasar (root) menjadi gelap agar overscroll HP tidak membocorkan warna putih -->
-<html lang="id" class="scroll-smooth antialiased" style="background-color: #0f172a;">
+<!-- Menggunakan background adaptif langsung di HTML root -->
+<html lang="id" class="scroll-smooth antialiased bg-slate-50 dark:bg-[#0b0f19]">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <!-- Kunci Theme-Color HP ke Biru Dongker agar status bar selalu siap untuk ikon putih -->
-  <meta name="theme-color" content="#0f172a" id="themeColorMeta">
+  
+  <!-- TAG AJAIB: Memberi tahu OS HP bahwa aplikasi mendukung Terang & Gelap -->
+  <meta name="color-scheme" content="light dark">
+  
+  <!-- Theme Color dinamis: Default Terang (slate-50), akan diubah JS saat Dark Mode -->
+  <meta name="theme-color" content="#f8fafc" id="themeColorMeta">
+  
   <title>BALIJANI - Portal Warta Premium</title>
 
   <!-- Tailwind CSS & Lucide Icons -->
@@ -48,7 +53,7 @@
     .snap-item { scroll-snap-align: start; }
     .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
 
-    /* Indikator Refresh mutlak tidak bocor */
+    /* Indikator Refresh diposisikan sangat jauh ke atas (-100px) */
     #pullRefreshIndicator {
       position: fixed;
       left: 50%;
@@ -72,9 +77,9 @@
     .bg-tt { background-color: #000000; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 m-0 p-0">
+<body class="m-0 p-0 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
 
-  <!-- TOAST NOTIFICATION (Disembunyikan sangat jauh agar tidak ada pinggiran bocor) -->
+  <!-- TOAST NOTIFICATION -->
   <div id="inAppToast" class="fixed left-4 right-4 z-[150] transition-all duration-500" style="top: -200px; opacity: 0;">
     <div class="max-w-md mx-auto bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-xl shadow-2xl rounded-2xl p-4 flex items-start gap-3 cursor-pointer border border-slate-200/50 dark:border-slate-700/50" onclick="App.openLatestPostFromToast()">
       <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0">
@@ -94,54 +99,50 @@
     </svg>
   </div>
 
-  <!-- HEADER UTAMA (BINGKAI GELAP KESATUAN PENUH) -->
-  <header class="sticky top-0 z-40 w-full flex flex-col shadow-sm">
+  <!-- HEADER UTAMA (Transparan & Adaptif sesuai tema) -->
+  <header class="sticky top-0 z-40 w-full flex flex-col shadow-sm bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800" style="padding-top: env(safe-area-inset-top);">
     
-    <!-- 1. AREA LOGO DAN STATUS BAR (SELALU GELAP AGAR IKON HP PUTIH TERLIHAT JELAS) -->
-    <div class="w-full bg-[#0f172a] text-white relative z-20" style="padding-top: env(safe-area-inset-top);">
-      <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-        
-        <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
-          <div class="flex items-center gap-2 mt-0.5">
-            <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-white">BALI<span class="text-brand-600">JANI</span></span>
-            <div class="relative flex items-center justify-center">
-              <span class="absolute inline-flex h-full w-full rounded bg-brand-500 opacity-40 scale-110 animate-pulse"></span>
-              <span class="relative inline-flex bg-brand-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest shadow-sm">APPS</span>
-            </div>
+    <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10 w-full">
+      
+      <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
+        <div class="flex items-center gap-2 mt-0.5">
+          <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
+          <div class="relative flex items-center justify-center">
+            <span class="absolute inline-flex h-full w-full rounded bg-brand-500 opacity-40 scale-110 animate-pulse"></span>
+            <span class="relative inline-flex bg-brand-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest shadow-sm">APPS</span>
           </div>
-        </a>
-
-        <div class="flex items-center gap-1">
-          <button id="subscribeBtn" class="p-2 rounded-full hover:bg-slate-800 text-slate-300 transition relative">
-            <i data-lucide="mail-open" class="w-5 h-5"></i>
-          </button>
-          <button onclick="App.toggleSearch()" class="p-2 rounded-full hover:bg-slate-800 text-slate-300 transition">
-            <i data-lucide="search" class="w-5 h-5"></i>
-          </button>
-          
-          <button onclick="App.toggleNotifPanel()" class="p-2 rounded-full hover:bg-slate-800 text-slate-300 relative transition">
-            <i data-lucide="bell" class="w-5 h-5"></i>
-            <span id="notifBadge" class="absolute top-0 right-0 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center rounded-full hidden border border-[#0f172a]">0</span>
-          </button>
-
-          <button onclick="App.toggleTheme()" class="p-2 rounded-full hover:bg-slate-800 text-slate-300">
-            <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i><i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-          </button>
         </div>
+      </a>
+
+      <div class="flex items-center gap-1">
+        <button id="subscribeBtn" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative">
+          <i data-lucide="mail-open" class="w-5 h-5"></i>
+        </button>
+        <button onclick="App.toggleSearch()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition">
+          <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+        
+        <button onclick="App.toggleNotifPanel()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 relative transition">
+          <i data-lucide="bell" class="w-5 h-5"></i>
+          <span id="notifBadge" class="absolute top-0 right-0 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center rounded-full hidden border border-white dark:border-[#0f172a]">0</span>
+        </button>
+
+        <button onclick="App.toggleTheme()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+          <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i><i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+        </button>
       </div>
     </div>
 
-    <!-- 2. AREA PENCARIAN (GELAP) -->
-    <div id="searchOverlay" class="hidden bg-[#1e293b] px-4 py-3 shadow-inner relative z-10 border-t border-slate-700">
+    <div id="searchOverlay" class="hidden border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-[#1e293b] px-4 py-3 shadow-inner relative z-10">
       <div class="relative max-w-md md:max-w-7xl mx-auto flex items-center">
         <i data-lucide="search" class="absolute left-3 w-4 h-4 text-slate-400"></i>
-        <input type="text" id="searchInput" placeholder="Cari warta, opini, atau tokoh..." class="w-full bg-slate-800 text-sm text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 outline-none border border-transparent focus:border-brand-500 transition" onkeypress="App.executeSearch(event)">
+        <input type="text" id="searchInput" placeholder="Cari warta, opini, atau tokoh..." class="w-full bg-white dark:bg-slate-800 text-sm text-slate-900 dark:text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 outline-none border border-slate-200 dark:border-transparent focus:border-brand-500 transition" onkeypress="App.executeSearch(event)">
       </div>
     </div>
     
-    <!-- 3. AREA MENU KATEGORI (BERUBAH TERANG/GELAP SESUAI TEMA BAWAH) -->
-    <div class="w-full bg-white dark:bg-[#0f172a] border-b border-slate-200 dark:border-slate-800 relative z-10">
+    <!-- AREA MENU KATEGORI -->
+    <div class="w-full relative z-10 mt-1">
       <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold" id="topNavContainer">
         <div class="sticky left-0 z-20 bg-gradient-to-r from-white via-white to-transparent dark:from-[#0f172a] dark:via-[#0f172a] dark:to-transparent py-2.5 pl-4 pr-6">
           <button onclick="App.navigate('home')" class="cat-tab active-tab px-4 py-1.5 rounded-full bg-brand-600 text-white transition whitespace-nowrap shadow-sm">Home</button>
@@ -153,12 +154,11 @@
           <button onclick="App.navigate('category', 'Opini Publik')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Opini Publik</button>
         </div>
       </nav>
-      <!-- PROGRESS BAR (Tetap di garis bawah) -->
+      <!-- PROGRESS BAR -->
       <div id="progressBarContainer" class="absolute bottom-0 left-0 w-full h-[3px] z-50 hidden pointer-events-none">
         <div id="progressBar" class="h-full bg-brand-600 w-0 transition-all duration-75"></div>
       </div>
     </div>
-
   </header>
 
   <!-- PUSAT NOTIFIKASI -->
@@ -226,7 +226,7 @@
         </div>
       </div>
 
-      <div id="adsBlock" class="bg-slate-100 dark:bg-slate-800/40 rounded-2xl p-4 md:p-6 border border-slate-200 dark:border-slate-800">
+      <div id="adsBlock" class="bg-white dark:bg-slate-800/40 rounded-2xl p-4 md:p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
         <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 mb-4">
           <i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali
         </h2>
@@ -454,8 +454,14 @@
       },
 
       async init() {
+        // SETTING TEMA ADAPTIF NATIVE
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
           document.documentElement.classList.add('dark');
+          const metaColor = document.getElementById('themeColorMeta');
+          if(metaColor) metaColor.setAttribute('content', '#0b0f19');
+        } else {
+          const metaColor = document.getElementById('themeColorMeta');
+          if(metaColor) metaColor.setAttribute('content', '#f8fafc');
         }
 
         window.addEventListener('popstate', (e) => {
@@ -1303,7 +1309,11 @@
       toggleTheme() {
         if('vibrate' in navigator) navigator.vibrate(20);
         document.documentElement.classList.toggle('dark');
-        // Tidak perlu mengubah themeColorMeta lagi karena header atas sudah dikunci gelap
+        const isDark = document.documentElement.classList.contains('dark');
+        
+        // Update tema meta agar adaptif hitam/putih sesuai pilihan mode terang/gelap
+        const color = isDark ? '#0b0f19' : '#f8fafc';
+        document.getElementById('themeColorMeta').setAttribute('content', color);
       }
     };
 
