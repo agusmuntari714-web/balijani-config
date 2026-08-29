@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <!-- WARNA GELAP DIKUNCI PERMANEN AGAR IKON HP SELALU TERLIHAT -->
-  <meta name="theme-color" content="#0f172a" id="themeColorMeta">
+  <meta name="theme-color" content="#ffffff" id="themeColorMeta">
   <title>BALIJANI - Portal Warta Premium</title>
 
   <!-- Tailwind CSS & Lucide Icons -->
@@ -94,10 +93,10 @@
   </div>
 
   <!-- HEADER UTAMA -->
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#ffffff]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     
     <!-- BLOK WARNA GELAP KHUSUS UNTUK AREA STATUS BAR HP (Mengunci warna di Poni HP) -->
-    <div class="absolute top-0 left-0 right-0 w-full bg-[#0f172a] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
+    <div class="absolute top-0 left-0 right-0 w-full bg-[#ffffff] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
 
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
       
@@ -450,23 +449,23 @@
         }
       },
 
-      updateAndroidStatusBar(color) {
+      updateAndroidStatusBar(color, isDarkMode) {
         if (typeof AndroidBridge !== "undefined") {
-            AndroidBridge.ubahWarnaStatusBar(color);
+            AndroidBridge.ubahWarnaStatusBar(color, isDarkMode);
         }
       },
 
       async init() {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (isDark) {
           document.documentElement.classList.add('dark');
           const metaColor = document.getElementById('themeColorMeta');
           if(metaColor) metaColor.setAttribute('content', '#0b0f19');
-          this.updateAndroidStatusBar('#0b0f19');
+          this.updateAndroidStatusBar('#0b0f19', true);
         } else {
-          // Kunci warna gelap di mode terang agar ikon HP tidak hilang
           const metaColor = document.getElementById('themeColorMeta');
-          if(metaColor) metaColor.setAttribute('content', '#0f172a');
-          this.updateAndroidStatusBar('#0f172a');
+          if(metaColor) metaColor.setAttribute('content', '#ffffff');
+          this.updateAndroidStatusBar('#ffffff', false);
         }
 
         window.addEventListener('popstate', (e) => {
@@ -1321,11 +1320,13 @@
       toggleTheme() {
         if('vibrate' in navigator) navigator.vibrate(20);
         document.documentElement.classList.toggle('dark');
-        const color = document.documentElement.classList.contains('dark') ? '#0b0f19' : '#0f172a';
+        
+        const isDark = document.documentElement.classList.contains('dark');
+        const color = isDark ? '#0b0f19' : '#ffffff';
         document.getElementById('themeColorMeta').setAttribute('content', color);
         
         // Memanggil Kotlin untuk mengubah warna status bar Android
-        this.updateAndroidStatusBar(color);
+        this.updateAndroidStatusBar(color, isDark);
       }
     };
 
