@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth antialiased">
+<html lang="id" class="scroll-smooth antialiased bg-[#0f172a] dark:bg-[#0b0f19]">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <!-- WARNA MERAH UNTUK STATUS BAR HP (Memicu ikon baterai/sinyal jadi putih kontras) -->
-  <meta name="theme-color" content="#dc2626" id="themeColorMeta">
+  <!-- WARNA GELAP DIKUNCI PERMANEN AGAR IKON HP SELALU TERLIHAT -->
+  <meta name="theme-color" content="#0f172a" id="themeColorMeta">
   <title>BALIJANI - Portal Warta Premium</title>
 
   <!-- Tailwind CSS & Lucide Icons -->
@@ -60,7 +60,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 30;
+      z-index: 50;
       transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .dark #pullRefreshIndicator { background: #1e293b; }
@@ -73,7 +73,7 @@
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative pt-0">
 
-  <!-- TOAST NOTIFICATION (Disembunyikan absolut -200% agar mustahil bocor) -->
+  <!-- TOAST NOTIFICATION -->
   <div id="inAppToast" class="fixed left-4 right-4 z-[150] transition-all duration-500" style="top: -200%;">
     <div class="max-w-md mx-auto bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-xl shadow-2xl rounded-2xl p-4 flex items-start gap-3 cursor-pointer border border-slate-200/50 dark:border-slate-700/50" onclick="App.openLatestPostFromToast()">
       <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0">
@@ -96,8 +96,8 @@
   <!-- HEADER UTAMA -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     
-    <!-- BLOK WARNA MERAH KHUSUS UNTUK AREA PONI/STATUS BAR HP (Menempel Paling Atas) -->
-    <div class="absolute top-0 left-0 right-0 w-full bg-brand-600 dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
+    <!-- BLOK WARNA GELAP KHUSUS UNTUK AREA STATUS BAR HP (Mengunci warna di Poni HP) -->
+    <div class="absolute top-0 left-0 right-0 w-full bg-[#0f172a] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
 
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
       
@@ -451,15 +451,14 @@
       },
 
       async init() {
-        // Otomatis aktifkan Dark mode jika HP menggunakan mode gelap
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
           document.documentElement.classList.add('dark');
           const metaColor = document.getElementById('themeColorMeta');
           if(metaColor) metaColor.setAttribute('content', '#0b0f19');
         } else {
-          // PAKSA WARNA MERAH di Mode Terang agar Status Bar HP memutihkan ikon Baterai & Sinyalnya
+          // Kunci warna gelap di mode terang agar ikon HP tidak hilang
           const metaColor = document.getElementById('themeColorMeta');
-          if(metaColor) metaColor.setAttribute('content', '#dc2626');
+          if(metaColor) metaColor.setAttribute('content', '#0f172a');
         }
 
         window.addEventListener('popstate', (e) => {
@@ -586,7 +585,7 @@
             this.latestUnreadPostId = newestPost.id;
             
             const toast = document.getElementById('inAppToast');
-            toast.style.transform = 'translateY(16px)'; // Animasi turun presisi
+            toast.style.transform = 'translateY(16px)'; 
             toast.style.opacity = '1';
 
             if('vibrate' in navigator) navigator.vibrate([100, 50, 100]); 
@@ -1307,7 +1306,7 @@
       toggleTheme() {
         if('vibrate' in navigator) navigator.vibrate(20);
         document.documentElement.classList.toggle('dark');
-        const color = document.documentElement.classList.contains('dark') ? '#0b0f19' : '#dc2626';
+        const color = document.documentElement.classList.contains('dark') ? '#0b0f19' : '#0f172a';
         document.getElementById('themeColorMeta').setAttribute('content', color);
       }
     };
