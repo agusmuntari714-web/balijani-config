@@ -2,7 +2,7 @@
 <html lang="id" class="scroll-smooth antialiased">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#ffffff" id="themeColorMeta">
   <title>BALIJANI - Portal Warta Premium</title>
 
@@ -98,7 +98,7 @@
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
       
-      <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
+      <a href="#home" onclick="App.navigate('home'); return false" aria-label="Kembali ke beranda Balijani" class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
         <div class="flex items-center gap-2 mt-0.5">
           <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
@@ -113,7 +113,7 @@
         <button id="subscribeBtn" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative">
           <i data-lucide="mail-open" class="w-5 h-5"></i>
         </button>
-        <button onclick="App.toggleSearch()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition">
+        <button aria-label="Buka pencarian" onclick="App.toggleSearch()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition">
           <i data-lucide="search" class="w-5 h-5"></i>
         </button>
         
@@ -131,7 +131,7 @@
     <div id="searchOverlay" class="hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 py-3 shadow-inner">
       <div class="relative max-w-md md:max-w-7xl mx-auto flex items-center">
         <i data-lucide="search" class="absolute left-3 w-4 h-4 text-slate-400"></i>
-        <input type="text" id="searchInput" placeholder="Cari warta, opini, atau tokoh..." class="w-full bg-slate-100 dark:bg-slate-800/50 text-sm text-slate-900 dark:text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 outline-none border border-transparent focus:border-brand-500 transition" onkeypress="App.executeSearch(event)">
+        <input type="text" id="searchInput" placeholder="Cari warta, opini, atau tokoh..." class="w-full bg-slate-100 dark:bg-slate-800/50 text-sm text-slate-900 dark:text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 outline-none border border-transparent focus:border-brand-500 transition" onkeydown="if (event.key === 'Enter' && !event.isComposing && event.keyCode !== 229) App.executeSearch(event)">
       </div>
     </div>
     
@@ -198,7 +198,7 @@
 
     <section id="homeView" class="hidden view-enter space-y-8 px-4 md:px-0">
       <div id="dynamicAdBannerContainer" class="hidden">
-        <a id="dynamicAdLink" href="#" target="_blank" class="block relative rounded-2xl overflow-hidden shadow-md group border border-slate-200 dark:border-slate-800 aspect-[21/9] md:aspect-[3/1]">
+        <a id="dynamicAdLink" href="#" target="_blank" rel="noopener noreferrer" class="block relative rounded-2xl overflow-hidden shadow-md group border border-slate-200 dark:border-slate-800 aspect-[21/9] md:aspect-[3/1]">
           <img id="dynamicAdImage" src="" alt="Iklan Sponsor" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
           <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Ad / Sponsor</div>
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent flex items-end p-4">
@@ -403,7 +403,7 @@
       <div id="iframeLoader" class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-0">
          <div class="w-8 h-8 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div>
       </div>
-      <iframe id="webFormIframe" src="" class="absolute inset-0 w-full h-full border-none z-10 opacity-0 transition-opacity duration-500" onload="this.style.opacity=1; document.getElementById('iframeLoader').style.display='none';"></iframe>
+      <iframe id="webFormIframe" title="Formulir opini Balijani" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-forms allow-scripts allow-same-origin" src="" class="absolute inset-0 w-full h-full border-none z-10 opacity-0 transition-opacity duration-500" onload="this.style.opacity=1; document.getElementById('iframeLoader').style.display='none';"></iframe>
     </div>
   </div>
 
@@ -729,7 +729,9 @@
         try {
           const res = await fetch(this.API_URL);
           if (!res.ok) throw new Error();
-          this.data = await res.json();
+          const payload = await res.json();
+          if (!Array.isArray(payload)) throw new Error('Invalid API response');
+          this.data = payload.filter(post => Number.isInteger(Number(post?.id)) && typeof post?.title?.rendered === 'string');
 
           if (!this.lastKnownPostId && this.data.length > 0) {
               this.lastKnownPostId = this.data[0].id;
@@ -819,6 +821,38 @@
       },
 
       getAuthorName(post) { return post._embedded?.author?.[0]?.name || 'Tim Redaksi'; },
+
+      safeText(value, fallback = '') {
+        return typeof value === 'string' ? value : fallback;
+      },
+
+      sanitizeHTML(value) {
+        const template = document.createElement('template');
+        template.innerHTML = this.safeText(value);
+        const allowedTags = new Set(['A','B','BLOCKQUOTE','BR','CODE','EM','H2','H3','H4','I','IMG','LI','OL','P','PRE','STRONG','UL']);
+        const allowedAttrs = new Set(['alt','class','href','src','target','rel']);
+        template.content.querySelectorAll('*').forEach((node) => {
+          if (!allowedTags.has(node.tagName)) {
+            node.replaceWith(...node.childNodes);
+            return;
+          }
+          [...node.attributes].forEach((attr) => {
+            if (!allowedAttrs.has(attr.name.toLowerCase())) node.removeAttribute(attr.name);
+          });
+          if (node.tagName === 'A') {
+            const href = node.getAttribute('href') || '';
+            if (!/^https?:\\/\\//i.test(href)) node.removeAttribute('href');
+            else { node.setAttribute('target', '_blank'); node.setAttribute('rel', 'noopener noreferrer'); }
+          }
+          if (node.tagName === 'IMG') {
+            const src = node.getAttribute('src') || '';
+            if (!/^https?:\\/\\//i.test(src)) node.removeAttribute('src');
+            node.setAttribute('loading', 'lazy');
+            node.setAttribute('referrerpolicy', 'no-referrer');
+          }
+        });
+        return template.innerHTML;
+      },
 
       toggleSearch() {
         this.isSearchOpen = !this.isSearchOpen;
@@ -946,6 +980,10 @@
         document.getElementById('mainHeroCard').onclick = () => this.openPost(hero.id);
 
         const carouselData = this.data.slice(1, 6);
+        if (!carouselData.length) {
+          document.getElementById('carouselTrack').innerHTML = '';
+          document.getElementById('carouselDots').innerHTML = '';
+        }
         const track = document.getElementById('carouselTrack');
         const dots = document.getElementById('carouselDots');
         track.innerHTML = ''; dots.innerHTML = '';
@@ -963,14 +1001,14 @@
       },
 
       buildHeroHTML(post) {
-        const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
-        const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Utama';
+const img = this.safeText(post._embedded?.['wp:featuredmedia']?.[0]?.source_url);
+        const cat = this.safeText(post._embedded?.['wp:term']?.[0]?.[0]?.name, 'Utama');
         return `
-          <img src="${img}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
+          <img src="${img}" alt="" loading="eager" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
           <div class="relative z-10 p-5 md:p-8 space-y-2 w-full">
-            <span class="bg-brand-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-sm">${cat}</span>
-            <h2 class="text-xl md:text-3xl font-bold text-white leading-snug drop-shadow-md">${post.title.rendered}</h2>
+            <span class="bg-brand-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-sm">${this.sanitizeHTML(cat)}</span>
+            <h2 class="text-xl md:text-3xl font-bold text-white leading-snug drop-shadow-md">${this.sanitizeHTML(post.title?.rendered)}</h2>
           </div>
         `;
       },
@@ -979,24 +1017,24 @@
         const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
         return `
           <div onclick="App.openPost(${post.id})" class="snap-item shrink-0 w-[70%] sm:w-[45%] md:w-[30%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform">
-            <div class="w-full aspect-[16/10] overflow-hidden bg-slate-100"><img src="${img}" class="w-full h-full object-cover"></div>
+            <div class="w-full aspect-[16/10] overflow-hidden bg-slate-100"><img src="${img}" alt="" loading="lazy" class="w-full h-full object-cover"></div>
             <div class="p-3 flex-1 flex flex-col justify-center">
-              <h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${post.title.rendered}</h3>
+              <h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${title}</h3>
             </div>
           </div>
         `;
       },
 
       buildGridCard(post, isGallery) {
-        const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
-        const author = this.getAuthorName(post);
+        const img = this.safeText(post._embedded?.['wp:featuredmedia']?.[0]?.source_url);
+        const author = this.sanitizeHTML(this.getAuthorName(post));
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
         el.innerHTML = `
           <div class="w-full ${isGallery ? 'aspect-square' : 'aspect-video'} overflow-hidden"><img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>
           <div class="p-3 md:p-4">
-            <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${post.title.rendered}</h3>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${this.sanitizeHTML(post.title?.rendered)}</h3>
             <span class="text-[9px] text-slate-500 font-medium">${author}</span>
           </div>
         `;
@@ -1007,7 +1045,8 @@
         if(this.carouselInterval) clearInterval(this.carouselInterval);
         const track = document.getElementById('carouselTrack');
         let index = 0;
-        const total = 5;
+        const total = track.children.length;
+        if (!total) return;
         this.carouselInterval = setInterval(() => {
           index = (index + 1) % total;
           const itemWidth = track.children[0]?.clientWidth || 0;
