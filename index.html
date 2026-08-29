@@ -841,12 +841,12 @@
           });
           if (node.tagName === 'A') {
             const href = node.getAttribute('href') || '';
-            if (!/^https?:\\/\\//i.test(href)) node.removeAttribute('href');
+            if (!/^https?:\/\//i.test(href)) node.removeAttribute('href');
             else { node.setAttribute('target', '_blank'); node.setAttribute('rel', 'noopener noreferrer'); }
           }
           if (node.tagName === 'IMG') {
             const src = node.getAttribute('src') || '';
-            if (!/^https?:\\/\\//i.test(src)) node.removeAttribute('src');
+            if (!/^https?:\/\//i.test(src)) node.removeAttribute('src');
             node.setAttribute('loading', 'lazy');
             node.setAttribute('referrerpolicy', 'no-referrer');
           }
@@ -1339,6 +1339,7 @@ const img = this.safeText(post._embedded?.['wp:featuredmedia']?.[0]?.source_url)
       }
     };
 
+    window.App = App;
     App.init();
   </script>
 </body>
