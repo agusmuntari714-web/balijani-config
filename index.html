@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <!-- Memerintahkan sistem HP untuk menyesuaikan warna ikon Sinyal/Baterai secara otomatis -->
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#ffffff" id="themeColorMeta">
-  
+  <!-- WARNA MERAH UNTUK STATUS BAR HP (Memicu ikon baterai/sinyal jadi putih kontras) -->
+  <meta name="theme-color" content="#dc2626" id="themeColorMeta">
   <title>BALIJANI - Portal Warta Premium</title>
 
   <!-- Tailwind CSS & Lucide Icons -->
@@ -62,7 +60,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 50;
+      z-index: 30;
       transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .dark #pullRefreshIndicator { background: #1e293b; }
@@ -97,6 +95,10 @@
 
   <!-- HEADER UTAMA -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
+    
+    <!-- BLOK WARNA MERAH KHUSUS UNTUK AREA PONI/STATUS BAR HP (Menempel Paling Atas) -->
+    <div class="absolute top-0 left-0 right-0 w-full bg-brand-600 dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
+
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
       
       <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
@@ -449,10 +451,15 @@
       },
 
       async init() {
+        // Otomatis aktifkan Dark mode jika HP menggunakan mode gelap
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
           document.documentElement.classList.add('dark');
           const metaColor = document.getElementById('themeColorMeta');
           if(metaColor) metaColor.setAttribute('content', '#0b0f19');
+        } else {
+          // PAKSA WARNA MERAH di Mode Terang agar Status Bar HP memutihkan ikon Baterai & Sinyalnya
+          const metaColor = document.getElementById('themeColorMeta');
+          if(metaColor) metaColor.setAttribute('content', '#dc2626');
         }
 
         window.addEventListener('popstate', (e) => {
@@ -1300,7 +1307,7 @@
       toggleTheme() {
         if('vibrate' in navigator) navigator.vibrate(20);
         document.documentElement.classList.toggle('dark');
-        const color = document.documentElement.classList.contains('dark') ? '#0b0f19' : '#ffffff';
+        const color = document.documentElement.classList.contains('dark') ? '#0b0f19' : '#dc2626';
         document.getElementById('themeColorMeta').setAttribute('content', color);
       }
     };
