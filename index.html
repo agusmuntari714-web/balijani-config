@@ -46,24 +46,22 @@
     .snap-item { scroll-snap-align: start; }
     .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
 
-    /* Indikator Refresh bergaya Native (Tersembunyi di balik header) */
+    /* Indikator Refresh dipaksa jauh -100px agar tidak mengintip */
     #pullRefreshIndicator {
       position: fixed;
-      top: env(safe-area-inset-top); 
-      left: 50%;
-      width: 40px;
-      height: 40px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      top: max(env(safe-area-inset-top), 24px); 
+      left: 0;
+      right: 0;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 30; /* Di bawah header (z-40) */
-      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateX(-50%) translateY(-100px);
+      background: rgba(220, 38, 38, 0.1);
+      backdrop-filter: blur(4px);
+      z-index: 30;
+      transition: transform 0.2s ease;
+      transform: translateY(-100px); 
     }
-    .dark #pullRefreshIndicator { background: #1e293b; }
 
     .bg-ig-gradient { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
     .bg-fb { background-color: #1877F2; }
@@ -71,10 +69,10 @@
     .bg-tt { background-color: #000000; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative">
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative pt-0">
 
-  <!-- TOAST NOTIFICATION IN-APP -->
-  <div id="inAppToast" class="fixed top-24 left-4 right-4 z-[150] transition-transform duration-500 transform -translate-y-40">
+  <!-- TOAST NOTIFICATION (Ditarik Jauh -translate-y-48 agar tidak bocor) -->
+  <div id="inAppToast" class="fixed top-4 left-4 right-4 z-[150] transition-transform duration-500 transform -translate-y-48">
     <div class="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-l-4 border-brand-500 p-4 flex items-start gap-3 cursor-pointer" onclick="App.openLatestPostFromToast()">
       <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0">
         <i data-lucide="bell-ring" class="w-5 h-5 animate-pulse"></i>
@@ -87,18 +85,15 @@
     </div>
   </div>
 
-  <!-- Indikator Refresh (Icon melingkar putar) -->
   <div id="pullRefreshIndicator">
-    <svg id="refreshIconSvg" class="w-5 h-5 text-brand-600 transition-transform duration-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-    </svg>
+    <div class="w-6 h-6 border-2 border-brand-600 border-t-transparent rounded-full animate-spin"></div>
   </div>
 
-  <!-- HEADER UTAMA (Normal kembali, tanpa padding ganda yang bocor) -->
+  <!-- HEADER UTAMA -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
       
-      <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
+      <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5 relative z-10">
         <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
         <div class="flex items-center gap-2 mt-0.5">
           <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
@@ -109,7 +104,7 @@
         </div>
       </a>
 
-      <div class="flex items-center gap-1">
+      <div class="flex items-center gap-1 relative z-10">
         <button id="subscribeBtn" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative">
           <i data-lucide="mail-open" class="w-5 h-5"></i>
         </button>
@@ -128,14 +123,14 @@
       </div>
     </div>
 
-    <div id="searchOverlay" class="hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 py-3 shadow-inner">
+    <div id="searchOverlay" class="hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 py-3 shadow-inner relative z-10">
       <div class="relative max-w-md md:max-w-7xl mx-auto flex items-center">
         <i data-lucide="search" class="absolute left-3 w-4 h-4 text-slate-400"></i>
         <input type="text" id="searchInput" placeholder="Cari warta, opini, atau tokoh..." class="w-full bg-slate-100 dark:bg-slate-800/50 text-sm text-slate-900 dark:text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 outline-none border border-transparent focus:border-brand-500 transition" onkeypress="App.executeSearch(event)">
       </div>
     </div>
     
-    <div class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] relative">
+    <div class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] relative z-10">
       <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold" id="topNavContainer">
         <div class="sticky left-0 z-20 bg-gradient-to-r from-white via-white to-transparent dark:from-[#0f172a] dark:via-[#0f172a] dark:to-transparent py-2.5 pl-4 pr-6">
           <button onclick="App.navigate('home')" class="cat-tab active-tab px-4 py-1.5 rounded-full bg-brand-600 text-white transition whitespace-nowrap shadow-sm">Home</button>
@@ -149,13 +144,13 @@
       </nav>
     </div>
 
-    <!-- PROGRESS BAR TERKUNCI SEMPURNA DI BAGIAN BAWAH HEADER -->
+    <!-- PROGRESS BAR -->
     <div id="progressBarContainer" class="absolute bottom-0 left-0 w-full h-[3px] z-50 hidden pointer-events-none">
       <div id="progressBar" class="h-full bg-brand-600 w-0 transition-all duration-75"></div>
     </div>
   </header>
 
-  <!-- PUSAT NOTIFIKASI (DRAWER / PANEL) -->
+  <!-- PUSAT NOTIFIKASI -->
   <div id="notifPanel" class="hidden fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm flex justify-end">
     <div class="bg-white dark:bg-slate-900 w-full max-w-sm h-full flex flex-col shadow-2xl animate-slide-left">
       <div class="h-14 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 bg-slate-50 dark:bg-slate-900" style="padding-top: env(safe-area-inset-top);">
@@ -220,6 +215,7 @@
         </div>
       </div>
 
+      <!-- EKSPLORASI BALI -->
       <div id="adsBlock" class="bg-slate-100 dark:bg-slate-800/40 rounded-2xl p-4 md:p-6 border border-slate-200 dark:border-slate-800">
         <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 mb-4">
           <i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali
@@ -306,7 +302,7 @@
       
       <div class="flex-1 w-full relative">
         <div id="postImageWrapper" class="relative w-full aspect-[4/3] md:aspect-video md:rounded-tl-2xl overflow-hidden bg-slate-100 dark:bg-slate-800">
-          <button onclick="App.navigate('home')" class="absolute top-4 left-4 z-10 w-9 h-9 rounded-full bg-black/40 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/60 transition"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+          <button onclick="history.back()" class="absolute top-4 left-4 z-10 w-9 h-9 rounded-full bg-black/40 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/60 transition"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
           <img id="postFeaturedImg" src="" alt="Cover" class="w-full h-full object-cover">
         </div>
 
@@ -539,6 +535,7 @@
       },
 
       startNotificationPolling() {
+        // Interval pengecekan dipercepat menjadi setiap 20 detik
         this.notificationInterval = setInterval(() => {
             this.checkNewPosts();
         }, 20000); 
@@ -546,8 +543,9 @@
 
       async checkNewPosts() {
         try {
-          if (!this.lastKnownPostId) return;
+          if (!this.lastKnownPostId) return; // Tunggu data awal termuat dulu
 
+          // Bypass cache agar selalu memanggil berita terbaru
           const checkUrl = "https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=5";
           const res = await fetch(checkUrl, { cache: "no-store" });
           if (!res.ok) return;
@@ -555,9 +553,11 @@
           
           if (!latestData || latestData.length === 0) return;
 
+          // Cek secara ketat ID yang lebih besar (berita baru)
           const newPosts = latestData.filter(post => parseInt(post.id) > parseInt(this.lastKnownPostId));
 
           if (newPosts.length > 0) {
+            // Sortir urutan agar notifikasi masuk dari yang tertua ke terbaru di antrean
             newPosts.reverse().forEach(post => {
                 this.notifications.unshift({
                     id: post.id,
@@ -567,6 +567,7 @@
                 });
             });
 
+            // Update memori sistem dengan ID terbaru
             this.lastKnownPostId = newPosts[newPosts.length - 1].id;
             localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
             localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
@@ -576,15 +577,17 @@
                 this.renderNotifPanel();
             }
             
+            // Munculkan UI In-App Toast
             const newestPost = newPosts[newPosts.length - 1];
             document.getElementById('toastTitle').textContent = newestPost.title.rendered;
             this.latestUnreadPostId = newestPost.id;
             
             const toast = document.getElementById('inAppToast');
-            toast.classList.remove('-translate-y-40');
+            toast.classList.remove('-translate-y-48');
             if('vibrate' in navigator) navigator.vibrate([100, 50, 100]); 
-            setTimeout(() => { toast.classList.add('-translate-y-40'); }, 8000);
+            setTimeout(() => { toast.classList.add('-translate-y-48'); }, 8000);
 
+            // Web Push Notification sistem HP
             if ("Notification" in window && Notification.permission === "granted") {
                 new Notification("Warta Baru Balijani", {
                     body: newestPost.title.rendered.replace(/(<([^>]+)>)/gi, ""),
@@ -698,7 +701,7 @@
       },
 
       closeToast() {
-        document.getElementById('inAppToast').classList.add('-translate-y-40');
+        document.getElementById('inAppToast').classList.add('-translate-y-48');
       },
 
       openLatestPostFromToast() {
@@ -731,6 +734,7 @@
           if (!res.ok) throw new Error();
           this.data = await res.json();
 
+          // PENTING: Rekam ID pertama kali agar notifikasi tidak error/diam
           if (!this.lastKnownPostId && this.data.length > 0) {
               this.lastKnownPostId = this.data[0].id;
               localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
@@ -755,6 +759,7 @@
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             
+            // Perbaikan logika kalkulasi persentase agar bar tidak keluar jalur
             if(height <= 0) {
                 progressBar.style.width = '100%';
             } else {
@@ -771,7 +776,6 @@
       initPullToRefresh() {
         let touchstartY = 0;
         const indicator = document.getElementById('pullRefreshIndicator');
-        const iconSvg = document.getElementById('refreshIconSvg');
 
         window.addEventListener('touchstart', e => {
           if (window.scrollY === 0) {
@@ -784,8 +788,7 @@
             const currentY = e.touches[0].clientY;
             const diff = currentY - touchstartY;
             if (diff > 0 && diff < 150) {
-              indicator.style.transform = `translateX(-50%) translateY(${diff - 60}px)`; 
-              iconSvg.style.transform = `rotate(${diff * 2}deg)`;
+              indicator.style.transform = `translateY(${diff - 100}px)`; // Disesuaikan animasi agar mulus
             }
           }
         }, {passive: true});
@@ -793,25 +796,15 @@
         window.addEventListener('touchend', async e => {
           if (window.scrollY === 0 && touchstartY > 0) {
             const diff = e.changedTouches[0].clientY - touchstartY;
-            if (diff > 90) {
-              indicator.style.transform = `translateX(-50%) translateY(20px)`; 
-              iconSvg.classList.add('animate-spin');
+            if (diff > 100) {
+              indicator.style.transform = `translateY(0px)`;
               if('vibrate' in navigator) navigator.vibrate(50);
-              
-              // Efek visual layaknya masuk aplikasi pertama kali (Skeleton Loader)
-              document.getElementById('loadingView').classList.remove('hidden');
-              ['homeView', 'categoryView', 'bookmarkView', 'singlePostView'].forEach(id => {
-                  document.getElementById(id).classList.add('hidden');
-              });
-
               await this.loadData();
-              
               setTimeout(() => {
-                indicator.style.transform = `translateX(-50%) translateY(-100px)`;
-                iconSvg.classList.remove('animate-spin');
-              }, 500);
+                indicator.style.transform = `translateY(-100px)`;
+              }, 300);
             } else {
-              indicator.style.transform = `translateX(-50%) translateY(-100px)`; 
+              indicator.style.transform = `translateY(-100px)`;
             }
           }
           touchstartY = 0;
