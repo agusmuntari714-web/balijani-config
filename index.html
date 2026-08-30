@@ -225,17 +225,17 @@
       </div>
     </div>
     
+    <!-- MENU KATEGORI LENGKAP (KATEGORI LAMA DIPTAHANKAN + KATEGORI BARU DITAMBAHKAN) -->
     <div class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] relative z-10">
-      <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold" id="topNavContainer">
-        <div class="sticky left-0 z-20 bg-gradient-to-r from-white via-white to-transparent dark:from-[#0f172a] dark:via-[#0f172a] dark:to-transparent py-2.5 pl-4 pr-6">
-          <button onclick="App.navigate('home')" class="cat-tab active-tab px-4 py-1.5 rounded-full bg-brand-600 text-white transition whitespace-nowrap shadow-sm">Home</button>
-        </div>
-        <div class="flex items-center gap-2 py-2.5 pr-4 -ml-2">
-          <button onclick="App.navigate('category', 'Hukum')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Hukum</button>
-          <button onclick="App.navigate('category', 'Politik')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Politik</button>
-          <button onclick="App.navigate('category', 'Pariwisata')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Pariwisata</button>
-          <button onclick="App.navigate('category', 'Opini Publik')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Opini Publik</button>
-        </div>
+      <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold py-2.5 px-4 gap-2" id="topNavContainer">
+        <button onclick="App.navigate('category', 'Hukum')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Hukum</button>
+        <button onclick="App.navigate('category', 'Politik')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Politik</button>
+        <button onclick="App.navigate('category', 'Pariwisata')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Pariwisata</button>
+        <button onclick="App.navigate('category', 'Opini Publik')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Opini Publik</button>
+        <button onclick="App.navigate('category', 'Berita Bali')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Berita Bali</button>
+        <button onclick="App.navigate('category', 'Berita Daerah')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Berita Daerah</button>
+        <button onclick="App.navigate('category', 'Gaya Hidup')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Gaya Hidup</button>
+        <button onclick="App.navigate('category', 'Olahraga')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Olahraga</button>
       </nav>
     </div>
 
@@ -314,7 +314,7 @@
         </div>
       </div>
 
-      <!-- SLOT IKLAN EKSPLORASI BALI (DI POSISI SEMULA / KHUSUS IKLAN BERBAYAR) -->
+      <!-- SLOT IKLAN EKSPLORASI BALI -->
       <div id="adsBlock" class="bg-slate-100 dark:bg-slate-800/40 rounded-2xl p-4 md:p-6 border border-slate-200 dark:border-slate-800">
         <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 mb-4">
           <i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali
@@ -359,7 +359,7 @@
         </div>
       </div>
 
-      <!-- MODEL 1: SOROTAN UTAMA (3 KOLOM VERTIKAL) -->
+      <!-- MODEL 1: SOROTAN UTAMA -->
       <div>
         <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
           <span class="w-1.5 h-5 bg-brand-600 rounded-full"></span> Sorotan Utama
@@ -375,7 +375,7 @@
         <div id="magazineGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
       </div>
 
-      <!-- MODEL 3: KILAS WARTA LAINNYA (SLIDE KECIL HORIZONTAL) -->
+      <!-- MODEL 3: KILAS WARTA LAINNYA -->
       <div>
         <div class="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
           <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -1061,7 +1061,6 @@
         }, 300);
       },
 
-      // FUNGSI POP-UP SHARE SEPERTI DI HP
       quickShare(event, title, url) {
           event.stopPropagation();
           if('vibrate' in navigator) navigator.vibrate(20);
@@ -1141,7 +1140,7 @@
           this.renderHome();
       },
 
-      // RENDER HOME DENGAN TATA LETAK LENGKAP & MAJALAH 2 KOLOM
+      // RENDER HOME LENGKAP
       renderHome() {
         if (!this.data.length) return;
         
@@ -1214,7 +1213,6 @@
         `;
       },
 
-      // Card Standar 3 Kolom
       buildStandardGridCard(post) {
         const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
         const author = this.getAuthorName(post);
@@ -1250,7 +1248,6 @@
         return el;
       },
 
-      // Card Model Majalah 2 Kolom (Sesuai Gambar Kiriman)
       buildMagazineCard(post) {
         const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
         const author = this.getAuthorName(post);
@@ -1284,7 +1281,6 @@
         return el;
       },
 
-      // Card Slide Kecil Horizontal ke Samping
       buildSmallSlideCard(post) {
         const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
         const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
@@ -1386,11 +1382,6 @@
         
         if (view === 'home') {
           document.getElementById('homeView').classList.remove('hidden');
-          const firstTab = document.querySelector('.cat-tab');
-          if(firstTab) {
-            firstTab.classList.add('bg-brand-600', 'text-white', 'shadow-sm');
-            firstTab.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-          }
         } 
         else if (view === 'bookmarks') {
           document.getElementById('bookmarkView').classList.remove('hidden');
@@ -1422,7 +1413,7 @@
             }
           }
           
-          document.getElementById('categoryViewTitle').textContent = query === 'all' ? 'Semua Berita' : query.charAt(0).toUpperCase() + query.slice(1);
+          document.getElementById('categoryViewTitle').textContent = query === 'all' ? 'Semua Berita' : query;
           document.getElementById('categoryViewSubtitle').textContent = subText;
 
           const grid = document.getElementById('archiveGridContainer');
