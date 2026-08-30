@@ -29,7 +29,6 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
-    /* Memastikan paragraf artikel bersih, rapi, tanpa garis tak diinginkan */
     .article-body p {
         margin-bottom: 1.5rem;
         line-height: 1.8;
@@ -41,7 +40,6 @@
         display: none !important;
     }
 
-    /* Membatasi gambar di dalam artikel agar tidak keluar jalur / meluber */
     .article-body img, .article-body figure img {
         max-width: 100% !important;
         height: auto !important;
@@ -373,10 +371,6 @@
     </section>
 
     <section id="bookmarkView" class="hidden view-enter pt-4 px-4 md:px-0">
-      <div id="emptyBookmarkState" class="hidden py-16 text-center text-slate-400">
-        <i data-lucide="bookmark-minus" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
-        <p class="text-sm font-medium">Belum ada warta yang disimpan.</p>
-      </div>
       <div class="mb-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
         <div>
           <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bookmark-check" class="w-6 h-6 text-brand-600"></i> Tersimpan</h1>
@@ -384,6 +378,10 @@
         </div>
       </div>
       <div id="bookmarkGridContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6"></div>
+      <div id="emptyBookmarkState" class="hidden py-16 text-center text-slate-400">
+        <i data-lucide="bookmark-minus" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
+        <p class="text-sm font-medium">Belum ada warta yang disimpan.</p>
+      </div>
     </section>
 
     <!-- SINGLE POST VIEW -->
@@ -545,6 +543,7 @@
       currentPost: null,
       postStats: {}, 
       savedArticles: JSON.parse(localStorage.getItem('balijani_saved_posts')) || [], 
+      likedPosts: JSON.parse(localStorage.getItem('balijani_liked_posts')) || [], 
       carouselInterval: null,
       isSearchOpen: false,
       
@@ -635,17 +634,43 @@
       },
 
       async loginWithGoogle() {
-          await supabaseClient.auth.signInWithOAuth({
+          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
+          
+          const { data, error } = await supabaseClient.auth.signInWithOAuth({
               provider: 'google',
-              options: { redirectTo: 'https://balijani.id' }
+              options: { 
+                  redirectTo: redirectUrl,
+                  skipBrowserRedirect: false
+              }
           });
+
+          if (error) {
+              alert('Gagal membuka login Google: ' + error.message);
+              return;
+          }
+          if (data?.url) {
+              window.location.href = data.url;
+          }
       },
 
       async loginWithFacebook() {
-          await supabaseClient.auth.signInWithOAuth({
+          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
+          
+          const { data, error } = await supabaseClient.auth.signInWithOAuth({
               provider: 'facebook',
-              options: { redirectTo: 'https://balijani.id' }
+              options: { 
+                  redirectTo: redirectUrl,
+                  skipBrowserRedirect: false
+              }
           });
+
+          if (error) {
+              alert('Gagal membuka login Facebook: ' + error.message);
+              return;
+          }
+          if (data?.url) {
+              window.location.href = data.url;
+          }
       },
 
       async logout() {
@@ -877,11 +902,30 @@
           else { this.currentPost = { title: { rendered: title }, link: url }; this.share(); }
       },
 
+      updateLikeUI(postId, count) {
+          const isLiked = this.likedPosts.includes(postId);
+          const likeCountText = document.getElementById('likeCountText');
+          const likeIcon = document.getElementById('likeIcon');
+          const postLikesCountStat = document.getElementById('postLikesCountStat');
+
+          if (likeCountText) likeCountText.textContent = `Suka (${count})`;
+          if (postLikesCountStat) postLikesCountStat.textContent = count;
+
+          if (likeIcon) {
+              if (isLiked) {
+                  likeIcon.classList.add('text-rose-500', 'fill-rose-500');
+                  likeIcon.classList.remove('text-slate-700', 'dark:text-slate-200');
+              } else {
+                  likeIcon.classList.remove('text-rose-500', 'fill-rose-500');
+                  likeIcon.classList.add('text-slate-700', 'dark:text-slate-200');
+              }
+          }
+      },
+
       async loadPostInteractions(postId) {
           let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
           let count = likeData ? likeData.likes_count : 0;
-          document.getElementById('likeCountText').textContent = `Suka (${count})`;
-          document.getElementById('postLikesCountStat').textContent = count;
+          this.updateLikeUI(postId, count);
           
           this.loadComments(postId);
 
@@ -893,15 +937,29 @@
 
       async toggleLike() {
           if (!this.currentPost) return;
-          const postId = this.currentPost.id;
+          if ('vibrate' in navigator) navigator.vibrate(15);
           
-          let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
-          let currentLikes = likeData ? likeData.likes_count : 0;
-          let newLikes = currentLikes + 1;
+          const postId = this.currentPost.id;
+          const isLiked = this.likedPosts.includes(postId);
+          let countEl = document.getElementById('postLikesCountStat');
+          let currentCount = parseInt(countEl ? countEl.textContent : 0) || 0;
 
-          await supabaseClient.from('post_likes').upsert({ post_id: postId, likes_count: newLikes });
-          document.getElementById('likeCountText').textContent = `Suka (${newLikes})`;
-          document.getElementById('postLikesCountStat').textContent = newLikes;
+          if (isLiked) {
+              this.likedPosts = this.likedPosts.filter(id => id !== postId);
+              currentCount = Math.max(0, currentCount - 1);
+          } else {
+              this.likedPosts.push(postId);
+              currentCount += 1;
+          }
+          
+          localStorage.setItem('balijani_liked_posts', JSON.stringify(this.likedPosts));
+          this.updateLikeUI(postId, currentCount);
+
+          try {
+              await supabaseClient.from('post_likes').upsert({ post_id: postId, likes_count: currentCount });
+          } catch (err) {
+              console.error("Gagal sinkron like:", err);
+          }
       },
 
       async toggleBookmark() {
@@ -1074,7 +1132,7 @@
             <span class="font-medium">Editor : ${author}</span>
             <div class="flex items-center gap-2">
               <button onclick="App.quickToggleBookmark(event, ${JSON.stringify(post).replace(/"/g, '&quot;')})" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-4 h-4 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button>
-              <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\'")}', '${post.link}')" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
+              <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
             </div>
           </div>`;
         return el;
@@ -1099,7 +1157,7 @@
             <span>Warta Bali</span>
             <div class="flex items-center gap-2">
               <button onclick="App.quickToggleBookmark(event, ${JSON.stringify(post).replace(/"/g, '&quot;')})" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-4 h-4 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button>
-              <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\'")}', '${post.link}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
+              <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
             </div>
           </div>`;
         return el;
@@ -1124,7 +1182,7 @@
               <span class="text-[9px] text-slate-400">${dateObj}</span>
               <div class="flex items-center gap-1">
                 <button onclick="App.quickToggleBookmark(event, ${JSON.stringify(post).replace(/"/g, '&quot;')})" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-3.5 h-3.5 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button>
-                <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\'")}', '${post.link}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
+                <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
               </div>
             </div>
           </div>`;
@@ -1182,13 +1240,9 @@
           if (query !== 'all') {
             const q = query.toLowerCase().trim();
             filtered = this.data.filter(p => {
-              // Periksa nama kategori dari WordPress term taxonomy
               const categoryNames = (p._embedded?.['wp:term']?.[0] || []).map(t => t.name.toLowerCase());
               const matchesCategory = categoryNames.some(cat => cat.includes(q) || q.includes(cat));
-              
-              // Periksa kecocokan judul dan konten
               const matchesContent = p.title.rendered.toLowerCase().includes(q) || p.content.rendered.toLowerCase().includes(q);
-              
               return matchesCategory || matchesContent;
             });
           }
