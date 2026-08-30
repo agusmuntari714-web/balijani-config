@@ -1325,23 +1325,11 @@
         if (paragraphs.length > 4 && this.data.length > 1) {
           const midIndex = Math.floor(paragraphs.length / 2);
           const randomPost = this.data.find(p => p.id !== id) || this.data[0];
-          const bacaJugaImg = this.getImageUrl(randomPost);
-          // [NEW PREMIUM DESIGN] Baca Juga
+          // [DESAIN BACA JUGA BARU] Garis Merah Berdiri
           const bacaJugaHtml = `
-            <div class="my-8 flex items-center gap-3 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 shadow-sm cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700/50 transition group" onclick="App.openPost(${randomPost.id})">
-              <div class="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-300 dark:bg-slate-900">
-                <img src="${bacaJugaImg}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300" onerror="this.style.display='none'">
-              </div>
-              <div class="flex-1 min-w-0">
-                <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider mb-1 flex items-center gap-1">
-                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
-                  Baca Juga
-                </span>
-                <h4 class="font-bold text-sm text-slate-900 dark:text-white line-clamp-2 leading-snug">${randomPost.title.rendered}</h4>
-              </div>
-              <div class="p-2 rounded-full bg-white dark:bg-slate-900 shadow-sm text-brand-600 shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-              </div>
+            <div class="my-8 p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-800/50 rounded-r-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition group" onclick="App.openPost(${randomPost.id})">
+              <span class="block text-[10px] font-bold text-brand-600 uppercase tracking-wider mb-1">Baca Juga</span>
+              <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug group-hover:text-brand-600 transition">${randomPost.title.rendered}</h4>
             </div>`;
           paragraphs.splice(midIndex, 0, bacaJugaHtml);
           html = paragraphs.join('</p>');
