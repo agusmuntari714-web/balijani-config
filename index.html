@@ -23,8 +23,8 @@
     }
   </script>
 
-  <!-- STYLING WIDGET CUACA GAYA HP BIRU MINIMALIS & SPINNER -->
- <style>
+  <!-- STYLING WIDGET CUACA GAYA HP BIRU MINIMALIS & TOMBOL REFRESH MODERN -->
+  <style>
     .weather-card {
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
         color: #ffffff;
@@ -64,19 +64,28 @@
         font-size: 40px;
         filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
     }
+    
+    /* Tombol Refresh Bulat Modern di Widget */
     .weather-refresh-btn {
-        background: rgba(255, 255, 255, 0.2);
-        border: none;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         color: white;
-        padding: 6px 10px;
-        border-radius: 8px;
-        font-size: 11px;
-        font-weight: bold;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
-        transition: background 0.2s;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
     }
     .weather-refresh-btn:active {
-        background: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(0.9);
+    }
+    .weather-refresh-btn.is-spinning svg {
+        animation: smooth-spin 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
     /* Animasi Spinner Pull-to-Refresh Halus */
@@ -223,8 +232,10 @@
                   <div class="weather-desc" id="w-desc">Memuat zona waktu...</div>
               </div>
           </div>
-          <div style="display: flex; align-items: center; gap: 10px;">
-              <button onclick="detectUserLocation()" class="weather-refresh-btn" title="Perbarui Lokasi">🔄</button>
+          <div style="display: flex; align-items: center; gap: 12px;">
+              <button onclick="detectUserLocation(); this.classList.add('is-spinning'); setTimeout(() => this.classList.remove('is-spinning'), 800);" class="weather-refresh-btn" title="Perbarui Lokasi">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+              </button>
               <div class="weather-icon" id="w-icon">🛰️</div>
           </div>
       </div>
@@ -836,6 +847,11 @@
                   document.getElementById(id).classList.add('hidden');
               });
 
+              // AUTO REFRESH WIDGET CUACA KETIKA TARIK LAYAR
+              if (typeof detectUserLocation === 'function') {
+                  detectUserLocation();
+              }
+
               await this.loadData();
               
               setTimeout(() => {
@@ -1424,7 +1440,7 @@
                     loadRealtimeWeather(lat, lon);
                 },
                 (error) => {
-                    // Fallback mulus ke Jakarta/Bali jika GPS mati
+                    // Fallback mulus ke Jakarta jika GPS mati
                     loadRealtimeWeather(-6.2088, 106.8456);
                     document.getElementById('w-city').innerText = "Jakarta (Default)";
                 },
