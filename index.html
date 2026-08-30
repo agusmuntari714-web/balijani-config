@@ -23,75 +23,107 @@
     }
   </script>
 
-  <!-- WIDGET CUACA GAYA WIDGET HP -->
-<div id="weather-widget" class="weather-card">
-    <div class="weather-left">
-        <div class="weather-temp" id="w-temp">--°C</div>
-        <div class="weather-info">
-            <div class="weather-city" id="w-city">Bali, Indonesia</div>
-            <div class="weather-desc" id="w-desc">Memuat cuaca...</div>
-        </div>
+<!-- WIDGET CUACA OTOMATIS BERDASARKAN LOKASI GPS HP -->
+<div class="weather-card">
+    <div class="weather-header">
+        <div class="weather-title" id="w-title">📍 Cuaca di Sekitar Anda</div>
+        <button onclick="detectLocation()" class="weather-refresh-btn" title="Perbarui Lokasi">🔄</button>
     </div>
-    <div class="weather-icon" id="w-icon">☀️</div>
+    
+    <div class="weather-body">
+        <div class="weather-left">
+            <div class="weather-temp" id="w-temp">--°C</div>
+            <div>
+                <div class="weather-desc" id="w-desc">Mendeteksi lokasi...</div>
+                <div class="weather-sub" id="w-sub">Memuat data cuaca...</div>
+            </div>
+        </div>
+        <div class="weather-icon" id="w-icon">🛰️</div>
+    </div>
 </div>
 
 <style>
     .weather-card {
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        background: linear-gradient(135deg, #0f172a, #1e293b);
         color: #ffffff;
-        padding: 16px 20px;
+        padding: 16px;
         border-radius: 16px;
+        margin: 16px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .weather-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 16px;
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 8px;
+    }
+    .weather-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #38bdf8;
+    }
+    .weather-refresh-btn {
+        background: #334155;
+        color: #ffffff;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+    .weather-refresh-btn:active {
+        background: #475569;
+    }
+    .weather-body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     .weather-left {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 14px;
     }
     .weather-temp {
-        font-size: 32px;
+        font-size: 28px;
         font-weight: 700;
         line-height: 1;
     }
-    .weather-city {
-        font-size: 15px;
-        font-weight: 600;
-        margin-bottom: 2px;
-    }
     .weather-desc {
-        font-size: 13px;
-        opacity: 0.9;
+        font-size: 14px;
+        font-weight: 600;
         text-transform: capitalize;
     }
+    .weather-sub {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 2px;
+    }
     .weather-icon {
-        font-size: 36px;
+        font-size: 32px;
     }
 </style>
 
 <script>
-    // Mengambil data cuaca otomatis via Open-Meteo API (Gratis, tanpa API Key, sangat akurat untuk wilayah Bali/Indonesia)
-    async function loadWeather() {
+    // Fungsi utama mengambil cuaca berdasarkan koordinat
+    async function fetchWeatherByCoords(lat, lon, locationName = "Lokasi Anda") {
         try {
-            // Koordinat default untuk wilayah Bali (-8.4095, 115.1889)
-            const lat = -8.4095;
-            const lon = 115.1889;
-            
+            document.getElementById('w-desc').innerText = "Memuat cuaca...";
             const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
             const data = await response.json();
             
             if (data && data.current_weather) {
                 const temp = Math.round(data.current_weather.temperature);
+                const windspeed = data.current_weather.windspeed;
                 const weatherCode = data.current_weather.weathercode;
                 
                 document.getElementById('w-temp').innerText = `${temp}°C`;
-                document.getElementById('w-city').innerText = 'Bali';
+                document.getElementById('w-title').innerText = `📍 ${locationName}`;
+                document.getElementById('w-sub').innerText = `Angin: ${windspeed} km/j`;
                 
-                // Menentukan ikon dan deskripsi sederhana berdasarkan kode cuaca cuaca WMO
                 let desc = 'Cerah Berawan';
                 let icon = '⛅';
                 
@@ -113,62 +145,37 @@
                 document.getElementById('w-icon').innerText = icon;
             }
         } catch (e) {
-            document.getElementById('w-desc').innerText = 'Gagal memuat cuaca';
+            document.getElementById('w-desc').innerText = 'Gagal memuat data cuaca';
         }
     }
 
-    // Jalankan fungsi saat halaman dimuat
-    loadWeather();
-</script>
-
-  <style>
-    body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .view-enter { animation: slideIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-    @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes slideLeft { from { transform: translateX(100%); } to { transform: translateX(0); } }
-    .animate-slide-left { animation: slideLeft 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-
-    .article-body p, .article-body span, .article-body li { line-height: 1.85; color: #334155; margin-bottom: 1.25rem; font-size: 1.05rem; }
-    .dark .article-body p, .dark .article-body span:not([class*="text-brand"]), .dark .article-body li { color: #cbd5e1 !important; }
-    .article-body h2, .article-body h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem; color: inherit; }
-    .article-body img, .article-body figure, .article-body iframe { max-width: 100% !important; height: auto !important; border-radius: 0.75rem; margin: 1.5rem auto !important; display: block; object-fit: cover; }
-    
-    .article-body blockquote.tiktok-embed { width: 100% !important; max-width: 605px !important; min-width: 325px !important; margin: 20px auto !important; border-radius: 12px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-
-    .article-body div[style*="background"], .article-body blockquote:not(.tiktok-embed) { background-color: #f1f5f9 !important; border-left: 4px solid #dc2626 !important; padding: 1.25rem !important; border-radius: 0.5rem !important; margin: 1.5rem 0 !important; }
-    .dark .article-body div[style*="background"], .dark .article-body blockquote:not(.tiktok-embed) { background-color: #1e293b !important; border-color: #ef4444 !important; }
-    .article-body div[style*="background"] *, .article-body blockquote:not(.tiktok-embed) * { color: inherit !important; }
-
-    .snap-container { scroll-snap-type: x mandatory; }
-    .snap-item { scroll-snap-align: start; }
-    .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
-
-    /* Indikator Refresh diposisikan mutlak secara aman */
-    #pullRefreshIndicator {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 40px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-      transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    // Fungsi mendeteksi GPS HP pengguna
+    function detectLocation() {
+        if (navigator.geolocation) {
+            document.getElementById('w-desc').innerText = "Mencari sinyal GPS...";
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    // Ambil data cuaca berdasarkan koordinat GPS HP
+                    fetchWeatherByCoords(lat, lon, "Posisi Terkini");
+                },
+                (error) => {
+                    // Jika izin lokasi ditolak atau gagal, fallback otomatis ke default (Bali: Denpasar)
+                    console.warn("GPS gagal atau ditolak, menggunakan default Bali.");
+                    fetchWeatherByCoords(-8.6705, 115.2126, "Bali (Default)");
+                },
+                { timeout: 10000, maximumAge: 60000 }
+            );
+        } else {
+            // Jika browser tidak support, fallback ke Bali
+            fetchWeatherByCoords(-8.6705, 115.2126, "Bali");
+        }
     }
-    .dark #pullRefreshIndicator { background: #1e293b; }
 
-    .bg-ig-gradient { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-    .bg-fb { background-color: #1877F2; }
-    .bg-yt { background-color: #FF0000; }
-    .bg-tt { background-color: #000000; }
-  </style>
-</head>
-<body class="bg-slate-50 text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative pt-0">
+    // Jalankan deteksi saat halaman pertama kali dibuka
+    detectLocation();
+</script>
 
   <!-- TOAST NOTIFICATION -->
   <div id="inAppToast" class="fixed left-4 right-4 z-[150] transition-all duration-500" style="top: -200%;">
