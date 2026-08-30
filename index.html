@@ -6,6 +6,19 @@
   <meta name="theme-color" content="#ffffff" id="themeColorMeta">
   <title>BALIJANI - Portal Warta Premium</title>
 
+  <!-- INLINE SCRIPT: Mencegah FOUC (Flash of Unstyled Content) Mode Gelap -->
+  <script>
+    (function() {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('themeColorMeta')?.setAttribute('content', '#0b0f19');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+
   <!-- Tailwind CSS, Lucide Icons & Supabase Client -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -24,58 +37,76 @@
     }
   </script>
 
-  <!-- STYLING WIDGET CUACA & PERBAIKAN ARTIKEL / GAMBAR -->
   <style>
+    :root {
+      --sheet-bg-light: #ffffff;
+      --sheet-bg-dark: #0f172a;
+      --scrim-bg: rgba(0, 0, 0, 0.6);
+    }
+    
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
-    .article-body p {
-        margin-bottom: 1.5rem;
-        line-height: 1.8;
-        border: none !important;
-        box-shadow: none !important;
-        background: transparent !important;
+    .article-body p, .article-body div, .article-body span, .article-body figcaption {
+        margin-bottom: 1.5rem; line-height: 1.8; border: none !important;
+        box-shadow: none !important; background: transparent !important; color: inherit !important;
     }
-    .article-body hr {
-        display: none !important;
-    }
-
+    .article-body hr { display: none !important; }
     .article-body img, .article-body figure img {
-        max-width: 100% !important;
-        height: auto !important;
-        width: auto !important;
-        border-radius: 12px;
-        margin: 1rem auto;
-        display: block;
+        max-width: 100% !important; height: auto !important; width: auto !important;
+        border-radius: 12px; margin: 1rem auto; display: block;
     }
-    .article-body figure {
-        margin: 1rem auto !important;
-        max-width: 100% !important;
-    }
+    .article-body figure { margin: 1rem auto !important; max-width: 100% !important; }
 
     .weather-card {
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: #ffffff; padding: 16px 20px; border-radius: 20px;
-        display: flex; justify-content: space-between; align-items: center;
-        margin: 16px 0; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #ffffff; padding: 16px 20px; border-radius: 20px;
+        display: flex; justify-content: space-between; align-items: center; margin: 16px 0;
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        cursor: pointer; transition: transform 0.2s ease;
     }
     .weather-card:active { transform: scale(0.98); }
     .weather-left { display: flex; align-items: center; gap: 16px; }
     .weather-temp { font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
-    .weather-city { font-size: 15px; font-weight: 700; margin-bottom: 2px; letter-spacing: -0.2px; }
+    .weather-city { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
     .weather-desc { font-size: 11px; opacity: 0.9; font-weight: 500; text-transform: capitalize; }
     .weather-icon { font-size: 40px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2)); }
     .weather-refresh-btn {
         background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white; width: 32px; height: 32px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; cursor: pointer;
+        color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
         transition: all 0.3s ease; backdrop-filter: blur(4px);
     }
     .weather-refresh-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.9); }
     .weather-refresh-btn.is-spinning svg { animation: smooth-spin 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
     @keyframes smooth-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* Sistem Bottom Sheet Native Android */
+    .bottom-sheet-scrim {
+        position: fixed; inset: 0; z-index: 200; background: var(--scrim-bg);
+        backdrop-filter: blur(4px); opacity: 0; pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    .bottom-sheet-scrim.active { opacity: 1; pointer-events: auto; }
+    
+    .bottom-sheet {
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 201;
+        background: var(--sheet-bg-light); color: #0f172a;
+        border-radius: 24px 24px 0 0; padding: 8px 0 24px 0;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto;
+        transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dark .bottom-sheet { background: var(--sheet-bg-dark); color: #fff; }
+    .bottom-sheet.active { transform: translateY(0); }
+    .drag-handle { width: 40px; height: 4px; background: #cbd5e1; border-radius: 2px; margin: 8px auto 16px; }
+    .dark .drag-handle { background: #334155; }
+
+    /* Sistem Snackbar (Toast Material) */
+    .snackbar {
+        position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px);
+        background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px;
+        z-index: 9999; opacity: 0; font-size: 14px; font-weight: 500; white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .snackbar.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   </style>
 </head>
 
@@ -95,56 +126,46 @@
     </div>
   </div>
 
-  <!-- MODAL DETAIL CUACA -->
-  <div id="weatherModal" class="hidden fixed inset-0 z-[200] bg-black/60 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 transition-all duration-300">
-      <div class="bg-slate-900 text-white w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl border border-slate-800 max-h-[85vh] overflow-y-auto transform transition-transform duration-300">
-          <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+  <!-- MODAL DETAIL CUACA (Bottom Sheet) -->
+  <div id="weatherScrim" class="bottom-sheet-scrim" onclick="closeWeatherModal()"></div>
+  <div id="weatherModal" class="bottom-sheet">
+      <div class="drag-handle"></div>
+      <div class="px-6">
+          <div class="flex justify-between items-center mb-6 border-b border-slate-200 dark:border-slate-800 pb-4">
               <div>
                   <h3 class="text-xl font-extrabold flex items-center gap-2" id="modalCityName">📍 Memuat...</h3>
-                  <p class="text-xs text-slate-400 mt-0.5" id="modalSubDate">Perkiraan cuaca lokal terkini</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="modalSubDate">Perkiraan cuaca lokal terkini</p>
               </div>
-              <button onclick="closeWeatherModal()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition">
+              <button onclick="closeWeatherModal()" class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
                   <i data-lucide="x" class="w-5 h-5"></i>
               </button>
           </div>
-
-          <div class="flex items-center justify-between bg-slate-800/60 p-4 rounded-2xl mb-6 border border-slate-700/50">
+          <div class="flex items-center justify-between bg-slate-100 dark:bg-slate-800/60 p-4 rounded-2xl mb-6 border border-slate-200 dark:border-slate-700/50">
               <div>
                   <div class="text-4xl font-black tracking-tight" id="modalTemp">--°C</div>
-                  <div class="text-sm font-semibold text-sky-400 mt-1" id="modalCondition">Memuat kondisi...</div>
+                  <div class="text-sm font-semibold text-sky-500 dark:text-sky-400 mt-1" id="modalCondition">Memuat kondisi...</div>
               </div>
               <div class="text-5xl" id="modalBigIcon">⛅</div>
           </div>
-
           <div class="grid grid-cols-2 gap-3 mb-6">
-              <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-800">
-                  <div class="text-[11px] text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="wind" class="w-3.5 h-3.5 text-sky-400"></i> Kecepatan Angin</div>
+              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="wind" class="w-3.5 h-3.5 text-sky-400"></i> Angin</div>
                   <div class="text-base font-bold" id="modalWind">-- km/j</div>
               </div>
-              <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-800">
-                  <div class="text-[11px] text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="droplets" class="w-3.5 h-3.5 text-blue-400"></i> Kelembapan</div>
+              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="droplets" class="w-3.5 h-3.5 text-blue-400"></i> Lembap</div>
                   <div class="text-base font-bold" id="modalHumidity">-- %</div>
               </div>
-              <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-800">
-                  <div class="text-[11px] text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="gauge" class="w-3.5 h-3.5 text-amber-400"></i> Tekanan Udara</div>
+              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="gauge" class="w-3.5 h-3.5 text-amber-400"></i> Tekanan</div>
                   <div class="text-base font-bold" id="modalPressure">-- hPa</div>
               </div>
-              <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-800">
-                  <div class="text-[11px] text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="sun" class="w-3.5 h-3.5 text-yellow-400"></i> Indeks UV</div>
-                  <div class="text-base font-bold">Normal / Aman</div>
+              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="sun" class="w-3.5 h-3.5 text-yellow-400"></i> UV</div>
+                  <div class="text-base font-bold">Aman</div>
               </div>
           </div>
-
-          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Prakiraan Beberapa Jam ke Depan</h4>
-          <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="hourlyForecastContainer">
-              <div class="bg-slate-800/50 p-3 rounded-xl text-center shrink-0 w-20 border border-slate-800">
-                  <div class="text-xs text-slate-400 mb-1">--:--</div>
-                  <div class="text-lg my-1">⛅</div>
-                  <div class="text-sm font-bold">--°</div>
-              </div>
-          </div>
-
-          <button onclick="closeWeatherModal()" class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg">Tutup</button>
+          <button onclick="closeWeatherModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg">Tutup</button>
       </div>
   </div>
 
@@ -290,7 +311,7 @@
           <i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <a href="javascript:void(0)" onclick="alert('Fitur Hotel & Villa akan segera hadir!');" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
+          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Hotel & Villa akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
             <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
@@ -299,7 +320,7 @@
               <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
             </div>
           </a>
-          <a href="javascript:void(0)" onclick="alert('Fitur Tiket Pesawat akan segera hadir!');" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
+          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Tiket Pesawat akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
             <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
@@ -308,7 +329,7 @@
               <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
             </div>
           </a>
-          <a href="javascript:void(0)" onclick="alert('Fitur Destinasi Wisata akan segera hadir!');" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
+          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Destinasi Wisata akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
             <img src="https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
@@ -317,7 +338,7 @@
               <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
             </div>
           </a>
-          <a href="javascript:void(0)" onclick="alert('Fitur Kuliner Khas akan segera hadir!');" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
+          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Kuliner Khas akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
             <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
@@ -411,7 +432,6 @@
           </div>
         </div>
 
-        <!-- ISI ARTIKEL BERSIH TANPA GARIS DAN GAMBAR RESPONSIF -->
         <div id="postRenderedContent" class="article-body px-5 pt-4 text-[17px] text-slate-800 dark:text-slate-200 leading-relaxed"></div>
 
         <div class="px-5 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
@@ -433,16 +453,13 @@
               <i data-lucide="message-square" class="w-4 h-4 text-brand-600"></i> Kolom Komentar Publik (<span id="commentCount">0</span>)
             </h3>
             
-            <!-- TOMBOL LOGIN GOOGLE & FACEBOOK -->
             <div id="oauthLoginContainer" class="hidden mb-6 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 text-center shadow-sm">
                 <p class="text-xs font-medium text-slate-600 dark:text-slate-300 mb-3">Silakan masuk menggunakan akun sosial media untuk menulis komentar:</p>
                 <div class="flex flex-wrap gap-2.5 justify-center items-center">
-                    <!-- Tombol Google -->
                     <button type="button" onclick="App.loginWithGoogle()" class="inline-flex items-center gap-2 bg-white text-gray-700 border border-gray-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm hover:bg-gray-50 transition active:scale-95 cursor-pointer">
                         <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.36 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.19C.43 8.15 0 9.89 0 12s.43 3.85 1.19 5.39l4.08-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.19 6.61l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
                         <span>Login Google</span>
                     </button>
-                    <!-- Tombol Facebook -->
                     <button type="button" onclick="App.loginWithFacebook()" class="inline-flex items-center gap-2 bg-[#1877F2] text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm hover:bg-[#166fe5] transition active:scale-95 cursor-pointer">
                         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                         <span>Login Facebook</span>
@@ -450,7 +467,6 @@
                 </div>
             </div>
 
-            <!-- FORM KOMENTAR -->
             <div id="commentFormContainer" class="hidden space-y-3 mb-6">
               <div class="flex items-center justify-between bg-white dark:bg-slate-900 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
                   <span id="loggedInUserText" class="font-bold text-slate-700 dark:text-slate-300">Masuk sebagai...</span>
@@ -467,7 +483,6 @@
             </div>
           </div>
 
-          <!-- KOTAK SOSIAL MEDIA -->
           <div class="mb-10 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-slate-300 dark:border-slate-700 text-center">
             <h3 class="font-bold text-slate-900 dark:text-white mb-2">Ikuti Sosial Media Kami</h3>
             <p id="newsletterCtaText" class="text-xs text-slate-600 dark:text-slate-400 mb-5">Dapatkan isu eksklusif Bali langsung ke inbox Anda.</p>
@@ -503,7 +518,7 @@
     </article>
   </main>
 
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 pb-safe">
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 pb-safe" style="padding-bottom: env(safe-area-inset-bottom);">
     <div class="flex items-center justify-around h-16 text-[10px] font-semibold text-slate-500 dark:text-slate-400" id="bottomNav">
       <button onclick="App.navigate('home')" class="nav-btn w-1/4 text-brand-600 flex flex-col items-center gap-1 transition"><i data-lucide="home" class="w-5 h-5"></i><span>Beranda</span></button>
       <button onclick="App.navigate('category', 'all')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="layout-grid" class="w-5 h-5"></i><span>Arsip</span></button>
@@ -512,21 +527,23 @@
     </div>
   </nav>
 
-  <!-- MODAL POPUP KIRIM OPINI -->
-  <div id="opiniModal" class="hidden fixed inset-0 z-[120] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-center space-y-4 animate-scale-up">
-      <div class="w-12 h-12 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto">
-        <i data-lucide="pen-tool" class="w-6 h-6"></i>
+  <!-- MODAL POPUP KIRIM OPINI (Bottom Sheet Style) -->
+  <div id="opiniScrim" class="bottom-sheet-scrim" onclick="App.closeOpiniModal()"></div>
+  <div id="opiniModal" class="bottom-sheet">
+    <div class="drag-handle"></div>
+    <div class="px-6 pb-6 text-center space-y-4">
+      <div class="w-14 h-14 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto">
+        <i data-lucide="pen-tool" class="w-7 h-7"></i>
       </div>
       <div>
-        <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Kirim Opini / Warta</h3>
+        <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Kirim Opini / Warta</h3>
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sampaikan gagasan, aspirasi, atau tulisan Anda untuk dipublikasikan di balijani.id.</p>
       </div>
       <div class="space-y-2 pt-2">
-        <button onclick="App.openInAppForm()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer">
+        <button onclick="App.openInAppForm()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95">
           <i data-lucide="file-text" class="w-4 h-4"></i> Buka Formulir Langsung
         </button>
-        <a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeOpiniModal()" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+        <a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeOpiniModal()" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95">
           <i data-lucide="external-link" class="w-4 h-4"></i> Buka di Web Browser
         </a>
       </div>
@@ -534,17 +551,19 @@
     </div>
   </div>
 
-  <!-- MODAL IFRAME FORMULIR WEB OPINI -->
-  <div id="webFormView" class="hidden fixed inset-0 z-[130] bg-slate-50 dark:bg-slate-900 flex flex-col transition-all duration-300 transform translate-y-full">
-    <div class="h-[60px] bg-white dark:bg-[#0f172a] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shadow-sm pt-safe z-10">
+  <!-- MODAL IFRAME FORMULIR WEB OPINI (Bottom Sheet Style) -->
+  <div id="webFormScrim" class="bottom-sheet-scrim" onclick="App.closeWebForm()"></div>
+  <div id="webFormView" class="bottom-sheet" style="height: 95vh; max-height: 95vh; padding: 0;">
+    <div class="drag-handle"></div>
+    <div class="h-[60px] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shadow-sm z-10">
       <button onclick="App.closeWebForm()" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 active:scale-95 transition cursor-pointer">
         <i data-lucide="x" class="w-5 h-5"></i> Tutup
       </button>
       <a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeWebForm()" class="flex items-center gap-1.5 text-[10px] font-bold bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 px-3 py-2 rounded-full border border-brand-500/20 active:scale-95 transition">
-        <span>Lanjut ke web balijani.id</span> <i data-lucide="external-link" class="w-3 h-3"></i>
+        <span>Lanjut ke web</span> <i data-lucide="external-link" class="w-3 h-3"></i>
       </a>
     </div>
-    <div class="flex-1 w-full bg-white dark:bg-slate-900 relative">
+    <div class="flex-1 w-full bg-white dark:bg-slate-900 relative" style="height: calc(95vh - 100px);">
       <div id="iframeLoader" class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-0">
          <div class="w-8 h-8 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div>
       </div>
@@ -554,8 +573,9 @@
 
   <!-- SCRIPT UTAMA APLIKASI -->
   <script>
+    // WARNING: Pastikan SUPABASE_ANON_KEY adalah "anon public" key (format JWT/eyJ...), bukan secret key.
     const SUPABASE_URL = "https://vqsshojqwpespanexcyy.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_-qnqxbaPM7ESUUyx6qPrkw_dWhZI4pD";
+    const SUPABASE_ANON_KEY = "sb_publishable_-qnqxbaPM7ESUUyx6qPrkw_dWhZI4pD"; 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const App = {
@@ -564,16 +584,30 @@
 
       data: [],
       currentPost: null,
-      postStats: {}, 
-      savedArticles: JSON.parse(localStorage.getItem('balijani_saved_posts')) || [], 
-      likedPosts: JSON.parse(localStorage.getItem('balijani_liked_posts')) || [], 
+      savedArticles: JSON.parse(localStorage.getItem('balijani_saved_posts') || '[]'), 
+      likedPosts: JSON.parse(localStorage.getItem('balijani_liked_posts') || '[]'), 
       carouselInterval: null,
       isSearchOpen: false,
+      activeCommentChannel: null, 
       
       lastKnownPostId: localStorage.getItem('balijani_last_post_id') || null,
-      notifications: JSON.parse(localStorage.getItem('balijani_notifs')) || [],
-      notificationInterval: null,
-      latestUnreadPostId: null,
+      notifications: JSON.parse(localStorage.getItem('balijani_notifs') || '[]'),
+
+      haptic(pattern = 10) { if ('vibrate' in navigator) navigator.vibrate(pattern); },
+
+      showSnackbar(msg) {
+        let sb = document.getElementById('appSnackbar');
+        if (!sb) {
+          sb = document.createElement('div');
+          sb.id = 'appSnackbar';
+          sb.className = 'snackbar';
+          document.body.appendChild(sb);
+        }
+        sb.textContent = msg;
+        sb.classList.add('show');
+        clearTimeout(this.snackbarTimeout);
+        this.snackbarTimeout = setTimeout(() => sb.classList.remove('show'), 3000);
+      },
 
       async fetchRemoteConfig() {
         if (!this.CONFIG_URL) return;
@@ -587,7 +621,7 @@
               logoEl.innerHTML = `${config.appName1}<span class="text-brand-600">${config.appName2 || 'JANI'}</span>`;
             }
           }
-        } catch (e) {}
+        } catch (e) { console.error("Config fetch failed", e); }
       },
 
       updateAndroidStatusBar(color, isDarkMode) {
@@ -597,20 +631,18 @@
       },
 
       async init() {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-        const applySystemTheme = (e) => {
-          if (e.matches) {
-            document.documentElement.classList.add('dark');
-            document.getElementById('themeColorMeta').setAttribute('content', '#0b0f19');
-            this.updateAndroidStatusBar('#0b0f19', true);
-          } else {
-            document.documentElement.classList.remove('dark');
-            document.getElementById('themeColorMeta').setAttribute('content', '#ffffff');
-            this.updateAndroidStatusBar('#ffffff', false);
-          }
+        const applySystemTheme = () => {
+          const isDark = document.documentElement.classList.contains('dark');
+          document.getElementById('themeColorMeta').setAttribute('content', isDark ? '#0b0f19' : '#ffffff');
+          this.updateAndroidStatusBar(isDark ? '#0b0f19' : '#ffffff', isDark);
         };
-        applySystemTheme(prefersDark);
-        prefersDark.addEventListener('change', applySystemTheme);
+        applySystemTheme();
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (e.matches) document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
+            applySystemTheme();
+        });
 
         window.addEventListener('popstate', (e) => {
             if (e.state) {
@@ -657,37 +689,30 @@
       },
 
       async loginWithGoogle() {
+          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
           const { data, error } = await supabaseClient.auth.signInWithOAuth({
-              provider: 'google'
+              provider: 'google', options: { redirectTo: redirectUrl, skipBrowserRedirect: false }
           });
-
-          if (error) {
-              alert('Gagal login Google: ' + error.message);
-          } else if (data?.url) {
-              window.location.href = data.url;
-          }
+          if (error) return this.showSnackbar('Gagal login Google: ' + error.message);
+          if (data?.url) window.location.href = data.url;
       },
 
       async loginWithFacebook() {
+          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
           const { data, error } = await supabaseClient.auth.signInWithOAuth({
-              provider: 'facebook'
+              provider: 'facebook', options: { redirectTo: redirectUrl, skipBrowserRedirect: false }
           });
-
-          if (error) {
-              alert('Gagal login Facebook: ' + error.message);
-          } else if (data?.url) {
-              window.location.href = data.url;
-          }
+          if (error) return this.showSnackbar('Gagal login Facebook: ' + error.message);
+          if (data?.url) window.location.href = data.url;
       },
 
       async logout() {
           await supabaseClient.auth.signOut();
           this.updateAuthUI(null);
+          this.showSnackbar('Berhasil keluar.');
       },
 
-      startNotificationPolling() {
-        setInterval(() => { this.checkNewPosts(); }, 20000); 
-      },
+      startNotificationPolling() { setInterval(() => { this.checkNewPosts(); }, 20000); },
 
       async checkNewPosts() {
         try {
@@ -717,15 +742,13 @@
         if (unreadCount > 0) {
             badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
             badge.classList.remove('hidden');
-        } else {
-            badge.classList.add('hidden');
-        }
+        } else { badge.classList.add('hidden'); }
       },
 
       toggleNotifPanel() {
-        const panel = document.getElementById('notifPanel');
-        panel.classList.toggle('hidden');
-        if(!panel.classList.contains('hidden')) this.renderNotifPanel();
+        this.haptic();
+        document.getElementById('notifPanel').classList.toggle('hidden');
+        if(!document.getElementById('notifPanel').classList.contains('hidden')) this.renderNotifPanel();
       },
 
       renderNotifPanel() {
@@ -750,21 +773,15 @@
       clearReadNotifs() {
         this.notifications = this.notifications.filter(n => !n.isRead);
         localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
-        this.renderNotifPanel();
-        this.updateNotifBadge();
+        this.renderNotifPanel(); this.updateNotifBadge();
       },
 
       clearAllNotifs() {
-        this.notifications = [];
-        localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
-        this.renderNotifPanel();
-        this.updateNotifBadge();
+        this.notifications = []; localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
+        this.renderNotifPanel(); this.updateNotifBadge();
       },
 
-      openNotifPost(id) {
-        this.toggleNotifPanel();
-        this.openPost(id);
-      },
+      openNotifPost(id) { this.toggleNotifPanel(); this.openPost(id); },
 
       markAsRead(id) {
         this.notifications.forEach(n => { if (n.id === id) n.isRead = true; });
@@ -790,18 +807,24 @@
       },
 
       initReadingProgress() {
+        let ticking = false;
         window.addEventListener('scroll', () => {
-          const singleView = document.getElementById('singlePostView');
-          const progressBar = document.getElementById('progressBar');
-          if (!singleView.classList.contains('hidden')) {
-            document.getElementById('progressBarContainer').classList.remove('hidden');
-            const winScroll = document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            progressBar.style.width = (height > 0 ? (winScroll / height) * 100 : 100) + '%';
-          } else {
-            document.getElementById('progressBarContainer').classList.add('hidden');
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              const singleView = document.getElementById('singlePostView');
+              if (!singleView.classList.contains('hidden')) {
+                document.getElementById('progressBarContainer').classList.remove('hidden');
+                const winScroll = document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                document.getElementById('progressBar').style.width = (height > 0 ? (winScroll / height) * 100 : 100) + '%';
+              } else {
+                document.getElementById('progressBarContainer').classList.add('hidden');
+              }
+              ticking = false;
+            });
+            ticking = true;
           }
-        });
+        }, { passive: true });
       },
 
       initPullToRefresh() {
@@ -819,11 +842,12 @@
       },
 
       getAuthorName(post) { return post._embedded?.author?.[0]?.name || 'Nyoman Sarjana'; },
+      getImageUrl(post) { return post._embedded?.['wp:featuredmedia']?.[0]?.source_url || ''; },
 
       toggleSearch() {
+        this.haptic();
         this.isSearchOpen = !this.isSearchOpen;
-        const bar = document.getElementById('searchOverlay');
-        bar.classList.toggle('hidden');
+        document.getElementById('searchOverlay').classList.toggle('hidden');
         if(this.isSearchOpen) document.getElementById('searchInput').focus();
       },
       executeSearch(e) {
@@ -834,40 +858,35 @@
         }
       },
 
-      confirmSocial(platform, url) {
-        window.open(url, '_system') || (window.location.href = url);
-      },
+      confirmSocial(platform, url) { window.open(url, '_system') || (window.location.href = url); },
 
       showOpiniModal() {
-        const modal = document.getElementById('opiniModal');
-        if(modal) {
-          modal.classList.remove('hidden');
-          lucide.createIcons();
-        }
+        this.haptic(20);
+        document.getElementById('opiniScrim').classList.add('active');
+        document.getElementById('opiniModal').classList.add('active');
       },
 
       closeOpiniModal() {
-        const modal = document.getElementById('opiniModal');
-        if(modal) modal.classList.add('hidden');
+        document.getElementById('opiniScrim').classList.remove('active');
+        document.getElementById('opiniModal').classList.remove('active');
       },
 
       openInAppForm() {
         this.closeOpiniModal();
-        const webView = document.getElementById('webFormView');
-        webView.classList.remove('hidden');
-        setTimeout(() => webView.classList.remove('translate-y-full'), 10);
+        document.getElementById('webFormScrim').classList.add('active');
+        document.getElementById('webFormView').classList.add('active');
+        document.getElementById('iframeLoader').style.display = 'flex';
         document.getElementById('webFormIframe').src = "https://balijani.id/form-opini/";
       },
 
       closeWebForm() {
-        const webView = document.getElementById('webFormView');
-        webView.classList.add('translate-y-full');
-        setTimeout(() => webView.classList.add('hidden'), 300);
+        document.getElementById('webFormScrim').classList.remove('active');
+        document.getElementById('webFormView').classList.remove('active');
       },
 
       share() {
         if (!this.currentPost) return;
-        if('vibrate' in navigator) navigator.vibrate(20);
+        this.haptic(15);
         const shareUrl = this.currentPost.link;
         const shareTitle = this.currentPost.title.rendered;
 
@@ -881,36 +900,44 @@
             return;
         }
 
-        let modal = document.getElementById('customShareModal');
-        if (!modal) {
-          modal = document.createElement('div');
-          modal.id = 'customShareModal';
-          modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4';
-          modal.innerHTML = `
-            <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white">Bagikan Berita</h3>
-              <p id="shareModalTitleText" class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2"></p>
-              <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
+        let scrim = document.getElementById('shareScrim');
+        let sheet = document.getElementById('shareSheet');
+        
+        if (!scrim) {
+          scrim = document.createElement('div');
+          scrim.id = 'shareScrim';
+          scrim.className = 'bottom-sheet-scrim';
+          scrim.onclick = () => { scrim.classList.remove('active'); sheet.classList.remove('active'); };
+          
+          sheet = document.createElement('div');
+          sheet.id = 'shareSheet';
+          sheet.className = 'bottom-sheet';
+          sheet.innerHTML = `
+            <div class="drag-handle"></div>
+            <div class="px-6 pb-6">
+              <h3 class="font-bold text-lg mb-2">Bagikan Berita</h3>
+              <p id="shareModalTitleText" class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-3"></p>
+              <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                <i data-lucide="link" class="w-4 h-4 text-slate-400 shrink-0"></i>
                 <input type="text" id="shareUrlInput" readonly class="bg-transparent text-xs text-slate-700 dark:text-slate-300 w-full outline-none select-all">
               </div>
-              <div class="flex gap-2 pt-2">
-                <button id="copyLinkBtn" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md">Salin Link</button>
-                <button onclick="document.getElementById('customShareModal').style.display='none'" class="px-4 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl transition">Tutup</button>
-              </div>
+              <button id="copyLinkBtn" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md active:scale-95">Salin Tautan</button>
             </div>`;
-          document.body.appendChild(modal);
+          document.body.appendChild(scrim);
+          document.body.appendChild(sheet);
+          
           document.getElementById('copyLinkBtn').onclick = () => {
             const input = document.getElementById('shareUrlInput');
-            input.select();
-            document.execCommand('copy');
-            alert('Tautan berhasil disalin!');
-            modal.style.display = 'none';
+            input.select(); document.execCommand('copy');
+            this.showSnackbar('Tautan berhasil disalin!');
+            scrim.classList.remove('active'); sheet.classList.remove('active');
           };
-          modal.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
         }
         document.getElementById('shareModalTitleText').textContent = shareTitle;
         document.getElementById('shareUrlInput').value = shareUrl;
-        modal.style.display = 'flex';
+        scrim.classList.add('active');
+        sheet.classList.add('active');
+        lucide.createIcons();
       },
 
       quickShare(event, title, url) {
@@ -943,10 +970,12 @@
           let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
           let count = likeData ? likeData.likes_count : 0;
           this.updateLikeUI(postId, count);
-          
           this.loadComments(postId);
 
-          supabaseClient.channel('public:comments')
+          // [FIX] Hanya unsubscribe channel yang spesifik untuk komentar ini
+          if (this.activeCommentChannel) supabaseClient.removeChannel(this.activeCommentChannel);
+
+          this.activeCommentChannel = supabaseClient.channel('comments_realtime_' + postId)
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments', filter: `post_id=eq.${postId}` }, payload => {
               this.appendCommentToDOM(payload.new);
             }).subscribe();
@@ -954,57 +983,42 @@
 
       async toggleLike() {
           if (!this.currentPost) return;
-          if ('vibrate' in navigator) navigator.vibrate(15);
-          
+          this.haptic(15);
           const postId = this.currentPost.id;
           const isLiked = this.likedPosts.includes(postId);
           let countEl = document.getElementById('postLikesCountStat');
           let currentCount = parseInt(countEl ? countEl.textContent : 0) || 0;
 
-          if (isLiked) {
-              this.likedPosts = this.likedPosts.filter(id => id !== postId);
-              currentCount = Math.max(0, currentCount - 1);
-          } else {
-              this.likedPosts.push(postId);
-              currentCount += 1;
-          }
+          if (isLiked) { this.likedPosts = this.likedPosts.filter(id => id !== postId); currentCount = Math.max(0, currentCount - 1); }
+          else { this.likedPosts.push(postId); currentCount += 1; }
           
           localStorage.setItem('balijani_liked_posts', JSON.stringify(this.likedPosts));
           this.updateLikeUI(postId, currentCount);
 
-          try {
-              await supabaseClient.from('post_likes').upsert({ post_id: postId, likes_count: currentCount });
-          } catch (err) {
-              console.error("Gagal sinkron like:", err);
-          }
+          try { await supabaseClient.from('post_likes').upsert({ post_id: postId, likes_count: currentCount }); }
+          catch (err) { console.error("Gagal sinkron like:", err); }
       },
 
       async toggleBookmark() {
           if (!this.currentPost) return;
+          this.haptic(15);
           const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
-          if (isSaved) {
-              this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id);
-          } else {
-              this.savedArticles.unshift(this.currentPost);
-          }
+          if (isSaved) { this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id); this.showSnackbar('Warta dihapus dari simpanan.'); }
+          else { this.savedArticles.unshift(this.currentPost); this.showSnackbar('Warta berhasil disimpan.'); }
           localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
           
           const bookmarkText = document.getElementById('bookmarkText');
           const bookmarkIcon = document.getElementById('bookmarkIcon');
-          if (isSaved) {
-              bookmarkText.textContent = "Simpan";
-              bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500');
-          } else {
-              bookmarkText.textContent = "Tersimpan";
-              bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500');
-          }
+          if (isSaved) { bookmarkText.textContent = "Simpan"; bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500'); }
+          else { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500'); }
       },
 
       quickToggleBookmark(event, post) {
           event.stopPropagation();
+          this.haptic(10);
           const index = this.savedArticles.findIndex(p => p.id === post.id);
-          if (index > -1) this.savedArticles.splice(index, 1);
-          else this.savedArticles.unshift(post);
+          if (index > -1) { this.savedArticles.splice(index, 1); this.showSnackbar('Warta dihapus dari simpanan.'); }
+          else { this.savedArticles.unshift(post); this.showSnackbar('Warta berhasil disimpan.'); }
           localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
           this.renderHome();
       },
@@ -1012,28 +1026,19 @@
       async loadComments(postId) {
           const container = document.getElementById('commentsList');
           container.innerHTML = `<p class="text-xs text-slate-400 italic">Memuat komentar...</p>`;
-
-          let { data: comments } = await supabaseClient
-              .from('comments')
-              .select('*')
-              .eq('post_id', postId)
-              .order('created_at', { ascending: false });
-
+          let { data: comments } = await supabaseClient.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: false });
           container.innerHTML = '';
           document.getElementById('commentCount').textContent = comments ? comments.length : 0;
-
           if (!comments || comments.length === 0) {
               container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada komentar. Jadilah yang pertama menanggapi!</p>`;
               return;
           }
-
           comments.forEach(c => this.appendCommentToDOM(c, false));
       },
 
       appendCommentToDOM(c, prepend = true) {
           const container = document.getElementById('commentsList');
           if(container.querySelector('p.italic')) container.innerHTML = '';
-
           const dateStr = new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
           const commentHTML = `
             <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
@@ -1045,7 +1050,6 @@
             </div>`;
           if(prepend) container.insertAdjacentHTML('afterbegin', commentHTML);
           else container.insertAdjacentHTML('beforeend', commentHTML);
-
           let countEl = document.getElementById('commentCount');
           countEl.textContent = parseInt(countEl.textContent || 0) + 1;
       },
@@ -1053,26 +1057,15 @@
       async submitComment(e) {
           e.preventDefault();
           if (!this.currentPost) return;
-
           const { data: { session } } = await supabaseClient.auth.getSession();
-          if (!session || !session.user) {
-              alert('Silakan login terlebih dahulu untuk mengirim komentar.');
-              return;
-          }
-
-          const author = session.user.user_metadata?.full_name || session.user.email || 'Pengguna Terverifikasi';
+          if (!session || !session.user) return this.showSnackbar('Silakan login untuk komentar.');
+          const author = session.user.user_metadata?.full_name || session.user.email || 'Pengguna';
           const content = document.getElementById('commentContent').value.trim();
           if (!content) return;
 
-          const { error } = await supabaseClient.from('comments').insert([
-              { post_id: this.currentPost.id, author_name: author, content: content }
-          ]);
-
-          if (error) {
-              alert('Gagal mengirim komentar.');
-          } else {
-              document.getElementById('commentContent').value = '';
-          }
+          const { error } = await supabaseClient.from('comments').insert([{ post_id: this.currentPost.id, author_name: author, content: content }]);
+          if (error) this.showSnackbar('Gagal mengirim komentar.');
+          else { document.getElementById('commentContent').value = ''; this.showSnackbar('Komentar terkirim!'); }
       },
 
       renderHome() {
@@ -1107,10 +1100,10 @@
       },
 
       buildHeroHTML(post) {
-        const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
+        const img = this.getImageUrl(post);
         const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Utama';
         return `
-          <img src="${img}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
+          <img src="${img}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
           <div class="relative z-10 p-5 md:p-8 space-y-2 w-full">
             <span class="bg-brand-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-sm">${cat}</span>
@@ -1119,10 +1112,10 @@
       },
 
       buildCarouselCard(post) {
-        const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
+        const img = this.getImageUrl(post);
         return `
           <div onclick="App.openPost(${post.id})" class="snap-item shrink-0 w-[70%] sm:w-[45%] md:w-[30%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform">
-            <div class="w-full aspect-[16/10] overflow-hidden bg-slate-100"><img src="${img}" class="w-full h-full object-cover"></div>
+            <div class="w-full aspect-[16/10] overflow-hidden bg-slate-100"><img src="${img}" onerror="this.parentElement.classList.add('bg-slate-200')" class="w-full h-full object-cover"></div>
             <div class="p-3 flex-1 flex flex-col justify-center">
               <h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${post.title.rendered}</h3>
             </div>
@@ -1130,7 +1123,7 @@
       },
 
       buildStandardGridCard(post) {
-        const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
+        const img = this.getImageUrl(post);
         const author = this.getAuthorName(post);
         const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
         const isSaved = this.savedArticles.some(p => p.id === post.id);
@@ -1139,7 +1132,7 @@
         el.onclick = () => this.openPost(post.id);
         el.innerHTML = `
           <div>
-            <div class="w-full aspect-video overflow-hidden bg-slate-100"><img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div>
+            <div class="w-full aspect-video overflow-hidden bg-slate-100"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div>
             <div class="p-4">
               <span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider mb-1 block">${cat}</span>
               <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-2">${post.title.rendered}</h3>
@@ -1156,7 +1149,7 @@
       },
 
       buildMagazineCard(post) {
-        const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
+        const img = this.getImageUrl(post);
         const author = this.getAuthorName(post);
         const isSaved = this.savedArticles.some(p => p.id === post.id);
         const el = document.createElement('article');
@@ -1164,7 +1157,7 @@
         el.onclick = () => this.openPost(post.id);
         el.innerHTML = `
           <div>
-            <div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div>
+            <div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div>
             <div class="p-5">
               <h3 class="text-base md:text-lg font-bold font-serif text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-3">${post.title.rendered}</h3>
               <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Editor : ${author}</span>
@@ -1181,7 +1174,7 @@
       },
 
       buildSmallSlideCard(post) {
-        const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
+        const img = this.getImageUrl(post);
         const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
         const dateObj = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
         const isSaved = this.savedArticles.some(p => p.id === post.id);
@@ -1189,7 +1182,7 @@
         el.className = "snap-item shrink-0 w-[48%] sm:w-[32%] md:w-[22%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
         el.innerHTML = `
-          <div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div>
+          <div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div>
           <div class="p-3 flex-1 flex flex-col justify-between">
             <div>
               <span class="text-[8px] font-bold text-sky-500 uppercase tracking-wider mb-1 block">${cat}</span>
@@ -1207,13 +1200,13 @@
       },
 
       buildGridCard(post, isGallery) {
-        const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
+        const img = this.getImageUrl(post);
         const author = this.getAuthorName(post);
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
         el.innerHTML = `
-          <div class="w-full ${isGallery ? 'aspect-square' : 'aspect-video'} overflow-hidden"><img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>
+          <div class="w-full ${isGallery ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-slate-100"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>
           <div class="p-3 md:p-4">
             <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${post.title.rendered}</h3>
             <span class="text-[9px] text-slate-500 font-medium">Editor : ${author}</span>
@@ -1222,34 +1215,42 @@
       },
 
       startCarousel() {
-        if(this.carouselInterval) clearInterval(this.carouselInterval);
+        this.stopCarousel();
         const track = document.getElementById('carouselTrack');
+        if(!track || !track.children.length) return;
         let index = 0;
+        const maxIndex = track.children.length - 1;
         this.carouselInterval = setInterval(() => {
-          index = (index + 1) % 5;
+          index = (index + 1) > maxIndex ? 0 : index + 1;
           const itemWidth = track.children[0]?.clientWidth || 0;
           track.scrollTo({ left: index * (itemWidth + 16), behavior: 'smooth' });
+          document.querySelectorAll('#carouselDots button').forEach((dot, i) => {
+            dot.className = `w-1.5 h-1.5 rounded-full transition-all ${i === index ? 'bg-brand-600 w-3' : 'bg-slate-300 dark:bg-slate-700'}`;
+          });
         }, 3500);
       },
+
+      stopCarousel() { if(this.carouselInterval) { clearInterval(this.carouselInterval); this.carouselInterval = null; } },
 
       renderBookmarks() {
         const grid = document.getElementById('bookmarkGridContainer');
         const emptyState = document.getElementById('emptyBookmarkState');
         grid.innerHTML = '';
         if (this.savedArticles.length === 0) emptyState.classList.remove('hidden');
-        else {
-          emptyState.classList.add('hidden');
-          this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
-        }
+        else { emptyState.classList.add('hidden'); this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true))); }
       },
 
       navigate(view, query = '', fromPopState = false) {
-        if('vibrate' in navigator && !fromPopState) navigator.vibrate(20);
+        if(!fromPopState) this.haptic(10);
         if (!fromPopState) history.pushState({ view: view, query: query }, '', '#' + view);
-        
+        if (view !== 'home') this.stopCarousel();
+
         ['homeView', 'categoryView', 'bookmarkView', 'singlePostView'].forEach(id => document.getElementById(id).classList.add('hidden'));
         
-        if (view === 'home') document.getElementById('homeView').classList.remove('hidden');
+        if (view === 'home') {
+            document.getElementById('homeView').classList.remove('hidden');
+            this.startCarousel();
+        }
         else if (view === 'bookmarks') { document.getElementById('bookmarkView').classList.remove('hidden'); this.renderBookmarks(); }
         else if (view === 'category') {
           document.getElementById('categoryView').classList.remove('hidden');
@@ -1266,12 +1267,8 @@
           document.getElementById('categoryViewTitle').textContent = query === 'all' ? 'Semua Berita' : query;
           const grid = document.getElementById('archiveGridContainer');
           grid.innerHTML = '';
-
-          if (filtered.length === 0) {
-            grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400"><p class="text-sm font-medium">Belum ada warta untuk kategori "${query}".</p></div>`;
-          } else {
-            filtered.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
-          }
+          if (filtered.length === 0) grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400"><p class="text-sm font-medium">Belum ada warta untuk kategori "${query}".</p></div>`;
+          else filtered.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
         } 
         else if (view === 'single') document.getElementById('singlePostView').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'instant' });
@@ -1288,15 +1285,15 @@
         document.getElementById('postAuthor').textContent = this.getAuthorName(post); 
         document.getElementById('postDate').textContent = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
         
-        const imgUrl = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
-        document.getElementById('postFeaturedImg').src = imgUrl || '';
+        const imgUrl = this.getImageUrl(post);
+        const imgEl = document.getElementById('postFeaturedImg');
+        imgEl.src = imgUrl || '';
         document.getElementById('postImageWrapper').style.display = imgUrl ? 'block' : 'none';
+        imgEl.onerror = () => { imgEl.style.display = 'none'; };
 
         let html = post.content.rendered
           .replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '')
-          .replace(/color:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black);?/gi, '')
-          .replace(/background(-color)?:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black|#f1f5f9);?/gi, '')
-          .replace(/border(-top|-bottom|-left|-right)?[^;]+;/gi, '')
+          .replace(/<(p|div|span|figure|figcaption|blockquote)([^>]*)\sstyle="([^"]*)"/gi, '<$1$2') 
           .replace(/<img /gi, '<img style="max-width: 100% !important; height: auto !important; border-radius: 12px; margin: 1rem auto; display: block;" ');
 
         const paragraphs = html.split('</p>');
@@ -1322,7 +1319,7 @@
         this.data.slice(5, 10).forEach(p => {
           popularList.innerHTML += `
             <div class="flex gap-3 items-center cursor-pointer group active:scale-95 transition" onclick="App.openPost(${p.id})">
-              <img src="${p._embedded?.['wp:featuredmedia']?.[0]?.source_url}" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0">
+              <img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0">
               <h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-600 transition">${p.title.rendered}</h4>
             </div>`;
         });
@@ -1332,13 +1329,8 @@
         const isSaved = this.savedArticles.some(p => p.id === post.id);
         const bookmarkText = document.getElementById('bookmarkText');
         const bookmarkIcon = document.getElementById('bookmarkIcon');
-        if (isSaved) {
-            bookmarkText.textContent = "Tersimpan";
-            bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500');
-        } else {
-            bookmarkText.textContent = "Simpan";
-            bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500');
-        }
+        if (isSaved) { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500'); }
+        else { bookmarkText.textContent = "Simpan"; bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500'); }
 
         if (!fromPopState) history.pushState({ view: 'single', id: id }, '', '#post-' + id);
         this.navigate('single', '', true);
@@ -1346,6 +1338,7 @@
       },
 
       toggleTheme() {
+        this.haptic(10);
         document.documentElement.classList.toggle('dark');
         const isDark = document.documentElement.classList.contains('dark');
         document.getElementById('themeColorMeta').setAttribute('content', isDark ? '#0b0f19' : '#ffffff');
@@ -1356,10 +1349,17 @@
     App.init();
   </script>
 
-  <!-- SCRIPT WIDGET CUACA & POP-UP -->
+  <!-- SCRIPT WIDGET CUACA -->
   <script>
-    function openWeatherModal() { document.getElementById('weatherModal').classList.remove('hidden'); }
-    function closeWeatherModal() { document.getElementById('weatherModal').classList.add('hidden'); }
+    function openWeatherModal() {
+        App.haptic(10);
+        document.getElementById('weatherScrim').classList.add('active');
+        document.getElementById('weatherModal').classList.add('active');
+    }
+    function closeWeatherModal() {
+        document.getElementById('weatherScrim').classList.remove('active');
+        document.getElementById('weatherModal').classList.remove('active');
+    }
     async function loadRealtimeWeather(lat, lon) {
         try {
             const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
@@ -1371,7 +1371,13 @@
             }
         } catch (e) {}
     }
-    navigator.geolocation?.getCurrentPosition(p => loadRealtimeWeather(p.coords.latitude, p.coords.longitude), () => loadRealtimeWeather(-6.2088, 106.8456));
+    function detectUserLocation() {
+        navigator.geolocation?.getCurrentPosition(
+            p => loadRealtimeWeather(p.coords.latitude, p.coords.longitude), 
+            () => loadRealtimeWeather(-6.2088, 106.8456) 
+        );
+    }
+    detectUserLocation();
   </script>
 </body>
 </html>
