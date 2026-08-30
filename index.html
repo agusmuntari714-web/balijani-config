@@ -416,13 +416,13 @@
 
         <div class="px-5 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
           <div class="flex items-center gap-2 mb-8">
-            <button id="likeButton" onclick="App.toggleLike()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95">
+            <button id="likeButton" onclick="App.toggleLike()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95 cursor-pointer">
               <i data-lucide="heart" id="likeIcon" class="w-4 h-4 transition-colors"></i> <span id="likeCountText">Suka (0)</span>
             </button>
-            <button id="bookmarkButton" onclick="App.toggleBookmark()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95">
+            <button id="bookmarkButton" onclick="App.toggleBookmark()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95 cursor-pointer">
               <i data-lucide="bookmark" id="bookmarkIcon" class="w-4 h-4 transition-colors"></i> <span id="bookmarkText">Simpan</span>
             </button>
-            <button onclick="App.share()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-900 dark:bg-slate-700 text-white font-bold text-xs shadow-md active:scale-95">
+            <button onclick="App.share()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-900 dark:bg-slate-700 text-white font-bold text-xs shadow-md active:scale-95 cursor-pointer">
               <i data-lucide="share-2" class="w-4 h-4"></i> <span class="hidden sm:inline">Bagikan</span>
             </button>
           </div>
@@ -433,7 +433,7 @@
               <i data-lucide="message-square" class="w-4 h-4 text-brand-600"></i> Kolom Komentar Publik (<span id="commentCount">0</span>)
             </h3>
             
-            <!-- TOMBOL LOGIN GOOGLE & FACEBOOK (Muncul jika belum login) -->
+            <!-- TOMBOL LOGIN GOOGLE & FACEBOOK -->
             <div id="oauthLoginContainer" class="hidden mb-6 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 text-center shadow-sm">
                 <p class="text-xs font-medium text-slate-600 dark:text-slate-300 mb-3">Silakan masuk menggunakan akun sosial media untuk menulis komentar:</p>
                 <div class="flex flex-wrap gap-2.5 justify-center items-center">
@@ -450,7 +450,7 @@
                 </div>
             </div>
 
-            <!-- FORM KOMENTAR (Hanya muncul jika sudah login) -->
+            <!-- FORM KOMENTAR -->
             <div id="commentFormContainer" class="hidden space-y-3 mb-6">
               <div class="flex items-center justify-between bg-white dark:bg-slate-900 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
                   <span id="loggedInUserText" class="font-bold text-slate-700 dark:text-slate-300">Masuk sebagai...</span>
@@ -512,9 +512,32 @@
     </div>
   </nav>
 
-  <div id="webFormView" class="hidden fixed inset-0 z-[100] bg-slate-50 dark:bg-slate-900 flex flex-col transition-all duration-300 transform translate-y-full">
+  <!-- MODAL POPUP KIRIM OPINI -->
+  <div id="opiniModal" class="hidden fixed inset-0 z-[120] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-center space-y-4 animate-scale-up">
+      <div class="w-12 h-12 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto">
+        <i data-lucide="pen-tool" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Kirim Opini / Warta</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sampaikan gagasan, aspirasi, atau tulisan Anda untuk dipublikasikan di balijani.id.</p>
+      </div>
+      <div class="space-y-2 pt-2">
+        <button onclick="App.openInAppForm()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer">
+          <i data-lucide="file-text" class="w-4 h-4"></i> Buka Formulir Langsung
+        </button>
+        <a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeOpiniModal()" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+          <i data-lucide="external-link" class="w-4 h-4"></i> Buka di Web Browser
+        </a>
+      </div>
+      <button onclick="App.closeOpiniModal()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 pt-2 block w-full cursor-pointer">Batal</button>
+    </div>
+  </div>
+
+  <!-- MODAL IFRAME FORMULIR WEB OPINI -->
+  <div id="webFormView" class="hidden fixed inset-0 z-[130] bg-slate-50 dark:bg-slate-900 flex flex-col transition-all duration-300 transform translate-y-full">
     <div class="h-[60px] bg-white dark:bg-[#0f172a] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shadow-sm pt-safe z-10">
-      <button onclick="App.closeWebForm()" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 active:scale-95 transition">
+      <button onclick="App.closeWebForm()" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 active:scale-95 transition cursor-pointer">
         <i data-lucide="x" class="w-5 h-5"></i> Tutup
       </button>
       <a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeWebForm()" class="flex items-center gap-1.5 text-[10px] font-bold bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 px-3 py-2 rounded-full border border-brand-500/20 active:scale-95 transition">
@@ -531,10 +554,8 @@
 
   <!-- SCRIPT UTAMA APLIKASI -->
   <script>
-    // KONFIGURASI SUPABASE
-    // Pastikan SUPABASE_ANON_KEY menggunakan "anon public" key (biasanya diawali dengan eyJ...)
     const SUPABASE_URL = "https://vqsshojqwpespanexcyy.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_-qnqxbaPM7ESUUyx6qPrkw_dWhZI4pD"; 
+    const SUPABASE_ANON_KEY = "sb_publishable_-qnqxbaPM7ESUUyx6qPrkw_dWhZI4pD";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const App = {
@@ -636,41 +657,25 @@
       },
 
       async loginWithGoogle() {
-          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
-          
           const { data, error } = await supabaseClient.auth.signInWithOAuth({
-              provider: 'google',
-              options: { 
-                  redirectTo: redirectUrl,
-                  skipBrowserRedirect: false
-              }
+              provider: 'google'
           });
 
           if (error) {
-              alert('Gagal membuka login Google: ' + error.message);
-              return;
-          }
-          if (data?.url) {
+              alert('Gagal login Google: ' + error.message);
+          } else if (data?.url) {
               window.location.href = data.url;
           }
       },
 
       async loginWithFacebook() {
-          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
-          
           const { data, error } = await supabaseClient.auth.signInWithOAuth({
-              provider: 'facebook',
-              options: { 
-                  redirectTo: redirectUrl,
-                  skipBrowserRedirect: false
-              }
+              provider: 'facebook'
           });
 
           if (error) {
-              alert('Gagal membuka login Facebook: ' + error.message);
-              return;
-          }
-          if (data?.url) {
+              alert('Gagal login Facebook: ' + error.message);
+          } else if (data?.url) {
               window.location.href = data.url;
           }
       },
@@ -834,10 +839,20 @@
       },
 
       showOpiniModal() {
-        this.openInAppForm();
+        const modal = document.getElementById('opiniModal');
+        if(modal) {
+          modal.classList.remove('hidden');
+          lucide.createIcons();
+        }
+      },
+
+      closeOpiniModal() {
+        const modal = document.getElementById('opiniModal');
+        if(modal) modal.classList.add('hidden');
       },
 
       openInAppForm() {
+        this.closeOpiniModal();
         const webView = document.getElementById('webFormView');
         webView.classList.remove('hidden');
         setTimeout(() => webView.classList.remove('translate-y-full'), 10);
@@ -931,11 +946,7 @@
           
           this.loadComments(postId);
 
-          // [FIX] Hapus semua subscription channel Realtime sebelumnya untuk mencegah memory leak
-          supabaseClient.getChannels().forEach(channel => supabaseClient.removeChannel(channel));
-
-          // Buat langganan Realtime baru yang unik per post
-          supabaseClient.channel('public:comments_' + postId)
+          supabaseClient.channel('public:comments')
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments', filter: `post_id=eq.${postId}` }, payload => {
               this.appendCommentToDOM(payload.new);
             }).subscribe();
