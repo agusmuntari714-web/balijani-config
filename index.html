@@ -360,7 +360,7 @@
       </div>
     </section>
 
-    <!-- SINGLE POST VIEW DENGAN KOMENTAR REAL-TIME & SUPABASE -->
+    <!-- SINGLE POST VIEW -->
     <article id="singlePostView" class="hidden view-enter max-w-4xl mx-auto bg-white dark:bg-[#0f172a] mt-4 md:mt-6 md:rounded-2xl md:border border-slate-100 dark:border-slate-800 pb-8 flex flex-col md:flex-row gap-6">
       <div class="flex-1 w-full relative">
         <div id="postImageWrapper" class="relative w-full aspect-[4/3] md:aspect-video md:rounded-tl-2xl overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -389,7 +389,6 @@
 
         <div id="postRenderedContent" class="article-body px-5 pt-4 text-[17px] text-slate-800 dark:text-slate-200 leading-relaxed"></div>
 
-        <!-- TOMBOL INTERAKSI (LIKE & BOOKMARK) -->
         <div class="px-5 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
           <div class="flex items-center gap-2 mb-8">
             <button id="likeButton" onclick="App.toggleLike()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95">
@@ -403,20 +402,18 @@
             </button>
           </div>
 
-          <!-- SECTION KOMENTAR REAL-TIME -->
+          <!-- KOLOM KOMENTAR REAL-TIME -->
           <div class="mb-10 bg-slate-50 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
             <h3 class="font-bold text-base text-slate-900 dark:text-white mb-4 flex items-center gap-2">
               <i data-lucide="message-square" class="w-4 h-4 text-brand-600"></i> Kolom Komentar Publik (<span id="commentCount">0</span>)
             </h3>
             
-            <!-- Form Kirim Komentar -->
             <form id="commentForm" onsubmit="App.submitComment(event)" class="space-y-3 mb-6">
               <input type="text" id="commentAuthor" placeholder="Nama Anda..." required class="w-full bg-white dark:bg-slate-900 text-xs text-slate-900 dark:text-white px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:border-brand-500">
               <textarea id="commentContent" placeholder="Tulis tanggapan atau opini Anda..." rows="3" required class="w-full bg-white dark:bg-slate-900 text-xs text-slate-900 dark:text-white p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:border-brand-500 resize-none"></textarea>
               <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-md">Kirim Komentar</button>
             </form>
 
-            <!-- List Komentar -->
             <div id="commentsList" class="space-y-3">
               <p class="text-xs text-slate-400 italic">Memuat komentar...</p>
             </div>
@@ -484,9 +481,8 @@
     </div>
   </div>
 
-  <!-- SCRIPT UTAMA APLIKASI & SUPABASE REAL-TIME -->
+  <!-- SCRIPT UTAMA APLIKASI -->
   <script>
-    // MASUKKAN URL & ANON KEY SUPABASE ANDA DI SINI
     const SUPABASE_URL = "https://vqsshojqwpespanexcyy.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_-qnqxbaPM7ESUUyx6qPrkw_dWhZI4pD";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -732,13 +728,59 @@
         setTimeout(() => webView.classList.add('hidden'), 300);
       },
 
+      // FUNGSI SHARE POPUP LENGKAP SEPERTI DI HP
+      share() {
+        if (!this.currentPost) return;
+        if('vibrate' in navigator) navigator.vibrate(20);
+        const shareUrl = this.currentPost.link;
+        const shareTitle = this.currentPost.title.rendered;
+
+        if (typeof AndroidBridge !== "undefined") {
+            AndroidBridge.bagikanBerita(shareTitle, shareUrl);
+            return; 
+        }
+
+        if (navigator.share) {
+            navigator.share({ title: shareTitle, url: shareUrl }).catch(() => {});
+            return;
+        }
+
+        let modal = document.getElementById('customShareModal');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'customShareModal';
+          modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4';
+          modal.innerHTML = `
+            <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white">Bagikan Berita</h3>
+              <p id="shareModalTitleText" class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2"></p>
+              <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                <input type="text" id="shareUrlInput" readonly class="bg-transparent text-xs text-slate-700 dark:text-slate-300 w-full outline-none select-all">
+              </div>
+              <div class="flex gap-2 pt-2">
+                <button id="copyLinkBtn" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md">Salin Link</button>
+                <button onclick="document.getElementById('customShareModal').style.display='none'" class="px-4 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs py-3 rounded-xl transition">Tutup</button>
+              </div>
+            </div>`;
+          document.body.appendChild(modal);
+          document.getElementById('copyLinkBtn').onclick = () => {
+            const input = document.getElementById('shareUrlInput');
+            input.select();
+            document.execCommand('copy');
+            alert('Tautan berhasil disalin!');
+            modal.style.display = 'none';
+          };
+          modal.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+        }
+        document.getElementById('shareModalTitleText').textContent = shareTitle;
+        document.getElementById('shareUrlInput').value = shareUrl;
+        modal.style.display = 'flex';
+      },
+
       quickShare(event, title, url) {
           event.stopPropagation();
           if (navigator.share) { navigator.share({ title: title, url: url }).catch(() => {}); }
-          else {
-              navigator.clipboard.writeText(url);
-              alert('Tautan berita berhasil disalin!');
-          }
+          else { this.currentPost = { title: { rendered: title }, link: url }; this.share(); }
       },
 
       quickToggleBookmark(event, post) {
@@ -750,17 +792,15 @@
           this.renderHome();
       },
 
-      // --- FITUR SUPABASE: KOMENTAR & LIKE REAL-TIME ---
+      // --- SUPABASE INTERAKSI REAL-TIME ---
       async loadPostInteractions(postId) {
-          // Ambil Like dari Supabase
           let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
           let count = likeData ? likeData.likes_count : 0;
           document.getElementById('likeCountText').textContent = `Suka (${count})`;
+          document.getElementById('postLikesCountStat').textContent = count;
           
-          // Ambil Komentar dari Supabase
           this.loadComments(postId);
 
-          // Pasang Realtime Listener untuk Komentar baru
           supabaseClient.channel('public:comments')
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments', filter: `post_id=eq.${postId}` }, payload => {
               this.appendCommentToDOM(payload.new);
@@ -785,7 +825,7 @@
           const container = document.getElementById('commentsList');
           container.innerHTML = `<p class="text-xs text-slate-400 italic">Memuat komentar...</p>`;
 
-          let { data: comments, error } = await supabaseClient
+          let { data: comments } = await supabaseClient
               .from('comments')
               .select('*')
               .eq('post_id', postId)
@@ -814,8 +854,7 @@
                 <span class="text-[9px] text-slate-400">${dateStr}</span>
               </div>
               <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${c.content}</p>
-            </div>
-          `;
+            </div>`;
           if(prepend) container.insertAdjacentHTML('afterbegin', commentHTML);
           else container.insertAdjacentHTML('beforeend', commentHTML);
 
@@ -829,7 +868,6 @@
 
           const author = document.getElementById('commentAuthor').value.trim();
           const content = document.getElementById('commentContent').value.trim();
-
           if (!author || !content) return;
 
           const { error } = await supabaseClient.from('comments').insert([
@@ -837,12 +875,11 @@
           ]);
 
           if (error) {
-              alert('Gagal mengirim komentar. Pastikan RLS di Supabase sudah diatur atau nonaktif.');
+              alert('Gagal mengirim komentar. Pastikan RLS di Supabase sudah dinonaktifkan.');
           } else {
               document.getElementById('commentContent').value = '';
           }
       },
-      // --- AKHIR FITUR SUPABASE ---
 
       renderHome() {
         if (!this.data.length) return;
@@ -1056,8 +1093,37 @@
           .replace(/color:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black);?/gi, '')
           .replace(/background(-color)?:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black|#f1f5f9);?/gi, '')
           .replace(/<p>/gi, '<p style="margin-bottom: 1.5rem; line-height: 1.8;">');
-        
+
+        // KOTAK BACA JUGA DI TENGAH ARTIKEL
+        const paragraphs = html.split('</p>');
+        if (paragraphs.length > 4 && this.data.length > 1) {
+          const midIndex = Math.floor(paragraphs.length / 2);
+          const randomPost = this.data.find(p => p.id !== id) || this.data[0];
+          const bacaJugaHtml = `
+            <div class="my-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border-l-4 border-brand-500 shadow-sm cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition" onclick="App.openPost(${randomPost.id})">
+              <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider mb-1 block">Baca Juga</span>
+              <h4 class="font-bold text-sm text-slate-900 dark:text-white line-clamp-2">${randomPost.title.rendered}</h4>
+            </div>`;
+          paragraphs.splice(midIndex, 0, bacaJugaHtml);
+          html = paragraphs.join('</p>');
+        }
         document.getElementById('postRenderedContent').innerHTML = html;
+
+        // BERITA TERKAIT DI BAWAH ARTIKEL
+        const relatedGrid = document.getElementById('relatedPostsGrid');
+        relatedGrid.innerHTML = '';
+        this.data.filter(p => p.id !== id).slice(0, 2).forEach(p => relatedGrid.appendChild(this.buildGridCard(p, true)));
+
+        // BERITA TERPOPULER DI SIDEBAR
+        const popularList = document.getElementById('popularPostsList');
+        popularList.innerHTML = '';
+        this.data.slice(5, 10).forEach(p => {
+          popularList.innerHTML += `
+            <div class="flex gap-3 items-center cursor-pointer group active:scale-95 transition" onclick="App.openPost(${p.id})">
+              <img src="${p._embedded?.['wp:featuredmedia']?.[0]?.source_url}" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0">
+              <h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-600 transition">${p.title.rendered}</h4>
+            </div>`;
+        });
 
         // Load Interaksi Supabase (Like & Komentar Realtime)
         this.loadPostInteractions(post.id);
