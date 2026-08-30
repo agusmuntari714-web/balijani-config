@@ -23,72 +23,73 @@
     }
   </script>
 
-  <!-- STYLING WIDGET CUACA & SPINNER MODERN -->
+  <!-- STYLING WIDGET CUACA MODERN & SPINNER -->
   <style>
-    .weather-card {
-        background: linear-gradient(135deg, #0f172a, #1e293b);
+    /* Widget Cuaca Gaya HP Modern (Glassmorphism & Clean) */
+    .weather-widget-modern {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         color: #ffffff;
-        padding: 16px;
-        border-radius: 16px;
+        padding: 18px 20px;
+        border-radius: 20px;
         margin: 16px 0;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    .weather-header {
+    .weather-top-row {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         margin-bottom: 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 8px;
     }
-    .weather-title {
-        font-size: 14px;
-        font-weight: 600;
-        color: #38bdf8;
-    }
-    .weather-refresh-btn {
-        background: #334155;
-        color: #ffffff;
-        border: none;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-size: 12px;
-        cursor: pointer;
-    }
-    .weather-refresh-btn:active {
-        background: #475569;
-    }
-    .weather-body {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .weather-left {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-    }
-    .weather-temp {
-        font-size: 28px;
+    .weather-location {
+        font-size: 15px;
         font-weight: 700;
-        line-height: 1;
+        letter-spacing: 0.3px;
+        color: #f8fafc;
     }
-    .weather-desc {
-        font-size: 14px;
-        font-weight: 600;
-        text-transform: capitalize;
-    }
-    .weather-sub {
+    .weather-datetime {
         font-size: 11px;
         color: #94a3b8;
+        font-weight: 500;
         margin-top: 2px;
     }
-    .weather-icon {
-        font-size: 32px;
+    .weather-main-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .weather-temp-box {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+    }
+    .weather-temp-val {
+        font-size: 38px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -1px;
+    }
+    .weather-condition {
+        font-size: 13px;
+        font-weight: 600;
+        color: #38bdf8;
+        margin-top: 4px;
+        text-transform: capitalize;
+    }
+    .weather-extra {
+        font-size: 11px;
+        color: #cbd5e1;
+        margin-top: 1px;
+    }
+    .weather-icon-display {
+        font-size: 42px;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
     }
 
-    /* Animasi Putar Halus untuk Pull-to-Refresh */
+    /* Animasi Spinner Pull-to-Refresh Halus */
     @keyframes smooth-spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
@@ -115,7 +116,7 @@
     </div>
   </div>
 
-  <!-- INDIKATOR PULL-TO-REFRESH MODEL BARU (DI TENGAH ATAS & HALUS) -->
+  <!-- INDIKATOR PULL-TO-REFRESH DI TENGAH ATAS -->
   <div id="pullRefreshIndicator" style="top: -60px; left: 50%; transform: translateX(-50%); position: fixed; z-index: 9999; transition: top 0.2s ease;">
       <div style="background: #ffffff; padding: 10px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
           <div id="refreshSpinnerRing" style="width: 22px; height: 22px; border: 3px solid #f1f5f9; border-top: 3px solid #dc2626; border-radius: 50%;"></div>
@@ -223,22 +224,27 @@
     <!-- HOME VIEW -->
     <section id="homeView" class="hidden view-enter space-y-6 px-4 md:px-0">
       
-      <!-- WIDGET CUACA OTOMATIS GPS -->
-      <div class="weather-card">
-          <div class="weather-header">
-              <div class="weather-title" id="w-title">📍 Cuaca di Sekitar Anda</div>
-              <button onclick="detectLocation()" class="weather-refresh-btn" title="Perbarui Lokasi">🔄</button>
+      <!-- WIDGET CUACA GAYA HP MODERN & REALTIME -->
+      <div class="weather-widget-modern">
+          <div class="weather-top-row">
+              <div>
+                  <div class="weather-location" id="w-location">Mendeteksi Wilayah...</div>
+                  <div class="weather-datetime" id="w-datetime">Memuat waktu zona lokal...</div>
+              </div>
+              <button onclick="detectUserLocation()" class="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg transition text-white" title="Perbarui Lokasi">
+                  <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+              </button>
           </div>
           
-          <div class="weather-body">
-              <div class="weather-left">
-                  <div class="weather-temp" id="w-temp">--°C</div>
-                  <div>
-                      <div class="weather-desc" id="w-desc">Mendeteksi lokasi...</div>
-                      <div class="weather-sub" id="w-sub">Memuat data cuaca...</div>
+          <div class="weather-main-row">
+              <div>
+                  <div class="weather-temp-box">
+                      <span class="weather-temp-val" id="w-temp">--°</span>
                   </div>
+                  <div class="weather-condition" id="w-desc">Mencari sinyal GPS...</div>
+                  <div class="weather-extra" id="w-sub">Kecepatan angin: -- km/j</div>
               </div>
-              <div class="weather-icon" id="w-icon">🛰️</div>
+              <div class="weather-icon-display" id="w-icon">🛰️</div>
           </div>
       </div>
 
@@ -1355,11 +1361,40 @@
     App.init();
   </script>
 
-  <!-- SCRIPT WIDGET CUACA GPS -->
+  <!-- SCRIPT WIDGET CUACA REALTIME & ZONA WAKTU OTOMATIS -->
   <script>
-    async function fetchWeatherByCoords(lat, lon, locationName = "Lokasi Anda") {
+    // Update Jam & Hari Realtime setiap detik sesuai zona waktu perangkat
+    setInterval(() => {
+        const now = new Date();
+        const optionsDate = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
+        const dateString = now.toLocaleDateString('id-ID', optionsDate);
+        const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        
+        const datetimeEl = document.getElementById('w-datetime');
+        if(datetimeEl && !datetimeEl.innerText.includes("Mencari")) {
+            // Mempertahankan nama lokasi yang sudah didapat, update jamnya saja
+            const currentText = datetimeEl.innerText.split('•')[0];
+            datetimeEl.innerText = `${currentText} • ${dateString}, ${timeString}`;
+        }
+    }, 1000);
+
+    async function fetchWeatherByCoords(lat, lon) {
         try {
-            document.getElementById('w-desc').innerText = "Memuat cuaca...";
+            document.getElementById('w-desc').innerText = "Mengambil data cuaca...";
+            
+            // Ambil Nama Wilayah secara otomatis menggunakan Reverse Geocoding API gratis
+            let locationName = "Lokasi Anda";
+            try {
+                const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10`);
+                const geoData = await geoRes.json();
+                if (geoData && geoData.address) {
+                    locationName = geoData.address.city || geoData.address.town || geoData.address.county || geoData.address.state || "Lokasi Anda";
+                }
+            } catch (err) {
+                console.log("Gagal mengambil nama wilayah, menggunakan koordinat.");
+            }
+
+            // Ambil Data Cuaca Realtime dari Open-Meteo
             const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
             const data = await response.json();
             
@@ -1368,15 +1403,21 @@
                 const windspeed = data.current_weather.windspeed;
                 const weatherCode = data.current_weather.weathercode;
                 
-                document.getElementById('w-temp').innerText = `${temp}°C`;
-                document.getElementById('w-title').innerText = `📍 ${locationName}`;
-                document.getElementById('w-sub').innerText = `Angin: ${windspeed} km/j`;
+                document.getElementById('w-location').innerText = `📍 ${locationName}`;
+                
+                const now = new Date();
+                const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' });
+                const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('w-datetime').innerText = `${dateString} • ${timeString}`;
+
+                document.getElementById('w-temp').innerText = `${temp}°`;
+                document.getElementById('w-sub').innerText = `Kecepatan angin: ${windspeed} km/j`;
                 
                 let desc = 'Cerah Berawan';
                 let icon = '⛅';
                 
                 if (weatherCode === 0) {
-                    desc = 'Cerah';
+                    desc = 'Cerah Terang';
                     icon = '☀️';
                 } else if (weatherCode >= 1 && weatherCode <= 3) {
                     desc = 'Berawan';
@@ -1393,30 +1434,32 @@
                 document.getElementById('w-icon').innerText = icon;
             }
         } catch (e) {
-            document.getElementById('w-desc').innerText = 'Gagal memuat data cuaca';
+            document.getElementById('w-desc').innerText = 'Gagal memuat cuaca';
         }
     }
 
-    function detectLocation() {
+    function detectUserLocation() {
         if (navigator.geolocation) {
-            document.getElementById('w-desc').innerText = "Mencari sinyal GPS...";
+            document.getElementById('w-desc').innerText = "Mendeteksi posisi GPS...";
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
-                    fetchWeatherByCoords(lat, lon, "Posisi Terkini");
+                    fetchWeatherByCoords(lat, lon);
                 },
                 (error) => {
-                    fetchWeatherByCoords(-8.6705, 115.2126, "Bali (Default)");
+                    document.getElementById('w-desc').innerText = "Izin lokasi ditolak / GPS mati";
+                    document.getElementById('w-location').innerText = "Aktifkan GPS Perangkat";
                 },
                 { timeout: 10000, maximumAge: 60000 }
             );
         } else {
-            fetchWeatherByCoords(-8.6705, 115.2126, "Bali");
+            document.getElementById('w-desc').innerText = "GPS tidak didukung perangkat";
         }
     }
 
-    detectLocation();
+    // Jalankan deteksi GPS otomatis saat aplikasi dibuka
+    detectUserLocation();
   </script>
 
 </body>
