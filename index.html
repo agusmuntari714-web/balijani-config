@@ -24,7 +24,7 @@
     }
   </script>
 
-  <!-- STYLING WIDGET CUACA & BERSIHKAN GARIS ARTIKEL -->
+  <!-- STYLING WIDGET CUACA & PERBAIKAN ARTIKEL / GAMBAR -->
   <style>
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -39,6 +39,15 @@
     }
     .article-body hr {
         display: none !important;
+    }
+
+    /* Membatasi gambar di dalam artikel agar tidak keluar jalur / meluber */
+    .article-body img {
+        max-width: 100% !important;
+        height: auto !important;
+        border-radius: 12px;
+        margin: 1rem auto;
+        display: block;
     }
 
     .weather-card {
@@ -399,7 +408,7 @@
           </div>
         </div>
 
-        <!-- ISI ARTIKEL BERSIH TANPA GARIS PENGGANGGU -->
+        <!-- ISI ARTIKEL BERSIH TANPA GARIS DAN GAMBAR RESPONSIF -->
         <div id="postRenderedContent" class="article-body px-5 pt-4 text-[17px] text-slate-800 dark:text-slate-200 leading-relaxed"></div>
 
         <div class="px-5 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
@@ -1193,12 +1202,11 @@
         document.getElementById('postFeaturedImg').src = imgUrl || '';
         document.getElementById('postImageWrapper').style.display = imgUrl ? 'block' : 'none';
 
-        // Membersihkan teks HTML artikel dari inline styles/garis bawaan WordPress agar rapi
         let html = post.content.rendered
           .replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '')
           .replace(/color:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black);?/gi, '')
           .replace(/background(-color)?:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black|#f1f5f9);?/gi, '')
-          .replace(/border(-top|-bottom|-left|-right)?[^;]+;/gi, ''); // Menghilangkan inline border/garis tak diinginkan
+          .replace(/border(-top|-bottom|-left|-right)?[^;]+;/gi, '');
 
         const paragraphs = html.split('</p>');
         if (paragraphs.length > 4 && this.data.length > 1) {
