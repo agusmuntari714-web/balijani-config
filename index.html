@@ -23,7 +23,7 @@
     }
   </script>
 
-  <!-- CSS STYLING UNTUK WIDGET CUACA -->
+  <!-- STYLING WIDGET CUACA & SPINNER MODERN -->
   <style>
     .weather-card {
         background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -87,6 +87,15 @@
     .weather-icon {
         font-size: 32px;
     }
+
+    /* Animasi Putar Halus untuk Pull-to-Refresh */
+    @keyframes smooth-spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .custom-spinning {
+        animation: smooth-spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
+    }
   </style>
 </head>
 
@@ -106,10 +115,11 @@
     </div>
   </div>
 
-  <div id="pullRefreshIndicator" style="top: -100px;">
-    <svg id="refreshIconSvg" class="w-6 h-6 text-brand-600 transition-transform duration-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-    </svg>
+  <!-- INDIKATOR PULL-TO-REFRESH MODEL BARU (DI TENGAH ATAS & HALUS) -->
+  <div id="pullRefreshIndicator" style="top: -60px; left: 50%; transform: translateX(-50%); position: fixed; z-index: 9999; transition: top 0.2s ease;">
+      <div style="background: #ffffff; padding: 10px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+          <div id="refreshSpinnerRing" style="width: 22px; height: 22px; border: 3px solid #f1f5f9; border-top: 3px solid #dc2626; border-radius: 50%;"></div>
+      </div>
   </div>
 
   <!-- HEADER UTAMA -->
@@ -210,7 +220,7 @@
       </div>
     </div>
 
-    <!-- HOME VIEW (WIDGET CUACA DILETAKKAN DI SINI DENGAN RAPI) -->
+    <!-- HOME VIEW -->
     <section id="homeView" class="hidden view-enter space-y-6 px-4 md:px-0">
       
       <!-- WIDGET CUACA OTOMATIS GPS -->
@@ -807,7 +817,7 @@
       initPullToRefresh() {
         let touchstartY = 0;
         const indicator = document.getElementById('pullRefreshIndicator');
-        const iconSvg = document.getElementById('refreshIconSvg');
+        const spinnerRing = document.getElementById('refreshSpinnerRing');
 
         window.addEventListener('touchstart', e => {
           if (window.scrollY === 0) {
@@ -820,8 +830,8 @@
             const currentY = e.touches[0].clientY;
             const diff = currentY - touchstartY;
             if (diff > 0 && diff < 150) {
-              indicator.style.top = `${diff - 60}px`; 
-              iconSvg.style.transform = `rotate(${diff * 2}deg)`;
+              indicator.style.top = `${diff - 50}px`; 
+              spinnerRing.style.transform = `rotate(${diff * 3}deg)`;
             }
           }
         }, {passive: true});
@@ -830,8 +840,8 @@
           if (window.scrollY === 0 && touchstartY > 0) {
             const diff = e.changedTouches[0].clientY - touchstartY;
             if (diff > 90) {
-              indicator.style.top = `max(env(safe-area-inset-top), 24px)`; 
-              iconSvg.classList.add('animate-spin');
+              indicator.style.top = `max(env(safe-area-inset-top), 20px)`; 
+              spinnerRing.classList.add('custom-spinning');
               if('vibrate' in navigator) navigator.vibrate(50);
               
               document.getElementById('loadingView').classList.remove('hidden');
@@ -842,11 +852,11 @@
               await this.loadData();
               
               setTimeout(() => {
-                indicator.style.top = `-100px`;
-                iconSvg.classList.remove('animate-spin');
+                indicator.style.top = `-60px`;
+                spinnerRing.classList.remove('custom-spinning');
               }, 500);
             } else {
-              indicator.style.top = `-100px`; 
+              indicator.style.top = `-60px`; 
             }
           }
           touchstartY = 0;
@@ -1345,7 +1355,7 @@
     App.init();
   </script>
 
-  <!-- SCRIPT LOGIKA WIDGET CUACA GPS -->
+  <!-- SCRIPT WIDGET CUACA GPS -->
   <script>
     async function fetchWeatherByCoords(lat, lon, locationName = "Lokasi Anda") {
         try {
