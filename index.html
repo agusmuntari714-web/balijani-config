@@ -657,32 +657,32 @@
       },
 
       async loginWithGoogle() {
-          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.origin + window.location.pathname;
-          
-          const { error } = await supabaseClient.auth.signInWithOAuth({
+          const { data, error } = await supabaseClient.auth.signInWithOAuth({
               provider: 'google',
               options: { 
-                  redirectTo: redirectUrl
+                  redirectTo: 'https://balijani.id'
               }
           });
 
           if (error) {
               alert('Gagal login Google: ' + error.message);
+          } else if (data?.url) {
+              window.location.href = data.url;
           }
       },
 
       async loginWithFacebook() {
-          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.origin + window.location.pathname;
-          
-          const { error } = await supabaseClient.auth.signInWithOAuth({
+          const { data, error } = await supabaseClient.auth.signInWithOAuth({
               provider: 'facebook',
               options: { 
-                  redirectTo: redirectUrl
+                  redirectTo: 'https://balijani.id'
               }
           });
 
           if (error) {
               alert('Gagal login Facebook: ' + error.message);
+          } else if (data?.url) {
+              window.location.href = data.url;
           }
       },
 
