@@ -359,7 +359,7 @@
         </div>
       </div>
 
-      <!-- MODEL 1: SOROTAN UTAMA (3 KOLOM VERTIKAL DENGAN TOMBOL SHARE & FAVORIT) -->
+      <!-- MODEL 1: SOROTAN UTAMA (3 KOLOM VERTIKAL) -->
       <div>
         <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
           <span class="w-1.5 h-5 bg-brand-600 rounded-full"></span> Sorotan Utama
@@ -367,7 +367,7 @@
         <div id="threeColGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
       </div>
 
-      <!-- MODEL 2: KABAR TERBARU (GAYA MAJALAH 2 KOLOM SEPERTI GAMBAR DENGAN TOMBOL SHARE & FAVORIT) -->
+      <!-- MODEL 2: KABAR TERBARU (GAYA MAJALAH 2 KOLOM) -->
       <div>
         <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
           <span class="w-1.5 h-5 bg-amber-500 rounded-full"></span> Kabar Terbaru
@@ -375,7 +375,7 @@
         <div id="magazineGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
       </div>
 
-      <!-- MODEL 3: KILAS WARTA LAINNYA (SLIDE KECIL HORIZONTAL KE SAMPING) -->
+      <!-- MODEL 3: KILAS WARTA LAINNYA (SLIDE KECIL HORIZONTAL) -->
       <div>
         <div class="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
           <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -1061,15 +1061,61 @@
         }, 300);
       },
 
+      // FUNGSI POP-UP SHARE SEPERTI DI HP
       quickShare(event, title, url) {
           event.stopPropagation();
           if('vibrate' in navigator) navigator.vibrate(20);
+
+          if (typeof AndroidBridge !== "undefined") {
+              AndroidBridge.bagikanBerita(title, url);
+              return;
+          }
+
           if (navigator.share) {
               navigator.share({ title: title, url: url }).catch(() => {});
-          } else {
-              navigator.clipboard.writeText(url);
-              alert('Tautan berita berhasil disalin!');
+              return;
           }
+
+          let modal = document.getElementById('customShareModal');
+          if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'customShareModal';
+            modal.className = 'fixed inset-0 z-[130] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4';
+            modal.innerHTML = `
+              <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="share-2" class="w-4 h-4 text-brand-600"></i> Bagikan Berita</h3>
+                  <button onclick="document.getElementById('customShareModal').style.display='none'" class="p-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <p id="shareModalTitle" class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 font-medium"></p>
+                <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                  <input type="text" id="shareUrlInput" readonly class="bg-transparent text-xs text-slate-700 dark:text-slate-300 w-full outline-none select-all">
+                </div>
+                <div class="flex gap-2 pt-1">
+                  <button id="copyLinkBtn" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-1.5"><i data-lucide="copy" class="w-4 h-4"></i> Salin Tautan</button>
+                </div>
+              </div>
+            `;
+            document.body.appendChild(modal);
+            lucide.createIcons();
+
+            document.getElementById('copyLinkBtn').onclick = () => {
+              const input = document.getElementById('shareUrlInput');
+              input.select();
+              document.execCommand('copy');
+              alert('Tautan berhasil disalin ke clipboard!');
+              modal.style.display = 'none';
+            };
+            
+            modal.onclick = (e) => {
+              if (e.target === modal) modal.style.display = 'none';
+            };
+          }
+          
+          document.getElementById('shareModalTitle').textContent = title;
+          document.getElementById('shareUrlInput').value = url;
+          modal.style.display = 'flex';
+          lucide.createIcons();
       },
 
       quickToggleBookmark(event, post) {
@@ -1124,7 +1170,7 @@
             threeColGrid.appendChild(this.buildStandardGridCard(p));
         });
 
-        // 4. Kabar Terbaru (Gaya Majalah 2 Kolom seperti gambar kiriman Anda)
+        // 4. Kabar Terbaru (Gaya Majalah 2 Kolom)
         const magazineGrid = document.getElementById('magazineGrid');
         magazineGrid.innerHTML = '';
         const magazineData = this.data.slice(12, 18);
@@ -1190,7 +1236,7 @@
             </div>
           </div>
           <div class="px-4 pb-4 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 dark:border-slate-800/60 pt-3">
-            <span class="font-medium">${author}</span>
+            <span class="font-medium">Editor : ${author}</span>
             <div class="flex items-center gap-2">
               <button onclick="App.quickToggleBookmark(event, ${JSON.stringify(post).replace(/"/g, '&quot;')})" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}" title="Simpan">
                 <svg class="w-4 h-4 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
@@ -1204,7 +1250,7 @@
         return el;
       },
 
-      // Card Model Majalah 2 Kolom (Persis seperti gambar kiriman)
+      // Card Model Majalah 2 Kolom (Sesuai Gambar Kiriman)
       buildMagazineCard(post) {
         const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
         const author = this.getAuthorName(post);
