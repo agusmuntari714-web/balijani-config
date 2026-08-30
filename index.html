@@ -107,6 +107,10 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .snackbar.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* Fix Animasi Spinner Pull To Refresh */
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .is-spinning-indicator { animation: spin 0.8s linear infinite; }
   </style>
 </head>
 
@@ -652,7 +656,11 @@
                 this.navigate('home', '', true);
             }
         });
-        history.replaceState({ view: 'home', query: '' }, '', window.location.pathname);
+
+        // [FIX] Cek apakah sedang membuka artikel langsung via URL (deep link)
+        if (!window.location.hash.startsWith('#post-')) {
+            history.replaceState({ view: 'home', query: '' }, '', window.location.pathname);
+        }
 
         await this.fetchRemoteConfig();
         this.initPullToRefresh();
@@ -800,7 +808,19 @@
           }
           this.renderHome();
           document.getElementById('loadingView').classList.add('hidden');
-          this.navigate('home', '', true);
+          
+          // [FIX] Jika buka via link langsung (deep link) atau sedang refresh di halaman artikel, tetap di halaman artikel.
+          if (window.location.hash.startsWith('#post-')) {
+              const postId = parseInt(window.location.hash.replace('#post-', ''));
+              if (postId) {
+                  history.replaceState({ view: 'single', id: postId }, '', '#post-' + postId);
+                  this.openPost(postId, true);
+              } else {
+                  this.navigate('home', '', true);
+              }
+          } else {
+              this.navigate('home', '', true);
+          }
         } catch (e) {
           document.getElementById('loadingView').innerHTML = `<p class="text-rose-500 py-10 text-center font-bold">Gagal terhubung ke Server Warta Balijani.</p>`;
         }
@@ -830,12 +850,18 @@
       initPullToRefresh() {
         let touchstartY = 0;
         const indicator = document.getElementById('pullRefreshIndicator');
+        const ring = document.getElementById('refreshSpinnerRing'); // [FIX] Ambil element spinner
+        
         window.addEventListener('touchstart', e => { if (window.scrollY === 0) touchstartY = e.touches[0].clientY; }, {passive: true});
         window.addEventListener('touchend', async e => {
           if (window.scrollY === 0 && touchstartY > 0 && e.changedTouches[0].clientY - touchstartY > 90) {
             indicator.style.top = `20px`;
+            ring.classList.add('is-spinning-indicator'); // [FIX] Mulai animasi putar
             await this.loadData();
-            setTimeout(() => { indicator.style.top = `-60px`; }, 500);
+            setTimeout(() => { 
+                indicator.style.top = `-60px`; 
+                ring.classList.remove('is-spinning-indicator'); // [FIX] Hentikan animasi putar
+            }, 500);
           }
           touchstartY = 0;
         }, {passive: true});
@@ -972,7 +998,6 @@
           this.updateLikeUI(postId, count);
           this.loadComments(postId);
 
-          // [FIX] Hanya unsubscribe channel yang spesifik untuk komentar ini
           if (this.activeCommentChannel) supabaseClient.removeChannel(this.activeCommentChannel);
 
           this.activeCommentChannel = supabaseClient.channel('comments_realtime_' + postId)
