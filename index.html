@@ -29,7 +29,6 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
-    /* Memastikan paragraf artikel bersih, rapi, tanpa garis tak diinginkan */
     .article-body p {
         margin-bottom: 1.5rem;
         line-height: 1.8;
@@ -41,7 +40,6 @@
         display: none !important;
     }
 
-    /* Membatasi gambar di dalam artikel agar tidak keluar jalur / meluber */
     .article-body img, .article-body figure img {
         max-width: 100% !important;
         height: auto !important;
@@ -435,7 +433,7 @@
               <i data-lucide="message-square" class="w-4 h-4 text-brand-600"></i> Kolom Komentar Publik (<span id="commentCount">0</span>)
             </h3>
             
-            <!-- TOMBOL LOGIN GOOGLE & FACEBOOK (Muncul jika belum login) -->
+            <!-- TOMBOL LOGIN GOOGLE & FACEBOOK -->
             <div id="oauthLoginContainer" class="hidden mb-6 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 text-center shadow-sm">
                 <p class="text-xs font-medium text-slate-600 dark:text-slate-300 mb-3">Silakan masuk menggunakan akun sosial media untuk menulis komentar:</p>
                 <div class="flex flex-wrap gap-2.5 justify-center items-center">
@@ -452,7 +450,7 @@
                 </div>
             </div>
 
-            <!-- FORM KOMENTAR (Hanya muncul jika sudah login) -->
+            <!-- FORM KOMENTAR -->
             <div id="commentFormContainer" class="hidden space-y-3 mb-6">
               <div class="flex items-center justify-between bg-white dark:bg-slate-900 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
                   <span id="loggedInUserText" class="font-bold text-slate-700 dark:text-slate-300">Masuk sebagai...</span>
@@ -659,50 +657,32 @@
       },
 
       async loginWithGoogle() {
-          const redirectUrl = 'https://balijani.id';
+          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.origin + window.location.pathname;
           
-          const { data, error } = await supabaseClient.auth.signInWithOAuth({
+          const { error } = await supabaseClient.auth.signInWithOAuth({
               provider: 'google',
               options: { 
-                  redirectTo: redirectUrl,
-                  skipBrowserRedirect: true
+                  redirectTo: redirectUrl
               }
           });
 
           if (error) {
               alert('Gagal login Google: ' + error.message);
-              return;
-          }
-          if (data?.url) {
-              this.openExternalAuth(data.url);
           }
       },
 
       async loginWithFacebook() {
-          const redirectUrl = 'https://balijani.id';
+          const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.origin + window.location.pathname;
           
-          const { data, error } = await supabaseClient.auth.signInWithOAuth({
+          const { error } = await supabaseClient.auth.signInWithOAuth({
               provider: 'facebook',
               options: { 
-                  redirectTo: redirectUrl,
-                  skipBrowserRedirect: true
+                  redirectTo: redirectUrl
               }
           });
 
           if (error) {
               alert('Gagal login Facebook: ' + error.message);
-              return;
-          }
-          if (data?.url) {
-              this.openExternalAuth(data.url);
-          }
-      },
-
-      openExternalAuth(url) {
-          if (typeof AndroidBridge !== "undefined" && AndroidBridge.bukaBrowser) {
-              AndroidBridge.bukaBrowser(url);
-          } else {
-              window.open(url, '_system') || (window.location.href = url);
           }
       },
 
