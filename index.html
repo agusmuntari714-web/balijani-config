@@ -23,7 +23,7 @@
     }
   </script>
 
-  <!-- STYLING WIDGET CUACA & POP-UP DETAIL -->
+  <!-- STYLING WIDGET CUACA & VARIASI CARD BERITA -->
   <style>
     .weather-card {
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
@@ -70,7 +70,6 @@
         filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
     }
     
-    /* Tombol Refresh Bulat Modern di Widget */
     .weather-refresh-btn {
         background: rgba(255, 255, 255, 0.15);
         border: 1px solid rgba(255, 255, 255, 0.2);
@@ -93,7 +92,6 @@
         animation: smooth-spin 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
-    /* Animasi Spinner Pull-to-Refresh Halus */
     @keyframes smooth-spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
@@ -120,7 +118,7 @@
     </div>
   </div>
 
-  <!-- MODAL DETAIL CUACA LENGKAP -->
+  <!-- MODAL DETAIL CUACA -->
   <div id="weatherModal" class="hidden fixed inset-0 z-[200] bg-black/60 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 transition-all duration-300">
       <div class="bg-slate-900 text-white w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl border border-slate-800 max-h-[85vh] overflow-y-auto transform transition-transform duration-300">
           <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
@@ -278,7 +276,7 @@
       </div>
     </div>
 
-    <!-- HOME VIEW -->
+    <!-- HOME VIEW (TAMPILAN DEPAN DENGAN CARD BERVARIASI 3 JAJAR) -->
     <section id="homeView" class="hidden view-enter space-y-6 px-4 md:px-0">
       
       <!-- WIDGET CUACA -->
@@ -298,19 +296,7 @@
           </div>
       </div>
 
-      <div id="dynamicAdBannerContainer" class="hidden">
-        <a id="dynamicAdLink" href="#" target="_blank" class="block relative rounded-2xl overflow-hidden shadow-md group border border-slate-200 dark:border-slate-800 aspect-[21/9] md:aspect-[3/1]">
-          <img id="dynamicAdImage" src="" alt="Iklan Sponsor" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-          <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Ad / Sponsor</div>
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent flex items-end p-4">
-            <div>
-              <span id="dynamicAdTag" class="text-[10px] font-bold uppercase tracking-wider text-brand-400">Eksklusif</span>
-              <h3 id="dynamicAdTitle" class="text-sm md:text-lg font-bold text-white drop-shadow"></h3>
-            </div>
-          </div>
-        </a>
-      </div>
-
+      <!-- HERO UTAMA -->
       <div class="space-y-4">
         <div id="mainHeroCard" class="cursor-pointer relative rounded-2xl overflow-hidden bg-slate-900 shadow-lg aspect-square md:aspect-[21/9] flex items-end"></div>
         <div>
@@ -321,6 +307,7 @@
         </div>
       </div>
 
+      <!-- EKSPLORASI BALI -->
       <div id="adsBlock" class="bg-slate-100 dark:bg-slate-800/40 rounded-2xl p-4 md:p-6 border border-slate-200 dark:border-slate-800">
         <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 mb-4">
           <i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali
@@ -365,11 +352,12 @@
         </div>
       </div>
 
+      <!-- KABAR TERKINI DENGAN GRID 3 JAJAR VARIATIF -->
       <div>
         <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
           <span class="w-1.5 h-5 bg-brand-600 rounded-full"></span> Kabar Terkini
         </h2>
-        <div id="homeGridFeed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <div id="homeGridFeed" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
       </div>
     </section>
 
@@ -441,7 +429,7 @@
             </button>
           </div>
 
-          <!-- KOTAK SOSIAL MEDIA (KONTRAS & ADAPTIF TERHADAP LIGHT/DARK MODE) -->
+          <!-- KOTAK SOSIAL MEDIA -->
           <div class="mb-10 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-slate-300 dark:border-slate-700 text-center">
             <h3 class="font-bold text-slate-900 dark:text-white mb-2">Ikuti Sosial Media Kami</h3>
             <p id="newsletterCtaText" class="text-xs text-slate-600 dark:text-slate-400 mb-5">Dapatkan isu eksklusif Bali langsung ke inbox Anda.</p>
@@ -1046,13 +1034,16 @@
         }, 300);
       },
 
+      // RENDER HOME DENGAN TAMPILAN CARD VARIATIF (3 JAJAR)
       renderHome() {
         if (!this.data.length) return;
         
+        // Hero Utama
         const hero = this.data[0];
         document.getElementById('mainHeroCard').innerHTML = this.buildHeroHTML(hero);
         document.getElementById('mainHeroCard').onclick = () => this.openPost(hero.id);
 
+        // Carousel Berita Pilihan
         const carouselData = this.data.slice(1, 6);
         const track = document.getElementById('carouselTrack');
         const dots = document.getElementById('carouselDots');
@@ -1064,9 +1055,22 @@
         });
         this.startCarousel();
 
+        // Kabar Terkini - Grid Variatif 3 Kolom (Jajar)
         const grid = document.getElementById('homeGridFeed');
         grid.innerHTML = '';
-        this.data.slice(6, 18).forEach(p => grid.appendChild(this.buildGridCard(p, false)));
+        
+        const feedData = this.data.slice(6, 21);
+        feedData.forEach((p, index) => {
+            // Pola variasi ukuran card setiap 5 berita
+            let cardType = 'standard'; // default
+            const mod = index % 5;
+            if (mod === 0) cardType = 'featured-tall'; // Card tinggi / besar
+            else if (mod === 1 || mod === 2) cardType = 'standard'; // Card standar 3 jajar
+            else cardType = 'horizontal-compact'; // Card melebar ke samping
+
+            grid.appendChild(this.buildVariedGridCard(p, cardType));
+        });
+
         lucide.createIcons();
       },
 
@@ -1093,6 +1097,69 @@
             </div>
           </div>
         `;
+      },
+
+      // PEMBUATAN CARD BERITA DENGAN BERBAGAI UKURAN & BENTUK (VARIATIF)
+      buildVariedGridCard(post, type) {
+        const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
+        const author = this.getAuthorName(post);
+        const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
+        const dateObj = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+
+        const el = document.createElement('article');
+        el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col active:scale-[0.98] transition-all";
+        el.onclick = () => this.openPost(post.id);
+
+        if (type === 'featured-tall') {
+            // Card besar/tinggi yang memakan 2 kolom di layar tablet/desktop jika diperlukan, atau tampil menonjol
+            el.className += " md:col-span-2 md:flex-row bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800/80";
+            el.innerHTML = `
+              <div class="w-full md:w-1/2 aspect-video md:aspect-auto overflow-hidden bg-slate-100">
+                <img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              </div>
+              <div class="p-4 md:p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <span class="text-[9px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/30 px-2 py-0.5 rounded mb-2 inline-block">${cat}</span>
+                  <h3 class="text-base md:text-lg font-bold font-serif text-slate-900 dark:text-white line-clamp-3 leading-snug mb-3 group-hover:text-brand-600 transition">${post.title.rendered}</h3>
+                </div>
+                <div class="flex items-center justify-between text-[10px] text-slate-500 pt-3 border-t border-slate-100 dark:border-slate-800">
+                  <span class="font-bold">${author}</span>
+                  <span>${dateObj}</span>
+                </div>
+              </div>
+            `;
+        } else if (type === 'horizontal-compact') {
+            // Card model menyamping (compact)
+            el.className += " flex-row items-center p-3 gap-3";
+            el.innerHTML = `
+              <div class="w-24 h-24 rounded-xl overflow-hidden bg-slate-100 shrink-0">
+                <img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              </div>
+              <div class="flex-1 flex flex-col justify-center">
+                <span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider mb-1">${cat}</span>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug mb-1 group-hover:text-brand-600 transition">${post.title.rendered}</h3>
+                <span class="text-[9px] text-slate-400">${dateObj}</span>
+              </div>
+            `;
+        } else {
+            // Card Standar Vertikal (3 Jajar Rapi)
+            el.innerHTML = `
+              <div class="w-full aspect-video overflow-hidden bg-slate-100">
+                <img src="${img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              </div>
+              <div class="p-4 flex-1 flex flex-col justify-between">
+                <div>
+                  <span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider mb-1 block">${cat}</span>
+                  <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug mb-3 group-hover:text-brand-600 transition">${post.title.rendered}</h3>
+                </div>
+                <div class="flex items-center justify-between text-[10px] text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800/60">
+                  <span class="font-medium">${author}</span>
+                  <span>${dateObj}</span>
+                </div>
+              </div>
+            `;
+        }
+        return el;
       },
 
       buildGridCard(post, isGallery) {
@@ -1238,7 +1305,6 @@
         document.getElementById('postFeaturedImg').src = imgUrl || '';
         document.getElementById('postImageWrapper').style.display = imgUrl ? 'block' : 'none';
 
-        // Membersihkan format bawaan dan memberikan spasi ke bawah (margin-bottom) agar antar paragraf rapi
         let html = post.content.rendered
           .replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '')
           .replace(/color:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black);?/gi, '')
