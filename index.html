@@ -24,10 +24,23 @@
     }
   </script>
 
-  <!-- STYLING WIDGET CUACA & SCROLLBAR HALUS -->
+  <!-- STYLING WIDGET CUACA & BERSIHKAN GARIS ARTIKEL -->
   <style>
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* Memastikan paragraf artikel bersih, rapi, tanpa garis tak diinginkan */
+    .article-body p {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+    .article-body hr {
+        display: none !important;
+    }
+
     .weather-card {
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
         color: #ffffff; padding: 16px 20px; border-radius: 20px;
@@ -51,7 +64,6 @@
     .weather-refresh-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.9); }
     .weather-refresh-btn.is-spinning svg { animation: smooth-spin 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
     @keyframes smooth-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .custom-spinning { animation: smooth-spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite !important; }
   </style>
 </head>
 
@@ -387,6 +399,7 @@
           </div>
         </div>
 
+        <!-- ISI ARTIKEL BERSIH TANPA GARIS PENGGANGGU -->
         <div id="postRenderedContent" class="article-body px-5 pt-4 text-[17px] text-slate-800 dark:text-slate-200 leading-relaxed"></div>
 
         <div class="px-5 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
@@ -580,14 +593,12 @@
         await this.loadData();
         this.startNotificationPolling();
 
-        // Inisialisasi & Pantau Sesi Auth Supabase
         this.checkAuthSession();
         supabaseClient.auth.onAuthStateChange((event, session) => {
             this.updateAuthUI(session);
         });
       },
 
-      // --- AUTENTIKASI OAUTH GOOGLE & FACEBOOK ---
       async checkAuthSession() {
           const { data: { session } } = await supabaseClient.auth.getSession();
           this.updateAuthUI(session);
@@ -627,7 +638,6 @@
           await supabaseClient.auth.signOut();
           this.updateAuthUI(null);
       },
-      // --- AKHIR OAUTH ---
 
       startNotificationPolling() {
         setInterval(() => { this.checkNewPosts(); }, 20000); 
@@ -853,7 +863,6 @@
           else { this.currentPost = { title: { rendered: title }, link: url }; this.share(); }
       },
 
-      // --- SUPABASE INTERAKSI REAL-TIME ---
       async loadPostInteractions(postId) {
           let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
           let count = likeData ? likeData.likes_count : 0;
@@ -976,7 +985,6 @@
               document.getElementById('commentContent').value = '';
           }
       },
-      // --- AKHIR INTERAKSI SUPABASE ---
 
       renderHome() {
         if (!this.data.length) return;
@@ -1185,11 +1193,12 @@
         document.getElementById('postFeaturedImg').src = imgUrl || '';
         document.getElementById('postImageWrapper').style.display = imgUrl ? 'block' : 'none';
 
+        // Membersihkan teks HTML artikel dari inline styles/garis bawaan WordPress agar rapi
         let html = post.content.rendered
           .replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '')
           .replace(/color:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black);?/gi, '')
           .replace(/background(-color)?:\s*(#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|white|black|#f1f5f9);?/gi, '')
-          .replace(/<p>/gi, '<p style="margin-bottom: 1.5rem; line-height: 1.8;">');
+          .replace(/border(-top|-bottom|-left|-right)?[^;]+;/gi, ''); // Menghilangkan inline border/garis tak diinginkan
 
         const paragraphs = html.split('</p>');
         if (paragraphs.length > 4 && this.data.length > 1) {
