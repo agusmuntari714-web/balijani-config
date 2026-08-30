@@ -1074,7 +1074,7 @@
             <span class="font-medium">Editor : ${author}</span>
             <div class="flex items-center gap-2">
               <button onclick="App.quickToggleBookmark(event, ${JSON.stringify(post).replace(/"/g, '&quot;')})" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-4 h-4 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button>
-              <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
+              <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\'")}', '${post.link}')" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
             </div>
           </div>`;
         return el;
@@ -1099,7 +1099,7 @@
             <span>Warta Bali</span>
             <div class="flex items-center gap-2">
               <button onclick="App.quickToggleBookmark(event, ${JSON.stringify(post).replace(/"/g, '&quot;')})" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-4 h-4 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button>
-              <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
+              <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\'")}', '${post.link}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
             </div>
           </div>`;
         return el;
@@ -1124,7 +1124,7 @@
               <span class="text-[9px] text-slate-400">${dateObj}</span>
               <div class="flex items-center gap-1">
                 <button onclick="App.quickToggleBookmark(event, ${JSON.stringify(post).replace(/"/g, '&quot;')})" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-3.5 h-3.5 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button>
-                <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
+                <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\'")}', '${post.link}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
               </div>
             </div>
           </div>`;
@@ -1180,13 +1180,27 @@
           document.getElementById('categoryView').classList.remove('hidden');
           let filtered = this.data;
           if (query !== 'all') {
-            const q = query.toLowerCase();
-            filtered = this.data.filter(p => p.title.rendered.toLowerCase().includes(q) || p.content.rendered.toLowerCase().includes(q));
+            const q = query.toLowerCase().trim();
+            filtered = this.data.filter(p => {
+              // Periksa nama kategori dari WordPress term taxonomy
+              const categoryNames = (p._embedded?.['wp:term']?.[0] || []).map(t => t.name.toLowerCase());
+              const matchesCategory = categoryNames.some(cat => cat.includes(q) || q.includes(cat));
+              
+              // Periksa kecocokan judul dan konten
+              const matchesContent = p.title.rendered.toLowerCase().includes(q) || p.content.rendered.toLowerCase().includes(q);
+              
+              return matchesCategory || matchesContent;
+            });
           }
           document.getElementById('categoryViewTitle').textContent = query === 'all' ? 'Semua Berita' : query;
           const grid = document.getElementById('archiveGridContainer');
           grid.innerHTML = '';
-          filtered.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
+
+          if (filtered.length === 0) {
+            grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400"><p class="text-sm font-medium">Belum ada warta untuk kategori "${query}".</p></div>`;
+          } else {
+            filtered.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
+          }
         } 
         else if (view === 'single') document.getElementById('singlePostView').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'instant' });
