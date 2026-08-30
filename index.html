@@ -728,7 +728,6 @@
         setTimeout(() => webView.classList.add('hidden'), 300);
       },
 
-      // FUNGSI SHARE POPUP LENGKAP SEPERTI DI HP
       share() {
         if (!this.currentPost) return;
         if('vibrate' in navigator) navigator.vibrate(20);
@@ -783,16 +782,7 @@
           else { this.currentPost = { title: { rendered: title }, link: url }; this.share(); }
       },
 
-      quickToggleBookmark(event, post) {
-          event.stopPropagation();
-          const index = this.savedArticles.findIndex(p => p.id === post.id);
-          if (index > -1) this.savedArticles.splice(index, 1);
-          else this.savedArticles.unshift(post);
-          localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
-          this.renderHome();
-      },
-
-      // --- SUPABASE INTERAKSI REAL-TIME ---
+      // --- SUPABASE INTERAKSI REAL-TIME TANPA ALERT ---
       async loadPostInteractions(postId) {
           let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
           let count = likeData ? likeData.likes_count : 0;
@@ -818,7 +808,38 @@
           await supabaseClient.from('post_likes').upsert({ post_id: postId, likes_count: newLikes });
           document.getElementById('likeCountText').textContent = `Suka (${newLikes})`;
           document.getElementById('postLikesCountStat').textContent = newLikes;
-          alert('Terima kasih, Anda menyukai berita ini!');
+          // Pop-up alert dihapus agar tidak mengganggu
+      },
+
+      async toggleBookmark() {
+          if (!this.currentPost) return;
+          const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
+          if (isSaved) {
+              this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id);
+          } else {
+              this.savedArticles.unshift(this.currentPost);
+          }
+          localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
+          
+          // Ubah tampilan tombol simpan secara instan tanpa alert
+          const bookmarkText = document.getElementById('bookmarkText');
+          const bookmarkIcon = document.getElementById('bookmarkIcon');
+          if (isSaved) {
+              bookmarkText.textContent = "Simpan";
+              bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500');
+          } else {
+              bookmarkText.textContent = "Tersimpan";
+              bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500');
+          }
+      },
+
+      quickToggleBookmark(event, post) {
+          event.stopPropagation();
+          const index = this.savedArticles.findIndex(p => p.id === post.id);
+          if (index > -1) this.savedArticles.splice(index, 1);
+          else this.savedArticles.unshift(post);
+          localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
+          this.renderHome();
       },
 
       async loadComments(postId) {
@@ -875,11 +896,12 @@
           ]);
 
           if (error) {
-              alert('Gagal mengirim komentar. Pastikan RLS di Supabase sudah dinonaktifkan.');
+              alert('Gagal mengirim komentar.');
           } else {
               document.getElementById('commentContent').value = '';
           }
       },
+      // --- AKHIR INTERAKSI SUPABASE ---
 
       renderHome() {
         if (!this.data.length) return;
@@ -1128,18 +1150,21 @@
         // Load Interaksi Supabase (Like & Komentar Realtime)
         this.loadPostInteractions(post.id);
 
+        // Update UI Tombol Bookmark sesuai status simpan
+        const isSaved = this.savedArticles.some(p => p.id === post.id);
+        const bookmarkText = document.getElementById('bookmarkText');
+        const bookmarkIcon = document.getElementById('bookmarkIcon');
+        if (isSaved) {
+            bookmarkText.textContent = "Tersimpan";
+            bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500');
+        } else {
+            bookmarkText.textContent = "Simpan";
+            bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500');
+        }
+
         if (!fromPopState) history.pushState({ view: 'single', id: id }, '', '#post-' + id);
         this.navigate('single', '', true);
         lucide.createIcons();
-      },
-
-      toggleBookmark() {
-        if (!this.currentPost) return;
-        const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
-        if (isSaved) this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id);
-        else this.savedArticles.unshift(this.currentPost);
-        localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
-        alert(isSaved ? 'Dihapus dari tersimpan' : 'Berhasil disimpan!');
       },
 
       toggleTheme() {
