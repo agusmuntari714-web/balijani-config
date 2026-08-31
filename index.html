@@ -6,7 +6,6 @@
   <meta name="theme-color" content="#ffffff" id="themeColorMeta">
   <title>BALIJANI - Portal Warta Premium</title>
 
-  <!-- INLINE SCRIPT: Mencegah FOUC (Flash of Unstyled Content) Mode Gelap -->
   <script>
     (function() {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -19,7 +18,6 @@
     })();
   </script>
 
-  <!-- Tailwind CSS, Lucide Icons & Supabase Client -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -79,7 +77,6 @@
     .weather-refresh-btn.is-spinning svg { animation: smooth-spin 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
     @keyframes smooth-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* STYLE KHUSUS BOX BACA JUGA */
     .article-body .baca-juga-box { background-color: #f1f5f9 !important; border-left: 4px solid #dc2626 !important; padding: 16px !important; border-radius: 0 8px 8px 0 !important; margin-bottom: 24px !important; cursor: pointer !important; transition: background 0.2s !important; }
     .dark .article-body .baca-juga-box { background-color: #1e293b !important; }
     .article-body .baca-juga-box:hover { background-color: #e2e8f0 !important; }
@@ -88,9 +85,7 @@
     .article-body .baca-juga-title { color: #0f172a !important; font-weight: 700 !important; font-size: 14px !important; line-height: 1.4 !important; }
     .dark .article-body .baca-juga-title { color: #ffffff !important; }
     .article-body .baca-juga-box:hover .baca-juga-title { color: #dc2626 !important; }
-    /* AKHIR STYLE BACA JUGA */
 
-    /* Sistem Bottom Sheet Native Android */
     .bottom-sheet-scrim {
         position: fixed; inset: 0; z-index: 200; background: var(--scrim-bg);
         backdrop-filter: blur(4px); opacity: 0; pointer-events: none;
@@ -110,7 +105,6 @@
     .drag-handle { width: 40px; height: 4px; background: #cbd5e1; border-radius: 2px; margin: 8px auto 16px; }
     .dark .drag-handle { background: #334155; }
 
-    /* Sistem Snackbar (Toast Material) */
     .snackbar {
         position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px);
         background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px;
@@ -119,7 +113,6 @@
     }
     .snackbar.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    /* Fix Animasi Spinner Pull To Refresh */
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .is-spinning-indicator { animation: spin 0.8s linear infinite; }
   </style>
@@ -127,7 +120,6 @@
 
 <body class="bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-white flex flex-col min-h-screen select-none">
 
-  <!-- TOAST NOTIFICATION -->
   <div id="inAppToast" class="fixed left-4 right-4 z-[150] transition-all duration-500" style="top: -200%;">
     <div class="max-w-md mx-auto bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-xl shadow-2xl rounded-2xl p-4 flex items-start gap-3 cursor-pointer border border-slate-200/50 dark:border-slate-700/50" onclick="App.openLatestPostFromToast()">
       <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0">
@@ -141,7 +133,6 @@
     </div>
   </div>
 
-  <!-- MODAL DETAIL CUACA (Bottom Sheet) -->
   <div id="weatherScrim" class="bottom-sheet-scrim" onclick="closeWeatherModal()"></div>
   <div id="weatherModal" class="bottom-sheet">
       <div class="drag-handle"></div>
@@ -155,21 +146,15 @@
                   <i data-lucide="x" class="w-5 h-5"></i>
               </button>
           </div>
-          
-          <!-- Suhu Utama -->
           <div class="text-center my-6">
               <div class="text-7xl font-black tracking-tighter" id="modalTemp">--°</div>
               <div class="text-base font-semibold text-sky-500 dark:text-sky-400 mt-2" id="modalCondition">Memuat kondisi...</div>
               <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium" id="modalHighLow">T: --° B: --° • Terasa: --°</div>
           </div>
-
-          <!-- Prakiraan Per Jam (Realtime) -->
           <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Prakiraan 12 Jam</h4>
           <div id="hourlyForecastContainer" class="flex gap-2 overflow-x-auto no-scrollbar pb-4 mb-6 border-b border-slate-200 dark:border-slate-800">
               <p class="text-xs text-slate-400 italic w-full text-center py-4">Memuat prakiraan...</p>
           </div>
-
-          <!-- Grid Metrik -->
           <div class="grid grid-cols-2 gap-3 mb-6">
               <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
                   <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="wind" class="w-3.5 h-3.5 text-sky-400"></i> Angin</div>
@@ -188,22 +173,18 @@
                   <div class="text-base font-bold" id="modalPrecip">-- mm</div>
               </div>
           </div>
-          
           <button onclick="closeWeatherModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg">Tutup</button>
       </div>
   </div>
 
-  <!-- INDIKATOR PULL-TO-REFRESH -->
   <div id="pullRefreshIndicator" style="top: -60px; left: 50%; transform: translateX(-50%); position: fixed; z-index: 9999; transition: top 0.2s ease;">
       <div style="background: #ffffff; padding: 10px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
           <div id="refreshSpinnerRing" style="width: 22px; height: 22px; border: 3px solid #f1f5f9; border-top: 3px solid #dc2626; border-radius: 50%;"></div>
       </div>
   </div>
 
-  <!-- HEADER UTAMA -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     <div class="absolute top-0 left-0 right-0 w-full bg-[#ffffff] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
-
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
       <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
@@ -215,7 +196,6 @@
           </div>
         </div>
       </a>
-
       <div class="flex items-center gap-1">
         <button id="subscribeBtn" onclick="App.openSubscribe()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative cursor-pointer">
           <i data-lucide="mail-open" class="w-5 h-5"></i>
@@ -232,15 +212,12 @@
         </button>
       </div>
     </div>
-
     <div id="searchOverlay" class="hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 py-3 shadow-inner relative z-10">
       <div class="relative max-w-md md:max-w-7xl mx-auto flex items-center">
         <i data-lucide="search" class="absolute left-3 w-4 h-4 text-slate-400"></i>
         <input type="text" id="searchInput" placeholder="Cari warta, opini, atau tokoh..." class="w-full bg-slate-100 dark:bg-slate-800/50 text-sm text-slate-900 dark:text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 outline-none border border-transparent focus:border-brand-500 transition" onkeypress="App.executeSearch(event)">
       </div>
     </div>
-    
-    <!-- MENU KATEGORI -->
     <div class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] relative z-10">
       <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold py-2.5 px-4 gap-2" id="topNavContainer">
         <button onclick="App.navigate('category', 'Hukum')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Hukum</button>
@@ -253,21 +230,17 @@
         <button onclick="App.navigate('category', 'Olahraga')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Olahraga</button>
       </nav>
     </div>
-
-    <!-- PROGRESS BAR -->
     <div id="progressBarContainer" class="absolute bottom-0 left-0 w-full h-[3px] z-50 hidden pointer-events-none">
       <div id="progressBar" class="h-full bg-brand-600 w-0 transition-all duration-75"></div>
     </div>
   </header>
 
-  <!-- PUSAT NOTIFIKASI -->
   <div id="notifPanel" class="hidden fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm flex justify-end">
     <div class="bg-white dark:bg-slate-900 w-full max-w-sm h-full flex flex-col shadow-2xl animate-slide-left">
       <div class="h-14 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 bg-slate-50 dark:bg-slate-900" style="padding-top: env(safe-area-inset-top);">
         <h2 class="font-extrabold text-lg text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bell" class="w-5 h-5 text-brand-600"></i> Notifikasi</h2>
         <button onclick="App.toggleNotifPanel()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition bg-slate-200 dark:bg-slate-800 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
-      
       <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex justify-between gap-2 bg-white dark:bg-[#0f172a]">
         <button onclick="App.clearReadNotifs()" class="flex-1 flex items-center justify-center gap-1.5 text-[10px] font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300">
           <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Hapus Terbaca
@@ -276,7 +249,6 @@
           <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus Semua
         </button>
       </div>
-      
       <div id="notifListContainer" class="flex-1 overflow-y-auto p-3 space-y-2 bg-slate-50 dark:bg-[#0b0f19]"></div>
     </div>
   </div>
@@ -298,10 +270,7 @@
       </div>
     </div>
 
-    <!-- HOME VIEW -->
     <section id="homeView" class="hidden view-enter space-y-6 px-4 md:px-0">
-      
-      <!-- WIDGET CUACA -->
       <div id="weather-widget" class="weather-card" onclick="openWeatherModal()">
           <div class="weather-left">
               <div class="weather-temp" id="w-temp">--°</div>
@@ -317,8 +286,6 @@
               <div class="weather-icon" id="w-icon">🛰️</div>
           </div>
       </div>
-
-      <!-- HERO UTAMA BESAR -->
       <div class="space-y-4">
         <div id="mainHeroCard" class="cursor-pointer relative rounded-2xl overflow-hidden bg-slate-900 shadow-lg aspect-square md:aspect-[21/9] flex items-end"></div>
         <div>
@@ -328,8 +295,6 @@
           </div>
         </div>
       </div>
-
-      <!-- SLOT IKLAN EKSPLORASI BALI -->
       <div id="adsBlock" class="bg-slate-100 dark:bg-slate-800/40 rounded-2xl p-4 md:p-6 border border-slate-200 dark:border-slate-800">
         <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 mb-4">
           <i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali
@@ -345,7 +310,7 @@
             </div>
           </a>
           <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Tiket Pesawat akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration=500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
             <div class="relative z-10 p-3 w-full text-center">
@@ -354,7 +319,7 @@
             </div>
           </a>
           <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Destinasi Wisata akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <img src="https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration=500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
             <div class="relative z-10 p-3 w-full text-center">
@@ -363,7 +328,7 @@
             </div>
           </a>
           <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Kuliner Khas akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration=500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
             <div class="relative z-10 p-3 w-full text-center">
@@ -373,24 +338,18 @@
           </a>
         </div>
       </div>
-
-      <!-- MODEL 1: SOROTAN UTAMA (Tata Letak Asimetris/Masonry) -->
       <div>
         <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
           <span class="w-1.5 h-5 bg-brand-600 rounded-full"></span> Sorotan Utama
         </h2>
         <div id="threeColGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
       </div>
-
-      <!-- MODEL 2: KABAR TERBARU (3 Kolom Majalah) -->
       <div>
         <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
           <span class="w-1.5 h-5 bg-amber-500 rounded-full"></span> Kabar Terbaru
         </h2>
         <div id="magazineGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
       </div>
-
-      <!-- MODEL 3: KILAS WARTA LAINNYA -->
       <div>
         <div class="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
           <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -429,14 +388,81 @@
       </div>
     </section>
 
-    <!-- SINGLE POST VIEW -->
+    <!-- ACCOUNT VIEW -->
+    <section id="accountView" class="hidden view-enter pt-4 px-4 md:px-0 pb-20">
+        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2 mb-6 border-b border-slate-200 dark:border-slate-800 pb-4">
+            <i data-lucide="user-circle" class="w-6 h-6 text-brand-600"></i> Akun Saya
+        </h1>
+        
+        <!-- UI Belum Login -->
+        <div id="profileLoggedOut" class="py-10 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+            <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="lock" class="w-8 h-8 text-slate-400"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 dark:text-white mb-2">Anda Belum Masuk</h3>
+            <p class="text-xs text-slate-500 mb-5">Masuk atau daftar untuk mengakses fitur Kirim Opini, Riwayat Komentar, dan Notifikasi Khusus.</p>
+            <button onclick="App.loginWithGoogle()" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-sm transition active:scale-95 cursor-pointer">
+                <i data-lucide="log-in" class="w-4 h-4"></i> Masuk / Daftar Akun
+            </button>
+        </div>
+
+        <!-- UI Sudah Login -->
+        <div id="profileLoggedIn" class="hidden space-y-5">
+            <div class="flex items-center gap-4 p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="w-16 h-16 rounded-full bg-brand-600 text-white flex items-center justify-center text-2xl font-black uppercase" id="profileAvatar">B</div>
+                <div>
+                    <h2 id="profileName" class="text-xl font-extrabold text-slate-900 dark:text-white">Nama Pengguna</h2>
+                    <p id="profileEmail" class="text-xs text-slate-500 mt-1">email@tersembunyi.com</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="App.openInAppForm()" class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-2 active:scale-95 transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/30 text-brand-600 flex items-center justify-center">
+                        <i data-lucide="pen-tool" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Kirim Opini</span>
+                </button>
+                <button onclick="App.navigate('bookmarks')" class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-2 active:scale-95 transition cursor-pointer">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center">
+                        <i data-lucide="bookmark" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Berita Tersimpan</span>
+                </button>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
+                    <i data-lucide="message-square" class="w-4 h-4 text-sky-500"></i>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Riwayat Komentar Anda</h3>
+                </div>
+                <div id="userCommentsList" class="divide-y divide-slate-100 dark:divide-slate-800">
+                    <p class="p-4 text-xs text-slate-400 italic">Memuat komentar...</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
+                    <i data-lucide="bell-ring" class="w-4 h-4 text-rose-500"></i>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Notifikasi Khusus</h3>
+                </div>
+                <div id="userNotifList" class="divide-y divide-slate-100 dark:divide-slate-800">
+                    <p class="p-4 text-xs text-slate-400 italic">Tidak ada notifikasi.</p>
+                </div>
+            </div>
+
+            <button onclick="App.logout()" class="w-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-bold text-sm py-3 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer border border-rose-200 dark:border-rose-900/50">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Keluar (Logout)
+            </button>
+        </div>
+    </section>
+
     <article id="singlePostView" class="hidden view-enter max-w-4xl mx-auto bg-white dark:bg-[#0f172a] mt-4 md:mt-6 md:rounded-2xl md:border border-slate-100 dark:border-slate-800 pb-8 flex flex-col md:flex-row gap-6">
       <div class="flex-1 w-full relative">
         <div id="postImageWrapper" class="relative w-full aspect-[4/3] md:aspect-video md:rounded-tl-2xl overflow-hidden bg-slate-100 dark:bg-slate-800">
           <button onclick="history.back()" class="absolute top-4 left-4 z-10 w-9 h-9 rounded-full bg-black/40 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/60 transition"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
           <img id="postFeaturedImg" src="" alt="Cover" class="w-full h-full object-cover">
         </div>
-
         <div class="px-5 pt-6 pb-4 border-b border-slate-100 dark:border-slate-800/80">
           <span id="postCategoryBadge" class="inline-block px-2.5 py-1 text-[10px] font-bold uppercase rounded bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400 mb-3"></span>
           <h1 id="postHeadline" class="text-2xl md:text-3xl font-extrabold font-serif leading-snug text-slate-900 dark:text-white mb-4"></h1>
@@ -455,9 +481,7 @@
             </div>
           </div>
         </div>
-
         <div id="postRenderedContent" class="article-body px-5 pt-4 text-[17px] text-slate-800 dark:text-slate-200 leading-relaxed"></div>
-
         <div class="px-5 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
           <div class="flex items-center gap-2 mb-8">
             <button id="likeButton" onclick="App.toggleLike()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95 cursor-pointer">
@@ -470,13 +494,10 @@
               <i data-lucide="share-2" class="w-4 h-4"></i> <span class="hidden sm:inline">Bagikan</span>
             </button>
           </div>
-
-          <!-- KOLOM KOMENTAR REAL-TIME & OAUTH LOGIN -->
           <div class="mb-10 bg-slate-50 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
             <h3 class="font-bold text-base text-slate-900 dark:text-white mb-4 flex items-center gap-2">
               <i data-lucide="message-square" class="w-4 h-4 text-brand-600"></i> Kolom Komentar Publik (<span id="commentCount">0</span>)
             </h3>
-            
             <div id="oauthLoginContainer" class="hidden mb-6 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 text-center shadow-sm">
                 <p class="text-xs font-medium text-slate-600 dark:text-slate-300 mb-3">Silakan masuk atau daftar menggunakan Email untuk menulis komentar:</p>
                 <div class="flex flex-wrap gap-2.5 justify-center items-center">
@@ -486,7 +507,6 @@
                     </button>
                 </div>
             </div>
-
             <div id="commentFormContainer" class="hidden space-y-3 mb-6">
               <div class="flex items-center justify-between bg-white dark:bg-slate-900 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
                   <span id="loggedInUserText" class="font-bold text-slate-700 dark:text-slate-300">Masuk sebagai...</span>
@@ -497,12 +517,10 @@
                 <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-md cursor-pointer">Kirim Komentar</button>
               </form>
             </div>
-
             <div id="commentsList" class="space-y-3">
               <p class="text-xs text-slate-400 italic">Memuat komentar...</p>
             </div>
           </div>
-
           <div class="mb-10 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-slate-300 dark:border-slate-700 text-center">
             <h3 class="font-bold text-slate-900 dark:text-white mb-2">Ikuti Sosial Media Kami</h3>
             <p id="newsletterCtaText" class="text-xs text-slate-600 dark:text-slate-400 mb-5">Dapatkan isu eksklusif Bali langsung ke inbox Anda.</p>
@@ -521,12 +539,10 @@
               </button>
             </div>
           </div>
-
           <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="layers" class="w-5 h-5 text-brand-600"></i> Berita Terkait</h3>
           <div id="relatedPostsGrid" class="grid grid-cols-2 md:grid-cols-2 gap-3 mb-8"></div>
         </div>
       </div>
-
       <aside class="w-full md:w-72 border-t md:border-t-0 md:border-l border-slate-100 dark:border-slate-800 px-5 pt-6 md:pr-5 md:pl-6 md:pb-6">
         <div class="sticky top-20">
           <h3 class="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
@@ -543,11 +559,10 @@
       <button onclick="App.navigate('home')" class="nav-btn w-1/4 text-brand-600 flex flex-col items-center gap-1 transition"><i data-lucide="home" class="w-5 h-5"></i><span>Beranda</span></button>
       <button onclick="App.navigate('category', 'all')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="layout-grid" class="w-5 h-5"></i><span>Arsip</span></button>
       <button onclick="App.navigate('bookmarks')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="bookmark" class="w-5 h-5"></i><span>Tersimpan</span></button>
-      <button onclick="App.showOpiniModal()" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="pen-tool" class="w-5 h-5"></i><span>Kirim Opini</span></button>
+      <button onclick="App.navigate('account')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="user" class="w-5 h-5"></i><span>Akun</span></button>
     </div>
   </nav>
 
-  <!-- MODAL POPUP KIRIM OPINI (Bottom Sheet Style) -->
   <div id="opiniScrim" class="bottom-sheet-scrim" onclick="App.closeOpiniModal()"></div>
   <div id="opiniModal" class="bottom-sheet">
     <div class="drag-handle"></div>
@@ -571,7 +586,6 @@
     </div>
   </div>
 
-  <!-- MODAL IFRAME FORMULIR WEB OPINI (Bottom Sheet Style) -->
   <div id="webFormScrim" class="bottom-sheet-scrim" onclick="App.closeWebForm()"></div>
   <div id="webFormView" class="bottom-sheet" style="height: 95vh; max-height: 95vh; padding: 0;">
     <div class="drag-handle"></div>
@@ -591,7 +605,6 @@
     </div>
   </div>
 
-  <!-- MODAL SUBSCRIBE / LANGGANAN (Bottom Sheet Style) -->
   <div id="subscribeScrim" class="bottom-sheet-scrim" onclick="App.closeSubscribe()"></div>
   <div id="subscribeModal" class="bottom-sheet">
     <div class="drag-handle"></div>
@@ -615,7 +628,6 @@
     </div>
   </div>
 
-  <!-- SCRIPT UTAMA APLIKASI -->
   <script>
     const SUPABASE_URL = "https://vqsshojqwpespanexcyy.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_-qnqxbaPM7ESUUyx6qPrkw_dWhZI4pD"; 
@@ -742,6 +754,9 @@
         this.checkAuthSession();
         supabaseClient.auth.onAuthStateChange((event, session) => {
             this.updateAuthUI(session);
+            if (document.getElementById('accountView') && !document.getElementById('accountView').classList.contains('hidden')) {
+                this.renderAccountPage(session);
+            }
         });
       },
 
@@ -779,23 +794,11 @@
           }
       },
 
-      async loginWithFacebook() {
-          if (typeof AndroidBridge !== "undefined" && AndroidBridge.showLoginDialog) {
-              AndroidBridge.showLoginDialog();
-          } else {
-              const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
-              const { data, error } = await supabaseClient.auth.signInWithOAuth({
-                  provider: 'facebook', options: { redirectTo: redirectUrl, skipBrowserRedirect: false }
-              });
-              if (error) return this.showSnackbar('Gagal login Facebook: ' + error.message);
-              if (data?.url) window.location.href = data.url;
-          }
-      },
-
       async logout() {
           await supabaseClient.auth.signOut();
           this.updateAuthUI(null);
           this.showSnackbar('Berhasil keluar.');
+          this.renderAccountPage(null);
       },
 
       startNotificationPolling() { setInterval(() => { this.checkNewPosts(); }, 20000); },
@@ -973,19 +976,8 @@
 
       confirmSocial(platform, url) { window.open(url, '_system') || (window.location.href = url); },
 
-      showOpiniModal() {
-        this.haptic(20);
-        document.getElementById('opiniScrim').classList.add('active');
-        document.getElementById('opiniModal').classList.add('active');
-      },
-
-      closeOpiniModal() {
-        document.getElementById('opiniScrim').classList.remove('active');
-        document.getElementById('opiniModal').classList.remove('active');
-      },
-
       openInAppForm() {
-        this.closeOpiniModal();
+        if (typeof App.closeOpiniModal === 'function') App.closeOpiniModal();
         document.getElementById('webFormScrim').classList.add('active');
         document.getElementById('webFormView').classList.add('active');
         document.getElementById('iframeLoader').style.display = 'flex';
@@ -1175,7 +1167,7 @@
           const content = document.getElementById('commentContent').value.trim();
           if (!content) return;
 
-          const { error } = await supabaseClient.from('comments').insert([{ post_id: this.currentPost.id, author_name: author, content: content }]);
+          const { error } = await supabaseClient.from('comments').insert([{ post_id: this.currentPost.id, author_name: author, content: content, user_id: session.user.id }]);
           if (error) {
               console.error("Supabase Error:", error);
               this.showSnackbar('Error: ' + error.message); 
@@ -1356,18 +1348,78 @@
         else { emptyState.classList.add('hidden'); this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true))); }
       },
 
+      async renderAccountPage(session) {
+          const loggedOutDiv = document.getElementById('profileLoggedOut');
+          const loggedInDiv = document.getElementById('profileLoggedIn');
+          
+          if (session && session.user) {
+              loggedOutDiv.classList.add('hidden');
+              loggedInDiv.classList.remove('hidden');
+              
+              const name = session.user.user_metadata?.full_name || 'Pengguna';
+              const email = session.user.email || 'email@tersembunyi.com';
+              
+              document.getElementById('profileName').innerText = name;
+              document.getElementById('profileEmail').innerText = email.replace(/(.{2}).*(@.*)/, "$1***$2");
+              document.getElementById('profileAvatar').innerText = name.charAt(0).toUpperCase();
+
+              // Load User Comments
+              const commentList = document.getElementById('userCommentsList');
+              commentList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Memuat...</p>`;
+              let { data: userComments } = await supabaseClient.from('comments').select('*').eq('user_id', session.user.id).order('created_at', { ascending: false }).limit(5);
+              
+              if (!userComments || userComments.length === 0) {
+                  commentList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Belum ada komentar.</p>`;
+              } else {
+                  commentList.innerHTML = '';
+                  userComments.forEach(c => {
+                      const dateStr = new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                      commentList.innerHTML += `
+                        <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer" onclick="App.openPost(${c.post_id})">
+                            <p class="text-xs text-slate-700 dark:text-slate-300 mb-1 line-clamp-2">${c.content}</p>
+                            <span class="text-[9px] text-slate-400">Pada ${dateStr}</span>
+                        </div>`;
+                  });
+              }
+
+              // Load Special Notifications (Reuse app notifications for now)
+              const notifList = document.getElementById('userNotifList');
+              if (this.notifications.length === 0) {
+                  notifList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Belum ada notifikasi.</p>`;
+              } else {
+                  notifList.innerHTML = '';
+                  this.notifications.slice(0, 3).forEach(notif => {
+                      notifList.innerHTML += `
+                        <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer" onclick="App.openPost(${notif.id})">
+                            <p class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 line-clamp-2">${notif.title}</p>
+                            <span class="text-[9px] text-slate-400">${new Date(notif.date).toLocaleDateString('id-ID')}</span>
+                        </div>`;
+                  });
+              }
+
+          } else {
+              loggedOutDiv.classList.remove('hidden');
+              loggedInDiv.classList.add('hidden');
+          }
+          lucide.createIcons();
+      },
+
       navigate(view, query = '', fromPopState = false) {
         if(!fromPopState) this.haptic(10);
         if (!fromPopState) history.pushState({ view: view, query: query }, '', '#' + view);
         if (view !== 'home') this.stopCarousel();
 
-        ['homeView', 'categoryView', 'bookmarkView', 'singlePostView'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        ['homeView', 'categoryView', 'bookmarkView', 'singlePostView', 'accountView'].forEach(id => document.getElementById(id).classList.add('hidden'));
         
         if (view === 'home') {
             document.getElementById('homeView').classList.remove('hidden');
             this.startCarousel();
         }
         else if (view === 'bookmarks') { document.getElementById('bookmarkView').classList.remove('hidden'); this.renderBookmarks(); }
+        else if (view === 'account') {
+            document.getElementById('accountView').classList.remove('hidden');
+            this.checkAuthSession().then(session => this.renderAccountPage(session));
+        }
         else if (view === 'category') {
           document.getElementById('categoryView').classList.remove('hidden');
           let filtered = this.data;
@@ -1472,13 +1524,13 @@
         } else {
             App.updateAuthUI(data.session);
             App.showSnackbar('Berhasil login!');
+            App.renderAccountPage(data.session);
         }
     };
 
     App.init();
   </script>
 
-  <!-- SCRIPT WIDGET CUACA -->
   <script>
     function openWeatherModal() {
         App.haptic(10);
