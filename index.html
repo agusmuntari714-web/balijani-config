@@ -36,12 +36,7 @@
   </script>
 
   <style>
-    :root {
-      --sheet-bg-light: #ffffff;
-      --sheet-bg-dark: #0f172a;
-      --scrim-bg: rgba(0, 0, 0, 0.6);
-    }
-    
+    :root { --sheet-bg-light: #ffffff; --sheet-bg-dark: #0f172a; --scrim-bg: rgba(0, 0, 0, 0.6); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
@@ -77,7 +72,6 @@
     .weather-refresh-btn.is-spinning svg { animation: smooth-spin 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
     @keyframes smooth-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* STYLE KHUSUS BOX BACA JUGA */
     .article-body .baca-juga-box { background-color: #f1f5f9 !important; border-left: 4px solid #dc2626 !important; padding: 16px !important; border-radius: 0 8px 8px 0 !important; margin-bottom: 24px !important; cursor: pointer !important; transition: background 0.2s !important; }
     .dark .article-body .baca-juga-box { background-color: #1e293b !important; }
     .article-body .baca-juga-box:hover { background-color: #e2e8f0 !important; }
@@ -87,48 +81,24 @@
     .dark .article-body .baca-juga-title { color: #ffffff !important; }
     .article-body .baca-juga-box:hover .baca-juga-title { color: #dc2626 !important; }
 
-    /* Sistem Bottom Sheet Native Android */
-    .bottom-sheet-scrim {
-        position: fixed; inset: 0; z-index: 200; background: var(--scrim-bg);
-        backdrop-filter: blur(4px); opacity: 0; pointer-events: none;
-        transition: opacity 0.3s ease;
-    }
+    .bottom-sheet-scrim { position: fixed; inset: 0; z-index: 200; background: var(--scrim-bg); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .bottom-sheet-scrim.active { opacity: 1; pointer-events: auto; }
-    
-    .bottom-sheet {
-        position: fixed; bottom: 0; left: 0; right: 0; z-index: 201;
-        background: var(--sheet-bg-light); color: #0f172a;
-        border-radius: 24px 24px 0 0; padding: 8px 0 24px 0;
-        box-shadow: 0 -10px 30px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto;
-        transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    .bottom-sheet { position: fixed; bottom: 0; left: 0; right: 0; z-index: 201; background: var(--sheet-bg-light); color: #0f172a; border-radius: 24px 24px 0 0; padding: 8px 0 24px 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
     .dark .bottom-sheet { background: var(--sheet-bg-dark); color: #fff; }
     .bottom-sheet.active { transform: translateY(0); }
     .drag-handle { width: 40px; height: 4px; background: #cbd5e1; border-radius: 2px; margin: 8px auto 16px; }
     .dark .drag-handle { background: #334155; }
 
-    /* Sistem Snackbar (Toast Material) */
-    .snackbar {
-        position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px);
-        background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px;
-        z-index: 9999; opacity: 0; font-size: 14px; font-weight: 500; white-space: nowrap;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    .snackbar { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px; z-index: 9999; opacity: 0; font-size: 14px; font-weight: 500; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
     .snackbar.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    /* EFEK NATIVE ANDROID */
     @keyframes androidFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .view-enter { animation: androidFadeIn 0.25s cubic-bezier(0.22, 1, 0.36, 1); }
-    
     .nav-btn { transition: color 0.2s, transform 0.1s; position: relative; }
     .nav-btn:active { transform: scale(0.9); }
     .nav-btn.active-tab { color: #dc2626 !important; }
-    .nav-btn.active-tab::after {
-        content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
-        width: 20px; height: 2px; background: #dc2626; border-radius: 2px;
-    }
+    .nav-btn.active-tab::after { content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); width: 20px; height: 2px; background: #dc2626; border-radius: 2px; }
 
-    /* Fix Animasi Spinner Pull To Refresh */
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .is-spinning-indicator { animation: spin 0.8s linear infinite; }
   </style>
@@ -136,12 +106,9 @@
 
 <body class="bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-white flex flex-col min-h-screen select-none">
 
-  <!-- TOAST NOTIFICATION -->
   <div id="inAppToast" class="fixed left-4 right-4 z-[150] transition-all duration-500" style="top: -200%;">
     <div class="max-w-md mx-auto bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-xl shadow-2xl rounded-2xl p-4 flex items-start gap-3 cursor-pointer border border-slate-200/50 dark:border-slate-700/50" onclick="App.openLatestPostFromToast()">
-      <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0">
-        <i data-lucide="bell-ring" class="w-5 h-5 animate-pulse"></i>
-      </div>
+      <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0"><i data-lucide="bell-ring" class="w-5 h-5 animate-pulse"></i></div>
       <div class="flex-1">
         <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Berita Baru Dirilis</h4>
         <p id="toastTitle" class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug"></p>
@@ -150,7 +117,6 @@
     </div>
   </div>
 
-  <!-- MODAL DETAIL CUACA (Bottom Sheet) -->
   <div id="weatherScrim" class="bottom-sheet-scrim" onclick="closeWeatherModal()"></div>
   <div id="weatherModal" class="bottom-sheet">
       <div class="drag-handle"></div>
@@ -160,9 +126,7 @@
                   <h3 class="text-xl font-extrabold flex items-center gap-2" id="modalCityName">📍 Memuat...</h3>
                   <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="modalSubDate">Perkiraan cuaca lokal terkini</p>
               </div>
-              <button onclick="closeWeatherModal()" class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
-                  <i data-lucide="x" class="w-5 h-5"></i>
-              </button>
+              <button onclick="closeWeatherModal()" class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
           </div>
           <div class="text-center my-6">
               <div class="text-7xl font-black tracking-tighter" id="modalTemp">--°</div>
@@ -170,39 +134,21 @@
               <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium" id="modalHighLow">T: --° B: --° • Terasa: --°</div>
           </div>
           <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Prakiraan 12 Jam</h4>
-          <div id="hourlyForecastContainer" class="flex gap-2 overflow-x-auto no-scrollbar pb-4 mb-6 border-b border-slate-200 dark:border-slate-800">
-              <p class="text-xs text-slate-400 italic w-full text-center py-4">Memuat prakiraan...</p>
-          </div>
+          <div id="hourlyForecastContainer" class="flex gap-2 overflow-x-auto no-scrollbar pb-4 mb-6 border-b border-slate-200 dark:border-slate-800"><p class="text-xs text-slate-400 italic w-full text-center py-4">Memuat prakiraan...</p></div>
           <div class="grid grid-cols-2 gap-3 mb-6">
-              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="wind" class="w-3.5 h-3.5 text-sky-400"></i> Angin</div>
-                  <div class="text-base font-bold" id="modalWind">-- km/j</div>
-              </div>
-              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="droplets" class="w-3.5 h-3.5 text-blue-400"></i> Lembap</div>
-                  <div class="text-base font-bold" id="modalHumidity">-- %</div>
-              </div>
-              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="gauge" class="w-3.5 h-3.5 text-amber-400"></i> Tekanan</div>
-                  <div class="text-base font-bold" id="modalPressure">-- hPa</div>
-              </div>
-              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="cloud-rain" class="w-3.5 h-3.5 text-indigo-400"></i> Curah Hujan</div>
-                  <div class="text-base font-bold" id="modalPrecip">-- mm</div>
-              </div>
+              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800"><div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="wind" class="w-3.5 h-3.5 text-sky-400"></i> Angin</div><div class="text-base font-bold" id="modalWind">-- km/j</div></div>
+              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800"><div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="droplets" class="w-3.5 h-3.5 text-blue-400"></i> Lembap</div><div class="text-base font-bold" id="modalHumidity">-- %</div></div>
+              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800"><div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="gauge" class="w-3.5 h-3.5 text-amber-400"></i> Tekanan</div><div class="text-base font-bold" id="modalPressure">-- hPa</div></div>
+              <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800"><div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="cloud-rain" class="w-3.5 h-3.5 text-indigo-400"></i> Curah Hujan</div><div class="text-base font-bold" id="modalPrecip">-- mm</div></div>
           </div>
           <button onclick="closeWeatherModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg">Tutup</button>
       </div>
   </div>
 
-  <!-- INDIKATOR PULL-TO-REFRESH -->
   <div id="pullRefreshIndicator" style="top: -60px; left: 50%; transform: translateX(-50%); position: fixed; z-index: 9999; transition: top 0.2s ease;">
-      <div style="background: #ffffff; padding: 10px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
-          <div id="refreshSpinnerRing" style="width: 22px; height: 22px; border: 3px solid #f1f5f9; border-top: 3px solid #dc2626; border-radius: 50%;"></div>
-      </div>
+      <div style="background: #ffffff; padding: 10px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;"><div id="refreshSpinnerRing" style="width: 22px; height: 22px; border: 3px solid #f1f5f9; border-top: 3px solid #dc2626; border-radius: 50%;"></div></div>
   </div>
 
-  <!-- HEADER UTAMA -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     <div class="absolute top-0 left-0 right-0 w-full bg-[#ffffff] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
@@ -210,33 +156,18 @@
         <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
         <div class="flex items-center gap-2 mt-0.5">
           <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
-          <div class="relative flex items-center justify-center">
-            <span class="absolute inline-flex h-full w-full rounded bg-brand-500 opacity-40 scale-110 animate-pulse"></span>
-            <span class="relative inline-flex bg-brand-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest shadow-sm">APPS</span>
-          </div>
+          <div class="relative flex items-center justify-center"><span class="absolute inline-flex h-full w-full rounded bg-brand-500 opacity-40 scale-110 animate-pulse"></span><span class="relative inline-flex bg-brand-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest shadow-sm">APPS</span></div>
         </div>
       </a>
       <div class="flex items-center gap-1">
-        <button id="subscribeBtn" onclick="App.openSubscribe()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative cursor-pointer">
-          <i data-lucide="mail-open" class="w-5 h-5"></i>
-        </button>
-        <button onclick="App.toggleSearch()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition">
-          <i data-lucide="search" class="w-5 h-5"></i>
-        </button>
-        <button onclick="App.toggleNotifPanel()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 relative transition">
-          <i data-lucide="bell" class="w-5 h-5"></i>
-          <span id="notifBadge" class="absolute top-0 right-0 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center rounded-full hidden border border-white dark:border-[#0f172a]">0</span>
-        </button>
-        <button onclick="App.toggleTheme()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
-          <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i><i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-        </button>
+        <button id="subscribeBtn" onclick="App.openSubscribe()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative cursor-pointer"><i data-lucide="mail-open" class="w-5 h-5"></i></button>
+        <button onclick="App.toggleSearch()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition"><i data-lucide="search" class="w-5 h-5"></i></button>
+        <button onclick="App.toggleNotifPanel()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 relative transition"><i data-lucide="bell" class="w-5 h-5"></i><span id="notifBadge" class="absolute top-0 right-0 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center rounded-full hidden border border-white dark:border-[#0f172a]">0</span></button>
+        <button onclick="App.toggleTheme()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"><i data-lucide="moon" class="w-5 h-5 dark:hidden"></i><i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i></button>
       </div>
     </div>
     <div id="searchOverlay" class="hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0f172a] px-4 py-3 shadow-inner relative z-10">
-      <div class="relative max-w-md md:max-w-7xl mx-auto flex items-center">
-        <i data-lucide="search" class="absolute left-3 w-4 h-4 text-slate-400"></i>
-        <input type="text" id="searchInput" placeholder="Cari warta, opini, atau tokoh..." class="w-full bg-slate-100 dark:bg-slate-800/50 text-sm text-slate-900 dark:text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 outline-none border border-transparent focus:border-brand-500 transition" onkeypress="App.executeSearch(event)">
-      </div>
+      <div class="relative max-w-md md:max-w-7xl mx-auto flex items-center"><i data-lucide="search" class="absolute left-3 w-4 h-4 text-slate-400"></i><input type="text" id="searchInput" placeholder="Cari warta, opini, atau tokoh..." class="w-full bg-slate-100 dark:bg-slate-800/50 text-sm text-slate-900 dark:text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-2.5 outline-none border border-transparent focus:border-brand-500 transition" onkeypress="App.executeSearch(event)"></div>
     </div>
     <div class="border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#0f172a] relative z-10">
       <nav class="max-w-md md:max-w-7xl mx-auto flex items-center overflow-x-auto no-scrollbar text-xs font-semibold py-2.5 px-4 gap-2" id="topNavContainer">
@@ -250,12 +181,9 @@
         <button onclick="App.navigate('category', 'Olahraga')" class="cat-tab px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition whitespace-nowrap">Olahraga</button>
       </nav>
     </div>
-    <div id="progressBarContainer" class="absolute bottom-0 left-0 w-full h-[3px] z-50 hidden pointer-events-none">
-      <div id="progressBar" class="h-full bg-brand-600 w-0 transition-all duration-75"></div>
-    </div>
+    <div id="progressBarContainer" class="absolute bottom-0 left-0 w-full h-[3px] z-50 hidden pointer-events-none"><div id="progressBar" class="h-full bg-brand-600 w-0 transition-all duration-75"></div></div>
   </header>
 
-  <!-- PUSAT NOTIFIKASI -->
   <div id="notifPanel" class="hidden fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm flex justify-end">
     <div class="bg-white dark:bg-slate-900 w-full max-w-sm h-full flex flex-col shadow-2xl animate-slide-left">
       <div class="h-14 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 bg-slate-50 dark:bg-slate-900" style="padding-top: env(safe-area-inset-top);">
@@ -263,12 +191,8 @@
         <button onclick="App.toggleNotifPanel()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition bg-slate-200 dark:bg-slate-800 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
       <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex justify-between gap-2 bg-white dark:bg-[#0f172a]">
-        <button onclick="App.clearReadNotifs()" class="flex-1 flex items-center justify-center gap-1.5 text-[10px] font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300">
-          <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Hapus Terbaca
-        </button>
-        <button onclick="App.clearAllNotifs()" class="flex-1 flex items-center justify-center gap-1.5 text-[10px] font-bold bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 transition px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400">
-          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus Semua
-        </button>
+        <button onclick="App.clearReadNotifs()" class="flex-1 flex items-center justify-center gap-1.5 text-[10px] font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300"><i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Hapus Terbaca</button>
+        <button onclick="App.clearAllNotifs()" class="flex-1 flex items-center justify-center gap-1.5 text-[10px] font-bold bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 transition px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus Semua</button>
       </div>
       <div id="notifListContainer" class="flex-1 overflow-y-auto p-3 space-y-2 bg-slate-50 dark:bg-[#0b0f19]"></div>
     </div>
@@ -278,209 +202,113 @@
     <div id="loadingView" class="py-6 px-4 md:px-0 max-w-7xl mx-auto w-full">
       <div class="animate-pulse flex flex-col gap-6">
         <div class="w-full aspect-square md:aspect-[21/9] bg-slate-200 dark:bg-slate-800 rounded-2xl"></div>
-        <div class="flex gap-4 overflow-x-hidden">
-          <div class="w-[70%] sm:w-[45%] md:w-[30%] shrink-0 aspect-[16/10] bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
-          <div class="w-[70%] sm:w-[45%] md:w-[30%] shrink-0 aspect-[16/10] bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
-        </div>
+        <div class="flex gap-4 overflow-x-hidden"><div class="w-[70%] sm:w-[45%] md:w-[30%] shrink-0 aspect-[16/10] bg-slate-200 dark:bg-slate-800 rounded-xl"></div><div class="w-[70%] sm:w-[45%] md:w-[30%] shrink-0 aspect-[16/10] bg-slate-200 dark:bg-slate-800 rounded-xl"></div></div>
         <div class="w-40 h-6 bg-slate-200 dark:bg-slate-800 rounded mt-4"></div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="w-full aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
-          <div class="w-full aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl hidden md:block"></div>
-          <div class="w-full aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl hidden md:block"></div>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5"><div class="w-full aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl"></div><div class="w-full aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl hidden md:block"></div><div class="w-full aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl hidden md:block"></div></div>
       </div>
     </div>
 
     <section id="homeView" class="hidden view-enter space-y-6 px-4 md:px-0">
       <div id="weather-widget" class="weather-card" onclick="openWeatherModal()">
-          <div class="weather-left">
-              <div class="weather-temp" id="w-temp">--°</div>
-              <div class="weather-info">
-                  <div class="weather-city" id="w-city">Mendeteksi Lokasi...</div>
-                  <div class="weather-desc" id="w-desc">Memuat data cuaca...</div>
-              </div>
-          </div>
+          <div class="weather-left"><div class="weather-temp" id="w-temp">--°</div><div class="weather-info"><div class="weather-city" id="w-city">Mendeteksi Lokasi...</div><div class="weather-desc" id="w-desc">Memuat data cuaca...</div></div></div>
           <div style="display: flex; align-items: center; gap: 12px;">
-              <button onclick="event.stopPropagation(); detectUserLocation(); this.classList.add('is-spinning'); setTimeout(() => this.classList.remove('is-spinning'), 800);" class="weather-refresh-btn" title="Perbarui Lokasi">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-              </button>
+              <button onclick="event.stopPropagation(); detectUserLocation(); this.classList.add('is-spinning'); setTimeout(() => this.classList.remove('is-spinning'), 800);" class="weather-refresh-btn" title="Perbarui Lokasi"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg></button>
               <div class="weather-icon" id="w-icon">🛰️</div>
           </div>
       </div>
       <div class="space-y-4">
         <div id="mainHeroCard" class="cursor-pointer relative rounded-2xl overflow-hidden bg-slate-900 shadow-lg aspect-square md:aspect-[21/9] flex items-end"></div>
-        <div>
-          <div class="relative w-full">
-            <div id="carouselTrack" class="flex gap-4 overflow-x-auto snap-container no-scrollbar pb-2 scroll-smooth"></div>
-            <div id="carouselDots" class="flex items-center justify-center gap-1.5 mt-2"></div>
-          </div>
-        </div>
+        <div><div class="relative w-full"><div id="carouselTrack" class="flex gap-4 overflow-x-auto snap-container no-scrollbar pb-2 scroll-smooth"></div><div id="carouselDots" class="flex items-center justify-center gap-1.5 mt-2"></div></div></div>
       </div>
       <div id="adsBlock" class="bg-slate-100 dark:bg-slate-800/40 rounded-2xl p-4 md:p-6 border border-slate-200 dark:border-slate-800">
-        <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 mb-4">
-          <i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali
-        </h2>
+        <h2 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 mb-4"><i data-lucide="compass" class="w-4 h-4 text-emerald-500"></i> Eksplorasi Bali</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Hotel & Villa akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
-            <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
-            <div class="relative z-10 p-3 w-full text-center">
-              <span class="block text-white font-bold text-sm drop-shadow-md">Hotel & Villa</span>
-              <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
-            </div>
-          </a>
-          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Tiket Pesawat akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
-            <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
-            <div class="relative z-10 p-3 w-full text-center">
-              <span class="block text-white font-bold text-sm drop-shadow-md">Tiket Pesawat</span>
-              <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
-            </div>
-          </a>
-          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Destinasi Wisata akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
-            <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
-            <div class="relative z-10 p-3 w-full text-center">
-              <span class="block text-white font-bold text-sm drop-shadow-md">Destinasi</span>
-              <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
-            </div>
-          </a>
-          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Kuliner Khas akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
-            <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
-            <div class="relative z-10 p-3 w-full text-center">
-              <span class="block text-white font-bold text-sm drop-shadow-md">Kuliner Khas</span>
-              <span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span>
-            </div>
-          </a>
+          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Hotel & Villa akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div><div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div><div class="relative z-10 p-3 w-full text-center"><span class="block text-white font-bold text-sm drop-shadow-md">Hotel & Villa</span><span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span></div></a>
+          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Tiket Pesawat akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div><div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div><div class="relative z-10 p-3 w-full text-center"><span class="block text-white font-bold text-sm drop-shadow-md">Tiket Pesawat</span><span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span></div></a>
+          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Destinasi Wisata akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer"><img src="https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div><div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div><div class="relative z-10 p-3 w-full text-center"><span class="block text-white font-bold text-sm drop-shadow-md">Destinasi</span><span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span></div></a>
+          <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Kuliner Khas akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div><div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div><div class="relative z-10 p-3 w-full text-center"><span class="block text-white font-bold text-sm drop-shadow-md">Kuliner Khas</span><span class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Coming Soon</span></div></a>
         </div>
       </div>
       <div>
-        <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
-          <span class="w-1.5 h-5 bg-brand-600 rounded-full"></span> Sorotan Utama
-        </h2>
+        <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2"><span class="w-1.5 h-5 bg-brand-600 rounded-full"></span> Sorotan Utama</h2>
         <div id="threeColGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
       </div>
       <div>
-        <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
-          <span class="w-1.5 h-5 bg-amber-500 rounded-full"></span> Kabar Terbaru
-        </h2>
+        <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5 mb-4 border-b border-slate-200 dark:border-slate-800 pb-2"><span class="w-1.5 h-5 bg-amber-500 rounded-full"></span> Kabar Terbaru</h2>
         <div id="magazineGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
       </div>
       <div>
-        <div class="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-2">
-          <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-            <span class="w-1.5 h-5 bg-sky-500 rounded-full"></span> Kilas Warta Lainnya
-          </h2>
-          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Geser ke samping &rarr;</span>
-        </div>
-        <div class="relative w-full">
-          <div id="smallSlideTrack" class="flex gap-4 overflow-x-auto snap-container no-scrollbar pb-2 scroll-smooth"></div>
-        </div>
+        <div class="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-2"><h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-1.5"><span class="w-1.5 h-5 bg-sky-500 rounded-full"></span> Kilas Warta Lainnya</h2><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Geser ke samping &rarr;</span></div>
+        <div class="relative w-full"><div id="smallSlideTrack" class="flex gap-4 overflow-x-auto snap-container no-scrollbar pb-2 scroll-smooth"></div></div>
       </div>
+      
+      <!-- FOOTER HOME -->
+      <footer class="mt-10 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-500 dark:text-slate-400 text-xs space-y-4">
+          <div class="flex items-center justify-center gap-2 mb-3">
+              <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
+              <span class="font-black text-lg text-slate-900 dark:text-white">BALIJANI</span>
+          </div>
+          <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 font-semibold text-slate-600 dark:text-slate-300">
+              <a href="https://balijani.id/redaksi" target="_blank" class="hover:text-brand-600 transition">Redaksi</a>
+              <a href="https://balijani.id/disclaimer" target="_blank" class="hover:text-brand-600 transition">Disclaimer</a>
+              <a href="https://balijani.id/privacy-policy" target="_blank" class="hover:text-brand-600 transition">Privacy Policy</a>
+              <a href="https://balijani.id/kode-etik" target="_blank" class="hover:text-brand-600 transition">Kode Etik</a>
+              <a href="https://balijani.id/pedoman-media-siber" target="_blank" class="hover:text-brand-600 transition">Pedoman Media Siber</a>
+          </div>
+          <div class="flex items-center justify-center gap-4 pt-2">
+              <button onclick="App.confirmSocial('YouTube', 'https://www.youtube.com/@balijani')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-red-600" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></button>
+              <button onclick="App.confirmSocial('Instagram', 'https://www.instagram.com/balijaninews/')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-pink-600" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></button>
+              <button onclick="App.confirmSocial('Facebook', 'https://www.facebook.com/redaksi.balijani.id/')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-blue-600" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg></button>
+              <button onclick="App.confirmSocial('TikTok', 'https://www.tiktok.com/@balijaniid')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-slate-900 dark:text-white" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg></button>
+          </div>
+          <p class="pt-4 border-t border-slate-100 dark:border-slate-800/60 text-[10px]">© <span id="currentYear"></span> BALIJANI. All rights reserved. <a href="https://balijani.id" target="_blank" class="font-bold text-brand-600">balijani.id</a></p>
+      </footer>
     </section>
 
     <section id="categoryView" class="hidden view-enter pt-4 px-4 md:px-0">
       <div id="opiniBannerContainer" class="hidden mb-6"></div>
       <div class="mb-6 flex items-center justify-between">
-        <div>
-          <h1 id="categoryViewTitle" class="text-2xl font-extrabold text-slate-900 dark:text-white">Arsip</h1>
-          <p id="categoryViewSubtitle" class="text-xs text-slate-500 mt-1">Hasil pencarian arsip data.</p>
-        </div>
+        <div><h1 id="categoryViewTitle" class="text-2xl font-extrabold text-slate-900 dark:text-white">Arsip</h1><p id="categoryViewSubtitle" class="text-xs text-slate-500 mt-1">Hasil pencarian arsip data.</p></div>
       </div>
       <div id="archiveGridContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6"></div>
     </section>
 
     <section id="bookmarkView" class="hidden view-enter pt-4 px-4 md:px-0">
       <div class="mb-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
-        <div>
-          <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bookmark-check" class="w-6 h-6 text-brand-600"></i> Tersimpan</h1>
-          <p class="text-xs text-slate-500 mt-1">Baca kembali warta favorit Anda secara offline.</p>
-        </div>
+        <div><h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bookmark-check" class="w-6 h-6 text-brand-600"></i> Tersimpan</h1><p class="text-xs text-slate-500 mt-1">Baca kembali warta favorit Anda secara offline.</p></div>
       </div>
       <div id="bookmarkGridContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6"></div>
-      <div id="emptyBookmarkState" class="hidden py-16 text-center text-slate-400">
-        <i data-lucide="bookmark-minus" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
-        <p class="text-sm font-medium">Belum ada warta yang disimpan.</p>
-      </div>
+      <div id="emptyBookmarkState" class="hidden py-16 text-center text-slate-400"><i data-lucide="bookmark-minus" class="w-12 h-12 mx-auto mb-3 opacity-30"></i><p class="text-sm font-medium">Belum ada warta yang disimpan.</p></div>
     </section>
 
-    <!-- ACCOUNT VIEW -->
     <section id="accountView" class="hidden view-enter pt-4 px-4 md:px-0 pb-20">
-        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2 mb-6 border-b border-slate-200 dark:border-slate-800 pb-4">
-            <i data-lucide="user-circle" class="w-6 h-6 text-brand-600"></i> Akun Saya
-        </h1>
-        
+        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2 mb-6 border-b border-slate-200 dark:border-slate-800 pb-4"><i data-lucide="user-circle" class="w-6 h-6 text-brand-600"></i> Akun Saya</h1>
         <div id="profileLoggedOut" class="py-10 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
-            <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i data-lucide="lock" class="w-8 h-8 text-slate-400"></i>
-            </div>
+            <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="lock" class="w-8 h-8 text-slate-400"></i></div>
             <h3 class="font-bold text-slate-900 dark:text-white mb-2">Anda Belum Masuk</h3>
             <p class="text-xs text-slate-500 mb-5">Masuk atau daftar untuk mengakses fitur Kirim Opini, Riwayat Komentar, dan Notifikasi Khusus.</p>
-            <button onclick="App.loginWithGoogle()" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-sm transition active:scale-95 cursor-pointer">
-                <i data-lucide="log-in" class="w-4 h-4"></i> Masuk / Daftar Akun
-            </button>
+            <button onclick="App.loginWithGoogle()" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-sm transition active:scale-95 cursor-pointer"><i data-lucide="log-in" class="w-4 h-4"></i> Masuk / Daftar Akun</button>
         </div>
-
         <div id="profileLoggedIn" class="hidden space-y-5">
             <div class="flex items-center gap-4 p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
                 <div class="w-16 h-16 rounded-full bg-brand-600 text-white flex items-center justify-center text-2xl font-black uppercase" id="profileAvatar">B</div>
-                <div class="flex-1">
-                    <h2 id="profileName" class="text-xl font-extrabold text-slate-900 dark:text-white">Nama Pengguna</h2>
-                    <p id="profileEmail" class="text-xs text-slate-500 mt-1">email@tersembunyi.com</p>
-                </div>
-                <button onclick="App.openEditProfile()" class="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-slate-600 dark:text-slate-300 active:scale-90 transition">
-                    <i data-lucide="edit-3" class="w-5 h-5"></i>
-                </button>
+                <div class="flex-1"><h2 id="profileName" class="text-xl font-extrabold text-slate-900 dark:text-white">Nama Pengguna</h2><p id="profileEmail" class="text-xs text-slate-500 mt-1">email@tersembunyi.com</p></div>
+                <button onclick="App.openEditProfile()" class="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-slate-600 dark:text-slate-300 active:scale-90 transition"><i data-lucide="edit-3" class="w-5 h-5"></i></button>
             </div>
-
             <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800">
-                <div class="p-4 flex justify-between items-center">
-                    <span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> Jenis Kelamin</span>
-                    <span id="profileGender" class="text-sm font-bold text-slate-900 dark:text-white">Belum diisi</span>
-                </div>
-                <div class="p-4 flex justify-between items-center">
-                    <span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> Kota Asal</span>
-                    <span id="profileCity" class="text-sm font-bold text-slate-900 dark:text-white">Belum diisi</span>
-                </div>
-                <div class="p-4 flex justify-between items-center">
-                    <span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4"></i> Profesi</span>
-                    <span id="profileProfession" class="text-sm font-bold text-slate-900 dark:text-white">Belum diisi</span>
-                </div>
+                <div class="p-4 flex justify-between items-center"><span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> Jenis Kelamin</span><span id="profileGender" class="text-sm font-bold text-slate-900 dark:text-white">Belum diisi</span></div>
+                <div class="p-4 flex justify-between items-center"><span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> Kota Asal</span><span id="profileCity" class="text-sm font-bold text-slate-900 dark:text-white">Belum diisi</span></div>
+                <div class="p-4 flex justify-between items-center"><span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4"></i> Profesi</span><span id="profileProfession" class="text-sm font-bold text-slate-900 dark:text-white">Belum diisi</span></div>
             </div>
-
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="App.openInAppForm()" class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-2 active:scale-95 transition cursor-pointer">
-                    <div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/30 text-brand-600 flex items-center justify-center">
-                        <i data-lucide="pen-tool" class="w-5 h-5"></i>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Kirim Opini</span>
-                </button>
-                <button onclick="App.navigate('bookmarks')" class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-2 active:scale-95 transition cursor-pointer">
-                    <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center">
-                        <i data-lucide="bookmark" class="w-5 h-5"></i>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Berita Tersimpan</span>
-                </button>
+                <button onclick="App.openInAppForm()" class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-2 active:scale-95 transition cursor-pointer"><div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/30 text-brand-600 flex items-center justify-center"><i data-lucide="pen-tool" class="w-5 h-5"></i></div><span class="text-xs font-bold text-slate-700 dark:text-slate-200">Kirim Opini</span></button>
+                <button onclick="App.navigate('bookmarks')" class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-2 active:scale-95 transition cursor-pointer"><div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center"><i data-lucide="bookmark" class="w-5 h-5"></i></div><span class="text-xs font-bold text-slate-700 dark:text-slate-200">Berita Tersimpan</span></button>
             </div>
-
             <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-                <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
-                    <i data-lucide="message-square" class="w-4 h-4 text-sky-500"></i>
-                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Riwayat Komentar Anda</h3>
-                </div>
-                <div id="userCommentsList" class="divide-y divide-slate-100 dark:divide-slate-800">
-                    <p class="p-4 text-xs text-slate-400 italic">Memuat komentar...</p>
-                </div>
+                <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2"><i data-lucide="message-square" class="w-4 h-4 text-sky-500"></i><h3 class="text-sm font-bold text-slate-900 dark:text-white">Riwayat Komentar Anda</h3></div>
+                <div id="userCommentsList" class="divide-y divide-slate-100 dark:divide-slate-800"><p class="p-4 text-xs text-slate-400 italic">Memuat komentar...</p></div>
             </div>
-
-            <button onclick="App.logout()" class="w-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-bold text-sm py-3 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer border border-rose-200 dark:border-rose-900/50">
-                <i data-lucide="log-out" class="w-4 h-4"></i> Keluar (Logout)
-            </button>
+            <button onclick="App.logout()" class="w-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-bold text-sm py-3 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer border border-rose-200 dark:border-rose-900/50"><i data-lucide="log-out" class="w-4 h-4"></i> Keluar (Logout)</button>
         </div>
     </section>
 
@@ -494,87 +322,59 @@
           <span id="postCategoryBadge" class="inline-block px-2.5 py-1 text-[10px] font-bold uppercase rounded bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400 mb-3"></span>
           <h1 id="postHeadline" class="text-2xl md:text-3xl font-extrabold font-serif leading-snug text-slate-900 dark:text-white mb-4"></h1>
           <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
-            <div class="flex items-center gap-3">
-              <span class="flex items-center gap-1.5"><i data-lucide="user" class="w-3.5 h-3.5 text-brand-600"></i> <span id="postAuthor" class="font-bold">Redaksi</span></span>
-              <span class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> <span id="postDate"></span></span>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="flex items-center gap-1 font-semibold bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
-                <i data-lucide="eye" class="w-3.5 h-3.5 text-slate-400"></i> <span id="postViewsCount">1</span>
-              </span>
-              <span class="flex items-center gap-1 font-semibold bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
-                <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500"></i> <span id="postLikesCountStat">0</span>
-              </span>
-            </div>
+            <div class="flex items-center gap-3"><span class="flex items-center gap-1.5"><i data-lucide="user" class="w-3.5 h-3.5 text-brand-600"></i> <span id="postAuthor" class="font-bold">Redaksi</span></span><span class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> <span id="postDate"></span></span></div>
+            <div class="flex items-center gap-3"><span class="flex items-center gap-1 font-semibold bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded"><i data-lucide="eye" class="w-3.5 h-3.5 text-slate-400"></i> <span id="postViewsCount">1</span></span><span class="flex items-center gap-1 font-semibold bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded"><i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500"></i> <span id="postLikesCountStat">0</span></span></div>
           </div>
         </div>
         <div id="postRenderedContent" class="article-body px-5 pt-4 text-[17px] text-slate-800 dark:text-slate-200 leading-relaxed"></div>
         <div class="px-5 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
           <div class="flex items-center gap-2 mb-8">
-            <button id="likeButton" onclick="App.toggleLike()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95 cursor-pointer">
-              <i data-lucide="heart" id="likeIcon" class="w-4 h-4 transition-colors"></i> <span id="likeCountText">Suka (0)</span>
-            </button>
-            <button id="bookmarkButton" onclick="App.toggleBookmark()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95 cursor-pointer">
-              <i data-lucide="bookmark" id="bookmarkIcon" class="w-4 h-4 transition-colors"></i> <span id="bookmarkText">Simpan</span>
-            </button>
-            <button onclick="App.share()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-900 dark:bg-slate-700 text-white font-bold text-xs shadow-md active:scale-95 cursor-pointer">
-              <i data-lucide="share-2" class="w-4 h-4"></i> <span class="hidden sm:inline">Bagikan</span>
-            </button>
+            <button id="likeButton" onclick="App.toggleLike()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95 cursor-pointer"><i data-lucide="heart" id="likeIcon" class="w-4 h-4 transition-colors"></i> <span id="likeCountText">Suka (0)</span></button>
+            <button id="bookmarkButton" onclick="App.toggleBookmark()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs transition active:scale-95 cursor-pointer"><i data-lucide="bookmark" id="bookmarkIcon" class="w-4 h-4 transition-colors"></i> <span id="bookmarkText">Simpan</span></button>
+            <button onclick="App.share()" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-slate-900 dark:bg-slate-700 text-white font-bold text-xs shadow-md active:scale-95 cursor-pointer"><i data-lucide="share-2" class="w-4 h-4"></i> <span class="hidden sm:inline">Bagikan</span></button>
           </div>
           <div class="mb-10 bg-slate-50 dark:bg-slate-800/40 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-            <h3 class="font-bold text-base text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-              <i data-lucide="message-square" class="w-4 h-4 text-brand-600"></i> Kolom Komentar Publik (<span id="commentCount">0</span>)
-            </h3>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white mb-4 flex items-center gap-2"><i data-lucide="message-square" class="w-4 h-4 text-brand-600"></i> Kolom Komentar Publik (<span id="commentCount">0</span>)</h3>
             <div id="oauthLoginContainer" class="hidden mb-6 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 text-center shadow-sm">
                 <p class="text-xs font-medium text-slate-600 dark:text-slate-300 mb-3">Silakan masuk atau daftar menggunakan Email untuk menulis komentar:</p>
-                <div class="flex flex-wrap gap-2.5 justify-center items-center">
-                    <button type="button" onclick="App.loginWithGoogle()" class="inline-flex items-center gap-2 bg-white text-gray-700 border border-gray-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm hover:bg-gray-50 transition active:scale-95 cursor-pointer">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.36 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.19C.43 8.15 0 9.89 0 12s.43 3.85 1.19 5.39l4.08-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.19 6.61l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-                        <span>Masuk / Daftar Akun</span>
-                    </button>
-                </div>
+                <div class="flex flex-wrap gap-2.5 justify-center items-center"><button type="button" onclick="App.loginWithGoogle()" class="inline-flex items-center gap-2 bg-white text-gray-700 border border-gray-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm hover:bg-gray-50 transition active:scale-95 cursor-pointer"><svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.36 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.19C.43 8.15 0 9.89 0 12s.43 3.85 1.19 5.39l4.08-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.64 1.19 6.61l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg><span>Masuk / Daftar Akun</span></button></div>
             </div>
             <div id="commentFormContainer" class="hidden space-y-3 mb-6">
-              <div class="flex items-center justify-between bg-white dark:bg-slate-900 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
-                  <span id="loggedInUserText" class="font-bold text-slate-700 dark:text-slate-300">Masuk sebagai...</span>
-                  <button onclick="App.logout()" class="text-rose-600 font-bold hover:underline cursor-pointer">Keluar</button>
+              <div class="flex items-center justify-between bg-white dark:bg-slate-900 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs"><span id="loggedInUserText" class="font-bold text-slate-700 dark:text-slate-300">Masuk sebagai...</span><button onclick="App.logout()" class="text-rose-600 font-bold hover:underline cursor-pointer">Keluar</button></div>
+              <form id="commentForm" onsubmit="App.submitComment(event)" class="space-y-3"><textarea id="commentContent" placeholder="Tulis tanggapan atau opini Anda..." rows="3" required class="w-full bg-white dark:bg-slate-900 text-xs text-slate-900 dark:text-white p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:border-brand-500 resize-none"></textarea><button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-md cursor-pointer">Kirim Komentar</button></form>
+            </div>
+            <div id="commentsList" class="space-y-3"><p class="text-xs text-slate-400 italic">Memuat komentar...</p></div>
+          </div>
+          
+          <!-- FOOTER ARTICLE -->
+          <footer class="mt-10 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-500 dark:text-slate-400 text-xs space-y-4">
+              <div class="flex items-center justify-center gap-2 mb-3">
+                  <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
+                  <span class="font-black text-lg text-slate-900 dark:text-white">BALIJANI</span>
               </div>
-              <form id="commentForm" onsubmit="App.submitComment(event)" class="space-y-3">
-                <textarea id="commentContent" placeholder="Tulis tanggapan atau opini Anda..." rows="3" required class="w-full bg-white dark:bg-slate-900 text-xs text-slate-900 dark:text-white p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:border-brand-500 resize-none"></textarea>
-                <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-md cursor-pointer">Kirim Komentar</button>
-              </form>
-            </div>
-            <div id="commentsList" class="space-y-3">
-              <p class="text-xs text-slate-400 italic">Memuat komentar...</p>
-            </div>
-          </div>
-          <div class="mb-10 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-slate-300 dark:border-slate-700 text-center">
-            <h3 class="font-bold text-slate-900 dark:text-white mb-2">Ikuti Sosial Media Kami</h3>
-            <p id="newsletterCtaText" class="text-xs text-slate-600 dark:text-slate-400 mb-5">Dapatkan isu eksklusif Bali langsung ke inbox Anda.</p>
-            <div class="flex items-center justify-center gap-4">
-              <button onclick="App.confirmSocial('YouTube', 'https://www.youtube.com/@balijani')" class="w-11 h-11 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all shadow-sm">
-                <svg class="w-5 h-5 fill-current text-red-600" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
-              </button>
-              <button onclick="App.confirmSocial('Instagram', 'https://www.instagram.com/balijaninews/')" class="w-11 h-11 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all shadow-sm">
-                <svg class="w-5 h-5 fill-current text-pink-600" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
-              </button>
-              <button onclick="App.confirmSocial('Facebook', 'https://www.facebook.com/redaksi.balijani.id/')" class="w-11 h-11 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all shadow-sm">
-                <svg class="w-5 h-5 fill-current text-blue-600" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
-              </button>
-              <button onclick="App.confirmSocial('TikTok', 'https://www.tiktok.com/@balijaniid')" class="w-11 h-11 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:scale-110 hover:shadow-lg transition-all shadow-sm">
-                <svg class="w-5 h-5 fill-current text-slate-900 dark:text-white" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
-              </button>
-            </div>
-          </div>
-          <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="layers" class="w-5 h-5 text-brand-600"></i> Berita Terkait</h3>
+              <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 font-semibold text-slate-600 dark:text-slate-300">
+                  <a href="https://balijani.id/redaksi" target="_blank" class="hover:text-brand-600 transition">Redaksi</a>
+                  <a href="https://balijani.id/disclaimer" target="_blank" class="hover:text-brand-600 transition">Disclaimer</a>
+                  <a href="https://balijani.id/privacy-policy" target="_blank" class="hover:text-brand-600 transition">Privacy Policy</a>
+                  <a href="https://balijani.id/kode-etik" target="_blank" class="hover:text-brand-600 transition">Kode Etik</a>
+                  <a href="https://balijani.id/pedoman-media-siber" target="_blank" class="hover:text-brand-600 transition">Pedoman Media Siber</a>
+              </div>
+              <div class="flex items-center justify-center gap-4 pt-2">
+                  <button onclick="App.confirmSocial('YouTube', 'https://www.youtube.com/@balijani')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-red-600" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></button>
+                  <button onclick="App.confirmSocial('Instagram', 'https://www.instagram.com/balijaninews/')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-pink-600" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></button>
+                  <button onclick="App.confirmSocial('Facebook', 'https://www.facebook.com/redaksi.balijani.id/')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-blue-600" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg></button>
+                  <button onclick="App.confirmSocial('TikTok', 'https://www.tiktok.com/@balijaniid')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-slate-900 dark:text-white" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg></button>
+              </div>
+              <p class="pt-4 border-t border-slate-100 dark:border-slate-800/60 text-[10px]">© <span id="currentYear"></span> BALIJANI. All rights reserved. <a href="https://balijani.id" target="_blank" class="font-bold text-brand-600">balijani.id</a></p>
+          </footer>
+
+          <h3 class="font-bold text-lg mb-4 mt-10 flex items-center gap-2"><i data-lucide="layers" class="w-5 h-5 text-brand-600"></i> Berita Terkait</h3>
           <div id="relatedPostsGrid" class="grid grid-cols-2 md:grid-cols-2 gap-3 mb-8"></div>
         </div>
       </div>
       <aside class="w-full md:w-72 border-t md:border-t-0 md:border-l border-slate-100 dark:border-slate-800 px-5 pt-6 md:pr-5 md:pl-6 md:pb-6">
         <div class="sticky top-20">
-          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
-            <i data-lucide="trending-up" class="w-4 h-4 text-amber-500"></i> Terpopuler
-          </h3>
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4 text-amber-500"></i> Terpopuler</h3>
           <div id="popularPostsList" class="flex flex-col gap-4"></div>
         </div>
       </aside>
@@ -591,102 +391,16 @@
   </nav>
 
   <div id="opiniScrim" class="bottom-sheet-scrim" onclick="App.closeOpiniModal()"></div>
-  <div id="opiniModal" class="bottom-sheet">
-    <div class="drag-handle"></div>
-    <div class="px-6 pb-6 text-center space-y-4">
-      <div class="w-14 h-14 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto">
-        <i data-lucide="pen-tool" class="w-7 h-7"></i>
-      </div>
-      <div>
-        <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Kirim Opini / Warta</h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sampaikan gagasan, aspirasi, atau tulisan Anda untuk dipublikasikan di balijani.id.</p>
-      </div>
-      <div class="space-y-2 pt-2">
-        <button onclick="App.openInAppForm()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95">
-          <i data-lucide="file-text" class="w-4 h-4"></i> Buka Formulir Langsung
-        </button>
-        <a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeOpiniModal()" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95">
-          <i data-lucide="external-link" class="w-4 h-4"></i> Buka di Web Browser
-        </a>
-      </div>
-      <button onclick="App.closeOpiniModal()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 pt-2 block w-full cursor-pointer">Batal</button>
-    </div>
-  </div>
+  <div id="opiniModal" class="bottom-sheet"><div class="drag-handle"></div><div class="px-6 pb-6 text-center space-y-4"><div class="w-14 h-14 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto"><i data-lucide="pen-tool" class="w-7 h-7"></i></div><div><h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Kirim Opini / Warta</h3><p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sampaikan gagasan, aspirasi, atau tulisan Anda untuk dipublikasikan di balijani.id.</p></div><div class="space-y-2 pt-2"><button onclick="App.openInAppForm()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="file-text" class="w-4 h-4"></i> Buka Formulir Langsung</button><a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeOpiniModal()" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="external-link" class="w-4 h-4"></i> Buka di Web Browser</a></div><button onclick="App.closeOpiniModal()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 pt-2 block w-full cursor-pointer">Batal</button></div></div>
 
   <div id="webFormScrim" class="bottom-sheet-scrim" onclick="App.closeWebForm()"></div>
-  <div id="webFormView" class="bottom-sheet" style="height: 95vh; max-height: 95vh; padding: 0;">
-    <div class="drag-handle"></div>
-    <div class="h-[60px] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shadow-sm z-10">
-      <button onclick="App.closeWebForm()" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 active:scale-95 transition cursor-pointer">
-        <i data-lucide="x" class="w-5 h-5"></i> Tutup
-      </button>
-      <a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeWebForm()" class="flex items-center gap-1.5 text-[10px] font-bold bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 px-3 py-2 rounded-full border border-brand-500/20 active:scale-95 transition">
-        <span>Lanjut ke web</span> <i data-lucide="external-link" class="w-3 h-3"></i>
-      </a>
-    </div>
-    <div class="flex-1 w-full bg-white dark:bg-slate-900 relative" style="height: calc(95vh - 100px);">
-      <div id="iframeLoader" class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-0">
-         <div class="w-8 h-8 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div>
-      </div>
-      <iframe id="webFormIframe" src="" class="absolute inset-0 w-full h-full border-none z-10 opacity-0 transition-opacity duration-500" onload="this.style.opacity=1; document.getElementById('iframeLoader').style.display='none';"></iframe>
-    </div>
-  </div>
+  <div id="webFormView" class="bottom-sheet" style="height: 95vh; max-height: 95vh; padding: 0;"><div class="drag-handle"></div><div class="h-[60px] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shadow-sm z-10"><button onclick="App.closeWebForm()" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 active:scale-95 transition cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i> Tutup</button><a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeWebForm()" class="flex items-center gap-1.5 text-[10px] font-bold bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 px-3 py-2 rounded-full border border-brand-500/20 active:scale-95 transition"><span>Lanjut ke web</span> <i data-lucide="external-link" class="w-3 h-3"></i></a></div><div class="flex-1 w-full bg-white dark:bg-slate-900 relative" style="height: calc(95vh - 100px);"><div id="iframeLoader" class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-0"><div class="w-8 h-8 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div></div><iframe id="webFormIframe" src="" class="absolute inset-0 w-full h-full border-none z-10 opacity-0 transition-opacity duration-500" onload="this.style.opacity=1; document.getElementById('iframeLoader').style.display='none';"></iframe></div></div>
 
-  <!-- MODAL EDIT PROFIL -->
   <div id="editProfileScrim" class="bottom-sheet-scrim" onclick="App.closeEditProfile()"></div>
-  <div id="editProfileModal" class="bottom-sheet">
-    <div class="drag-handle"></div>
-    <div class="px-6 pb-6">
-        <h3 class="text-lg font-extrabold mb-4 text-center">Edit Profil</h3>
-        <div class="space-y-3">
-            <div>
-                <label class="text-xs font-bold text-slate-500">Nama Lengkap</label>
-                <input id="editName" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white">
-            </div>
-            <div>
-                <label class="text-xs font-bold text-slate-500">Jenis Kelamin</label>
-                <select id="editGender" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white">
-                    <option value="">Pilih...</option>
-                    <option value="Laki-laki">Laki-laki</option>
-                    <option value="Perempuan">Perempuan</option>
-                </select>
-            </div>
-            <div>
-                <label class="text-xs font-bold text-slate-500">Kota Asal</label>
-                <input id="editCity" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white">
-            </div>
-            <div>
-                <label class="text-xs font-bold text-slate-500">Profesi</label>
-                <input id="editProfession" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white">
-            </div>
-        </div>
-        <button onclick="App.saveProfile()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm py-3 rounded-xl mt-6 active:scale-95 transition">Simpan Perubahan</button>
-        <button onclick="App.closeEditProfile()" class="w-full text-slate-500 font-bold text-sm py-3 mt-2">Batal</button>
-    </div>
-  </div>
+  <div id="editProfileModal" class="bottom-sheet"><div class="drag-handle"></div><div class="px-6 pb-6"><h3 class="text-lg font-extrabold mb-4 text-center">Edit Profil</h3><div class="space-y-3"><div><label class="text-xs font-bold text-slate-500">Nama Lengkap</label><input id="editName" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div><div><label class="text-xs font-bold text-slate-500">Jenis Kelamin</label><select id="editGender" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"><option value="">Pilih...</option><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select></div><div><label class="text-xs font-bold text-slate-500">Kota Asal</label><input id="editCity" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div><div><label class="text-xs font-bold text-slate-500">Profesi</label><input id="editProfession" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div></div><button onclick="App.saveProfile()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm py-3 rounded-xl mt-6 active:scale-95 transition">Simpan Perubahan</button><button onclick="App.closeEditProfile()" class="w-full text-slate-500 font-bold text-sm py-3 mt-2">Batal</button></div></div>
 
   <div id="subscribeScrim" class="bottom-sheet-scrim" onclick="App.closeSubscribe()"></div>
-  <div id="subscribeModal" class="bottom-sheet">
-    <div class="drag-handle"></div>
-    <div class="px-6 pb-6 text-center space-y-4">
-      <div class="w-14 h-14 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto">
-        <i data-lucide="mail-open" class="w-7 h-7"></i>
-      </div>
-      <div>
-        <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Berlangganan Newsletter</h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Dapatkan ringkasan warta dan isu eksklusif Bali langsung ke email Anda.</p>
-      </div>
-      <div class="space-y-2 pt-2">
-        <a href="https://balijani.id/newsletter" target="_blank" onclick="App.closeSubscribe()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95">
-          <i data-lucide="user-plus" class="w-4 h-4"></i> Daftar via Web Balijani
-        </a>
-        <button onclick="App.showSnackbar('Fitur langganan dalam aplikasi akan segera hadir!')" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95">
-          <i data-lucide="bell" class="w-4 h-4"></i> Ingatkan Saya Nanti
-        </button>
-      </div>
-      <button onclick="App.closeSubscribe()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 pt-2 block w-full cursor-pointer">Tutup</button>
-    </div>
-  </div>
+  <div id="subscribeModal" class="bottom-sheet"><div class="drag-handle"></div><div class="px-6 pb-6 text-center space-y-4"><div class="w-14 h-14 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto"><i data-lucide="mail-open" class="w-7 h-7"></i></div><div><h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Berlangganan Newsletter</h3><p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Dapatkan ringkasan warta dan isu eksklusif Bali langsung ke email Anda.</p></div><div class="space-y-2 pt-2"><a href="https://balijani.id/newsletter" target="_blank" onclick="App.closeSubscribe()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="user-plus" class="w-4 h-4"></i> Daftar via Web Balijani</a><button onclick="App.showSnackbar('Fitur langganan dalam aplikasi akan segera hadir!')" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="bell" class="w-4 h-4"></i> Ingatkan Saya Nanti</button></div><button onclick="App.closeSubscribe()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 pt-2 block w-full cursor-pointer">Tutup</button></div></div>
 
   <script>
     const SUPABASE_URL = "https://vqsshojqwpespanexcyy.supabase.co";
@@ -713,14 +427,8 @@
 
       showSnackbar(msg) {
         let sb = document.getElementById('appSnackbar');
-        if (!sb) {
-          sb = document.createElement('div');
-          sb.id = 'appSnackbar';
-          sb.className = 'snackbar';
-          document.body.appendChild(sb);
-        }
-        sb.textContent = msg;
-        sb.classList.add('show');
+        if (!sb) { sb = document.createElement('div'); sb.id = 'appSnackbar'; sb.className = 'snackbar'; document.body.appendChild(sb); }
+        sb.textContent = msg; sb.classList.add('show');
         clearTimeout(this.snackbarTimeout);
         this.snackbarTimeout = setTimeout(() => sb.classList.remove('show'), 3000);
       },
@@ -735,24 +443,10 @@
 
       closeToast() { document.getElementById('inAppToast').style.top = '-200%'; },
 
-      openLatestPostFromToast() {
-        this.closeToast();
-        if (this.latestUnreadPostId) {
-          this.openPost(this.latestUnreadPostId);
-          this.latestUnreadPostId = null;
-        }
-      },
+      openLatestPostFromToast() { this.closeToast(); if (this.latestUnreadPostId) { this.openPost(this.latestUnreadPostId); this.latestUnreadPostId = null; } },
 
-      openSubscribe() {
-        this.haptic(10);
-        document.getElementById('subscribeScrim').classList.add('active');
-        document.getElementById('subscribeModal').classList.add('active');
-      },
-
-      closeSubscribe() {
-        document.getElementById('subscribeScrim').classList.remove('active');
-        document.getElementById('subscribeModal').classList.remove('active');
-      },
+      openSubscribe() { this.haptic(10); document.getElementById('subscribeScrim').classList.add('active'); document.getElementById('subscribeModal').classList.add('active'); },
+      closeSubscribe() { document.getElementById('subscribeScrim').classList.remove('active'); document.getElementById('subscribeModal').classList.remove('active'); },
 
       async fetchRemoteConfig() {
         if (!this.CONFIG_URL) return;
@@ -762,18 +456,12 @@
             const config = await res.json();
             if (config.apiEndpoint) this.API_URL = config.apiEndpoint;
             const logoEl = document.getElementById('dynamicLogoText');
-            if (logoEl && config.appName1) {
-              logoEl.innerHTML = `${config.appName1}<span class="text-brand-600">${config.appName2 || 'JANI'}</span>`;
-            }
+            if (logoEl && config.appName1) { logoEl.innerHTML = `${config.appName1}<span class="text-brand-600">${config.appName2 || 'JANI'}</span>`; }
           }
         } catch (e) { console.error("Config fetch failed", e); }
       },
 
-      updateAndroidStatusBar(color, isDarkMode) {
-        if (typeof AndroidBridge !== "undefined") {
-            AndroidBridge.ubahWarnaStatusBar(color, isDarkMode ? "dark" : "light");
-        }
-      },
+      updateAndroidStatusBar(color, isDarkMode) { if (typeof AndroidBridge !== "undefined") { AndroidBridge.ubahWarnaStatusBar(color, isDarkMode ? "dark" : "light"); } },
 
       async init() {
         const applySystemTheme = () => {
@@ -790,17 +478,22 @@
         });
 
         window.addEventListener('popstate', (e) => {
-            if (e.state) {
+            if (e.state && e.state.view) {
                 if (e.state.view === 'single') this.openPost(e.state.id, true);
                 else this.navigate(e.state.view, e.state.query || '', true);
             } else {
-                this.navigate('home', '', true);
+                const hash = window.location.hash;
+                if (hash.startsWith('#post-')) { this.openPost(parseInt(hash.replace('#post-', '')), true); }
+                else if (hash.startsWith('#category')) { const parts = hash.split('/'); this.navigate('category', parts[1] ? decodeURIComponent(parts[1]) : 'all', true); }
+                else if (hash === '#bookmarks') { this.navigate('bookmarks', '', true); }
+                else if (hash === '#account') { this.navigate('account', '', true); }
+                else { this.navigate('home', '', true); }
             }
         });
 
-        if (!window.location.hash.startsWith('#post-')) {
-            history.replaceState({ view: 'home', query: '' }, '', window.location.pathname);
-        }
+        if (!window.location.hash) { history.replaceState({ view: 'home', query: '' }, '', '#home'); }
+
+        document.getElementById('currentYear').innerText = new Date().getFullYear();
 
         await this.fetchRemoteConfig();
         this.initPullToRefresh();
@@ -812,23 +505,16 @@
         this.checkAuthSession();
         supabaseClient.auth.onAuthStateChange((event, session) => {
             this.updateAuthUI(session);
-            if (!document.getElementById('accountView').classList.contains('hidden')) {
-                this.renderAccountPage(session);
-            }
+            if (!document.getElementById('accountView').classList.contains('hidden')) { this.renderAccountPage(session); }
         });
       },
 
-      async checkAuthSession() {
-          const { data: { session } } = await supabaseClient.auth.getSession();
-          this.updateAuthUI(session);
-          return session;
-      },
+      async checkAuthSession() { const { data: { session } } = await supabaseClient.auth.getSession(); this.updateAuthUI(session); return session; },
 
       updateAuthUI(session) {
           const loginContainer = document.getElementById('oauthLoginContainer');
           const commentFormContainer = document.getElementById('commentFormContainer');
           const loggedInUserText = document.getElementById('loggedInUserText');
-
           if (session && session.user) {
               if(loginContainer) loginContainer.classList.add('hidden');
               if(commentFormContainer) commentFormContainer.classList.remove('hidden');
@@ -841,24 +527,16 @@
       },
 
       async loginWithGoogle() {
-          if (typeof AndroidBridge !== "undefined" && AndroidBridge.showLoginDialog) {
-              AndroidBridge.showLoginDialog();
-          } else {
+          if (typeof AndroidBridge !== "undefined" && AndroidBridge.showLoginDialog) { AndroidBridge.showLoginDialog(); } 
+          else {
               const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
-              const { data, error } = await supabaseClient.auth.signInWithOAuth({
-                  provider: 'google', options: { redirectTo: redirectUrl, skipBrowserRedirect: false }
-              });
+              const { data, error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: redirectUrl, skipBrowserRedirect: false } });
               if (error) return this.showSnackbar('Gagal login Google: ' + error.message);
               if (data?.url) window.location.href = data.url;
           }
       },
 
-      async logout() {
-          await supabaseClient.auth.signOut();
-          this.updateAuthUI(null);
-          this.showSnackbar('Berhasil keluar.');
-          this.renderAccountPage(null);
-      },
+      async logout() { await supabaseClient.auth.signOut(); this.updateAuthUI(null); this.showSnackbar('Berhasil keluar.'); this.renderAccountPage(null); },
 
       startNotificationPolling() { setInterval(() => { this.checkNewPosts(); }, 20000); },
 
@@ -869,12 +547,9 @@
           if (!res.ok) return;
           const latestData = await res.json();
           if (!latestData || latestData.length === 0) return;
-
           const newPosts = latestData.filter(post => parseInt(post.id) > parseInt(this.lastKnownPostId));
           if (newPosts.length > 0) {
-            newPosts.reverse().forEach(post => {
-                this.notifications.unshift({ id: post.id, title: post.title.rendered, date: post.date, isRead: false });
-            });
+            newPosts.reverse().forEach(post => { this.notifications.unshift({ id: post.id, title: post.title.rendered, date: post.date, isRead: false }); });
             this.lastKnownPostId = newPosts[newPosts.length - 1].id;
             localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
             localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
@@ -886,310 +561,111 @@
         } catch (e) {}
       },
 
-      updateNotifBadge() {
-        const unreadCount = this.notifications.filter(n => !n.isRead).length;
-        const badge = document.getElementById('notifBadge');
-        if (unreadCount > 0) {
-            badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-            badge.classList.remove('hidden');
-        } else { badge.classList.add('hidden'); }
-      },
-
-      toggleNotifPanel() {
-        this.haptic();
-        document.getElementById('notifPanel').classList.toggle('hidden');
-        if(!document.getElementById('notifPanel').classList.contains('hidden')) this.renderNotifPanel();
-      },
-
-      renderNotifPanel() {
-        const container = document.getElementById('notifListContainer');
-        container.innerHTML = '';
-        if (this.notifications.length === 0) {
-            container.innerHTML = `<div class="py-16 text-center text-slate-400"><p class="text-xs font-medium">Belum ada notifikasi baru.</p></div>`;
-        } else {
-            this.notifications.forEach(notif => {
-                container.innerHTML += `
-                  <div onclick="App.openNotifPost(${notif.id})" class="flex items-start gap-3 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <div class="flex-1">
-                      <h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2">${notif.title}</h4>
-                      <span class="text-[9px] text-slate-400 mt-1 block">${new Date(notif.date).toLocaleDateString('id-ID')}</span>
-                    </div>
-                  </div>`;
-            });
-        }
-        lucide.createIcons();
-      },
-
-      clearReadNotifs() {
-        this.notifications = this.notifications.filter(n => !n.isRead);
-        localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
-        this.renderNotifPanel(); this.updateNotifBadge();
-      },
-
-      clearAllNotifs() {
-        this.notifications = []; localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
-        this.renderNotifPanel(); this.updateNotifBadge();
-      },
-
-      openNotifPost(id) {
-        document.getElementById('notifPanel').classList.add('hidden');
-        this.openPost(id);
-      },
-
-      markAsRead(id) {
-        let changed = false;
-        this.notifications.forEach(n => { if (n.id === id && !n.isRead) { n.isRead = true; changed = true; } });
-        if (changed) {
-            localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
-            this.updateNotifBadge();
-        }
-      },
+      updateNotifBadge() { const unreadCount = this.notifications.filter(n => !n.isRead).length; const badge = document.getElementById('notifBadge'); if (unreadCount > 0) { badge.textContent = unreadCount > 99 ? '99+' : unreadCount; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); } },
+      toggleNotifPanel() { this.haptic(); document.getElementById('notifPanel').classList.toggle('hidden'); if(!document.getElementById('notifPanel').classList.contains('hidden')) this.renderNotifPanel(); },
+      renderNotifPanel() { const container = document.getElementById('notifListContainer'); container.innerHTML = ''; if (this.notifications.length === 0) { container.innerHTML = `<div class="py-16 text-center text-slate-400"><p class="text-xs font-medium">Belum ada notifikasi baru.</p></div>`; } else { this.notifications.forEach(notif => { container.innerHTML += `<div onclick="App.openNotifPost(${notif.id})" class="flex items-start gap-3 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm"><div class="flex-1"><h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2">${notif.title}</h4><span class="text-[9px] text-slate-400 mt-1 block">${new Date(notif.date).toLocaleDateString('id-ID')}</span></div></div>`; }); } lucide.createIcons(); },
+      clearReadNotifs() { this.notifications = this.notifications.filter(n => !n.isRead); localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications)); this.renderNotifPanel(); this.updateNotifBadge(); },
+      clearAllNotifs() { this.notifications = []; localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications)); this.renderNotifPanel(); this.updateNotifBadge(); },
+      openNotifPost(id) { document.getElementById('notifPanel').classList.add('hidden'); this.openPost(id); },
+      markAsRead(id) { let changed = false; this.notifications.forEach(n => { if (n.id === id && !n.isRead) { n.isRead = true; changed = true; } }); if (changed) { localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications)); this.updateNotifBadge(); } },
 
       async loadData() {
         try {
           const res = await fetch(this.API_URL);
           if (!res.ok) throw new Error();
           this.data = await res.json();
-          if (!this.lastKnownPostId && this.data.length > 0) {
-              this.lastKnownPostId = this.data[0].id;
-              localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
-          }
+          if (!this.lastKnownPostId && this.data.length > 0) { this.lastKnownPostId = this.data[0].id; localStorage.setItem('balijani_last_post_id', this.lastKnownPostId); }
           this.renderHome();
           document.getElementById('loadingView').classList.add('hidden');
           
-          if (window.location.hash.startsWith('#post-')) {
-              const postId = parseInt(window.location.hash.replace('#post-', ''));
-              if (postId) {
-                  history.replaceState({ view: 'single', id: postId }, '', '#post-' + postId);
-                  this.openPost(postId, true);
-              } else {
-                  this.navigate('home', '', true);
-              }
-          } else {
-              this.navigate('home', '', true);
-          }
-        } catch (e) {
-          document.getElementById('loadingView').innerHTML = `<p class="text-rose-500 py-10 text-center font-bold">Gagal terhubung ke Server Warta Balijani.</p>`;
-        }
+          const hash = window.location.hash;
+          if (hash.startsWith('#post-')) {
+              const postId = parseInt(hash.replace('#post-', ''));
+              if (postId) { history.replaceState({ view: 'single', id: postId }, '', '#post-' + postId); this.openPost(postId, true); }
+              else { this.navigate('home', '', true); }
+          } else if (hash.startsWith('#category')) {
+              const parts = hash.split('/');
+              const query = parts[1] ? decodeURIComponent(parts[1]) : 'all';
+              this.navigate('category', query, true);
+          } else if (hash === '#bookmarks') { this.navigate('bookmarks', '', true); }
+          else if (hash === '#account') { this.navigate('account', '', true); }
+          else { this.navigate('home', '', true); }
+        } catch (e) { document.getElementById('loadingView').innerHTML = `<p class="text-rose-500 py-10 text-center font-bold">Gagal terhubung ke Server Warta Balijani.</p>`; }
       },
 
-      initReadingProgress() {
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-          if (!ticking) {
-            window.requestAnimationFrame(() => {
-              const singleView = document.getElementById('singlePostView');
-              if (!singleView.classList.contains('hidden')) {
-                document.getElementById('progressBarContainer').classList.remove('hidden');
-                const winScroll = document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                document.getElementById('progressBar').style.width = (height > 0 ? (winScroll / height) * 100 : 100) + '%';
-              } else {
-                document.getElementById('progressBarContainer').classList.add('hidden');
-              }
-              ticking = false;
-            });
-            ticking = true;
-          }
-        }, { passive: true });
-      },
-
-      initPullToRefresh() {
-        let touchstartY = 0;
-        const indicator = document.getElementById('pullRefreshIndicator');
-        const ring = document.getElementById('refreshSpinnerRing');
-        
-        window.addEventListener('touchstart', e => { if (window.scrollY === 0) touchstartY = e.touches[0].clientY; }, {passive: true});
-        window.addEventListener('touchend', async e => {
-          if (window.scrollY === 0 && touchstartY > 0 && e.changedTouches[0].clientY - touchstartY > 90) {
-            indicator.style.top = `20px`;
-            ring.classList.add('is-spinning-indicator');
-            await this.loadData();
-            setTimeout(() => { 
-                indicator.style.top = `-60px`; 
-                ring.classList.remove('is-spinning-indicator');
-            }, 500);
-          }
-          touchstartY = 0;
-        }, {passive: true});
-      },
+      initReadingProgress() { let ticking = false; window.addEventListener('scroll', () => { if (!ticking) { window.requestAnimationFrame(() => { const singleView = document.getElementById('singlePostView'); if (!singleView.classList.contains('hidden')) { document.getElementById('progressBarContainer').classList.remove('hidden'); const winScroll = document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; document.getElementById('progressBar').style.width = (height > 0 ? (winScroll / height) * 100 : 100) + '%'; } else { document.getElementById('progressBarContainer').classList.add('hidden'); } ticking = false; }); ticking = true; } }, { passive: true }); },
+      initPullToRefresh() { let touchstartY = 0; const indicator = document.getElementById('pullRefreshIndicator'); const ring = document.getElementById('refreshSpinnerRing'); window.addEventListener('touchstart', e => { if (window.scrollY === 0) touchstartY = e.touches[0].clientY; }, {passive: true}); window.addEventListener('touchend', async e => { if (window.scrollY === 0 && touchstartY > 0 && e.changedTouches[0].clientY - touchstartY > 90) { indicator.style.top = `20px`; ring.classList.add('is-spinning-indicator'); await this.loadData(); setTimeout(() => { indicator.style.top = `-60px`; ring.classList.remove('is-spinning-indicator'); }, 500); } touchstartY = 0; }, {passive: true}); },
 
       getAuthorName(post) { return post._embedded?.author?.[0]?.name || 'Nyoman Sarjana'; },
       getImageUrl(post) { return post._embedded?.['wp:featuredmedia']?.[0]?.source_url || ''; },
 
-      toggleSearch() {
-        this.haptic();
-        this.isSearchOpen = !this.isSearchOpen;
-        document.getElementById('searchOverlay').classList.toggle('hidden');
-        if(this.isSearchOpen) document.getElementById('searchInput').focus();
-      },
-      executeSearch(e) {
-        if (e.key === 'Enter') {
-          this.navigate('category', document.getElementById('searchInput').value);
-          this.toggleSearch();
-          document.getElementById('searchInput').value = '';
-        }
-      },
-
+      toggleSearch() { this.haptic(); this.isSearchOpen = !this.isSearchOpen; document.getElementById('searchOverlay').classList.toggle('hidden'); if(this.isSearchOpen) document.getElementById('searchInput').focus(); },
+      executeSearch(e) { if (e.key === 'Enter') { this.navigate('category', document.getElementById('searchInput').value); this.toggleSearch(); document.getElementById('searchInput').value = ''; } },
       confirmSocial(platform, url) { window.open(url, '_system') || (window.location.href = url); },
 
-      showOpiniModal() {
-        this.haptic(20);
-        document.getElementById('opiniScrim').classList.add('active');
-        document.getElementById('opiniModal').classList.add('active');
-      },
-
-      closeOpiniModal() {
-        document.getElementById('opiniScrim').classList.remove('active');
-        document.getElementById('opiniModal').classList.remove('active');
-      },
-
-      openInAppForm() {
-        if (typeof App.closeOpiniModal === 'function') App.closeOpiniModal();
-        document.getElementById('webFormScrim').classList.add('active');
-        document.getElementById('webFormView').classList.add('active');
-        document.getElementById('iframeLoader').style.display = 'flex';
-        document.getElementById('webFormIframe').src = "https://balijani.id/form-opini/";
-      },
-
-      closeWebForm() {
-        document.getElementById('webFormScrim').classList.remove('active');
-        document.getElementById('webFormView').classList.remove('active');
-      },
+      showOpiniModal() { this.haptic(20); document.getElementById('opiniScrim').classList.add('active'); document.getElementById('opiniModal').classList.add('active'); },
+      closeOpiniModal() { document.getElementById('opiniScrim').classList.remove('active'); document.getElementById('opiniModal').classList.remove('active'); },
+      openInAppForm() { if (typeof App.closeOpiniModal === 'function') App.closeOpiniModal(); document.getElementById('webFormScrim').classList.add('active'); document.getElementById('webFormView').classList.add('active'); document.getElementById('iframeLoader').style.display = 'flex'; document.getElementById('webFormIframe').src = "https://balijani.id/form-opini/"; },
+      closeWebForm() { document.getElementById('webFormScrim').classList.remove('active'); document.getElementById('webFormView').classList.remove('active'); },
 
       share() {
         if (!this.currentPost) return;
         this.haptic(15);
-        const shareUrl = this.currentPost.link;
-        const shareTitle = this.currentPost.title.rendered;
-
-        if (typeof AndroidBridge !== "undefined") {
-            AndroidBridge.bagikanBerita(shareTitle, shareUrl);
-            return; 
-        }
-
-        if (navigator.share) {
-            navigator.share({ title: shareTitle, url: shareUrl }).catch(() => {});
-            return;
-        }
-
-        let scrim = document.getElementById('shareScrim');
-        let sheet = document.getElementById('shareSheet');
-        
+        const shareUrl = this.currentPost.link; const shareTitle = this.currentPost.title.rendered;
+        if (typeof AndroidBridge !== "undefined") { AndroidBridge.bagikanBerita(shareTitle, shareUrl); return; }
+        if (navigator.share) { navigator.share({ title: shareTitle, url: shareUrl }).catch(() => {}); return; }
+        let scrim = document.getElementById('shareScrim'); let sheet = document.getElementById('shareSheet');
         if (!scrim) {
-          scrim = document.createElement('div');
-          scrim.id = 'shareScrim';
-          scrim.className = 'bottom-sheet-scrim';
-          scrim.onclick = () => { scrim.classList.remove('active'); sheet.classList.remove('active'); };
-          
-          sheet = document.createElement('div');
-          sheet.id = 'shareSheet';
-          sheet.className = 'bottom-sheet';
-          sheet.innerHTML = `
-            <div class="drag-handle"></div>
-            <div class="px-6 pb-6">
-              <h3 class="font-bold text-lg mb-2">Bagikan Berita</h3>
-              <p id="shareModalTitleText" class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-3"></p>
-              <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
-                <i data-lucide="link" class="w-4 h-4 text-slate-400 shrink-0"></i>
-                <input type="text" id="shareUrlInput" readonly class="bg-transparent text-xs text-slate-700 dark:text-slate-300 w-full outline-none select-all">
-              </div>
-              <button id="copyLinkBtn" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md active:scale-95">Salin Tautan</button>
-            </div>`;
-          document.body.appendChild(scrim);
-          document.body.appendChild(sheet);
-          
-          document.getElementById('copyLinkBtn').onclick = () => {
-            const input = document.getElementById('shareUrlInput');
-            input.select(); document.execCommand('copy');
-            this.showSnackbar('Tautan berhasil disalin!');
-            scrim.classList.remove('active'); sheet.classList.remove('active');
-          };
+          scrim = document.createElement('div'); scrim.id = 'shareScrim'; scrim.className = 'bottom-sheet-scrim'; scrim.onclick = () => { scrim.classList.remove('active'); sheet.classList.remove('active'); };
+          sheet = document.createElement('div'); sheet.id = 'shareSheet'; sheet.className = 'bottom-sheet'; sheet.innerHTML = `<div class="drag-handle"></div><div class="px-6 pb-6"><h3 class="font-bold text-lg mb-2">Bagikan Berita</h3><p id="shareModalTitleText" class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-3"></p><div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 mb-4"><i data-lucide="link" class="w-4 h-4 text-slate-400 shrink-0"></i><input type="text" id="shareUrlInput" readonly class="bg-transparent text-xs text-slate-700 dark:text-slate-300 w-full outline-none select-all"></div><button id="copyLinkBtn" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md active:scale-95">Salin Tautan</button></div>`;
+          document.body.appendChild(scrim); document.body.appendChild(sheet);
+          document.getElementById('copyLinkBtn').onclick = () => { const input = document.getElementById('shareUrlInput'); input.select(); document.execCommand('copy'); this.showSnackbar('Tautan berhasil disalin!'); scrim.classList.remove('active'); sheet.classList.remove('active'); };
         }
-        document.getElementById('shareModalTitleText').textContent = shareTitle;
-        document.getElementById('shareUrlInput').value = shareUrl;
-        scrim.classList.add('active');
-        sheet.classList.add('active');
-        lucide.createIcons();
+        document.getElementById('shareModalTitleText').textContent = shareTitle; document.getElementById('shareUrlInput').value = shareUrl;
+        scrim.classList.add('active'); sheet.classList.add('active'); lucide.createIcons();
       },
 
-      quickShare(event, title, url) {
-          event.stopPropagation();
-          if (navigator.share) { navigator.share({ title: title, url: url }).catch(() => {}); }
-          else { this.currentPost = { title: { rendered: title }, link: url }; this.share(); }
-      },
+      quickShare(event, title, url) { event.stopPropagation(); if (navigator.share) { navigator.share({ title: title, url: url }).catch(() => {}); } else { this.currentPost = { title: { rendered: title }, link: url }; this.share(); } },
 
       updateLikeUI(postId, count) {
           const isLiked = this.likedPosts.includes(postId);
-          const likeCountText = document.getElementById('likeCountText');
-          const likeIcon = document.getElementById('likeIcon');
-          const postLikesCountStat = document.getElementById('postLikesCountStat');
-
-          if (likeCountText) likeCountText.textContent = `Suka (${count})`;
-          if (postLikesCountStat) postLikesCountStat.textContent = count;
-
-          if (likeIcon) {
-              if (isLiked) {
-                  likeIcon.classList.add('text-rose-500', 'fill-rose-500');
-                  likeIcon.classList.remove('text-slate-700', 'dark:text-slate-200');
-              } else {
-                  likeIcon.classList.remove('text-rose-500', 'fill-rose-500');
-                  likeIcon.classList.add('text-slate-700', 'dark:text-slate-200');
-              }
-          }
+          const likeCountText = document.getElementById('likeCountText'); const likeIcon = document.getElementById('likeIcon'); const postLikesCountStat = document.getElementById('postLikesCountStat');
+          if (likeCountText) likeCountText.textContent = `Suka (${count})`; if (postLikesCountStat) postLikesCountStat.textContent = count;
+          if (likeIcon) { if (isLiked) { likeIcon.classList.add('text-rose-500', 'fill-rose-500'); likeIcon.classList.remove('text-slate-700', 'dark:text-slate-200'); } else { likeIcon.classList.remove('text-rose-500', 'fill-rose-500'); likeIcon.classList.add('text-slate-700', 'dark:text-slate-200'); } }
       },
 
       async loadPostInteractions(postId) {
           let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
           let count = likeData ? likeData.likes_count : 0;
-          this.updateLikeUI(postId, count);
-          this.loadComments(postId);
-
+          this.updateLikeUI(postId, count); this.loadComments(postId);
           if (this.activeCommentChannel) supabaseClient.removeChannel(this.activeCommentChannel);
-
-          this.activeCommentChannel = supabaseClient.channel('comments_realtime_' + postId)
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments', filter: `post_id=eq.${postId}` }, payload => {
-              this.appendCommentToDOM(payload.new);
-            }).subscribe();
+          this.activeCommentChannel = supabaseClient.channel('comments_realtime_' + postId).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments', filter: `post_id=eq.${postId}` }, payload => { this.appendCommentToDOM(payload.new); }).subscribe();
       },
 
       async toggleLike() {
-          if (!this.currentPost) return;
-          this.haptic(15);
-          const postId = this.currentPost.id;
-          const isLiked = this.likedPosts.includes(postId);
-          let countEl = document.getElementById('postLikesCountStat');
-          let currentCount = parseInt(countEl ? countEl.textContent : 0) || 0;
-
-          if (isLiked) { this.likedPosts = this.likedPosts.filter(id => id !== postId); currentCount = Math.max(0, currentCount - 1); }
-          else { this.likedPosts.push(postId); currentCount += 1; }
-          
-          localStorage.setItem('balijani_liked_posts', JSON.stringify(this.likedPosts));
-          this.updateLikeUI(postId, currentCount);
-
-          try { await supabaseClient.from('post_likes').upsert({ post_id: postId, likes_count: currentCount }); }
-          catch (err) { console.error("Gagal sinkron like:", err); }
+          if (!this.currentPost) return; this.haptic(15); const postId = this.currentPost.id; const isLiked = this.likedPosts.includes(postId);
+          let countEl = document.getElementById('postLikesCountStat'); let currentCount = parseInt(countEl ? countEl.textContent : 0) || 0;
+          if (isLiked) { this.likedPosts = this.likedPosts.filter(id => id !== postId); currentCount = Math.max(0, currentCount - 1); } else { this.likedPosts.push(postId); currentCount += 1; }
+          localStorage.setItem('balijani_liked_posts', JSON.stringify(this.likedPosts)); this.updateLikeUI(postId, currentCount);
+          try { await supabaseClient.from('post_likes').upsert({ post_id: postId, likes_count: currentCount }); } catch (err) { console.error("Gagal sinkron like:", err); }
       },
 
       async toggleBookmark() {
-          if (!this.currentPost) return;
-          this.haptic(15);
-          const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
-          if (isSaved) { this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id); this.showSnackbar('Warta dihapus dari simpanan.'); }
+          if (!this.currentPost) return; this.haptic(15); const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
+          if (isSaved) { this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id); this.showSnackbar('Warta dihapus dari simpanan.'); } 
           else { this.savedArticles.unshift(this.currentPost); this.showSnackbar('Warta berhasil disimpan.'); }
           localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
-          
-          const bookmarkText = document.getElementById('bookmarkText');
-          const bookmarkIcon = document.getElementById('bookmarkIcon');
-          if (isSaved) { bookmarkText.textContent = "Simpan"; bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500'); }
+          const bookmarkText = document.getElementById('bookmarkText'); const bookmarkIcon = document.getElementById('bookmarkIcon');
+          if (isSaved) { bookmarkText.textContent = "Simpan"; bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500'); } 
           else { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500'); }
       },
 
-      quickToggleBookmark(event, post) {
-          event.stopPropagation();
-          this.haptic(10);
+      quickToggleBookmark(event, postId) {
+          event.stopPropagation(); this.haptic(10);
+          const post = this.data.find(p => p.id === postId) || this.savedArticles.find(p => p.id === postId);
+          if (!post) return;
           const index = this.savedArticles.findIndex(p => p.id === post.id);
-          if (index > -1) { this.savedArticles.splice(index, 1); this.showSnackbar('Warta dihapus dari simpanan.'); }
+          if (index > -1) { this.savedArticles.splice(index, 1); this.showSnackbar('Warta dihapus dari simpanan.'); } 
           else { this.savedArticles.unshift(post); this.showSnackbar('Warta berhasil disimpan.'); }
           localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
           this.renderHome();
@@ -1199,12 +675,8 @@
           const container = document.getElementById('commentsList');
           container.innerHTML = `<p class="text-xs text-slate-400 italic">Memuat komentar...</p>`;
           let { data: comments } = await supabaseClient.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: false });
-          container.innerHTML = '';
-          document.getElementById('commentCount').textContent = comments ? comments.length : 0;
-          if (!comments || comments.length === 0) {
-              container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada komentar. Jadilah yang pertama menanggapi!</p>`;
-              return;
-          }
+          container.innerHTML = ''; document.getElementById('commentCount').textContent = comments ? comments.length : 0;
+          if (!comments || comments.length === 0) { container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada komentar. Jadilah yang pertama menanggapi!</p>`; return; }
           comments.forEach(c => this.appendCommentToDOM(c, false));
       },
 
@@ -1212,37 +684,20 @@
           const container = document.getElementById('commentsList');
           if(container.querySelector('p.italic')) container.innerHTML = '';
           const dateStr = new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-          const commentHTML = `
-            <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
-              <div class="flex justify-between items-center">
-                <span class="text-xs font-bold text-slate-900 dark:text-white">${c.author_name}</span>
-                <span class="text-[9px] text-slate-400">${dateStr}</span>
-              </div>
-              <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${c.content}</p>
-            </div>`;
-          if(prepend) container.insertAdjacentHTML('afterbegin', commentHTML);
-          else container.insertAdjacentHTML('beforeend', commentHTML);
-          let countEl = document.getElementById('commentCount');
-          countEl.textContent = parseInt(countEl.textContent || 0) + 1;
+          const commentHTML = `<div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-1"><div class="flex justify-between items-center"><span class="text-xs font-bold text-slate-900 dark:text-white">${c.author_name}</span><span class="text-[9px] text-slate-400">${dateStr}</span></div><p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${c.content}</p></div>`;
+          if(prepend) container.insertAdjacentHTML('afterbegin', commentHTML); else container.insertAdjacentHTML('beforeend', commentHTML);
+          let countEl = document.getElementById('commentCount'); countEl.textContent = parseInt(countEl.textContent || 0) + 1;
       },
 
       async submitComment(e) {
-          e.preventDefault();
-          if (!this.currentPost) return;
+          e.preventDefault(); if (!this.currentPost) return;
           const { data: { session } } = await supabaseClient.auth.getSession();
           if (!session || !session.user) return this.showSnackbar('Silakan login untuk komentar.');
           const author = session.user.user_metadata?.full_name || session.user.email || 'Pengguna';
-          const content = document.getElementById('commentContent').value.trim();
-          if (!content) return;
-
+          const content = document.getElementById('commentContent').value.trim(); if (!content) return;
           const { error } = await supabaseClient.from('comments').insert([{ post_id: this.currentPost.id, author_name: author, content: content, user_id: session.user.id }]);
-          if (error) {
-              console.error("Supabase Error:", error);
-              this.showSnackbar('Error: ' + error.message); 
-          } else { 
-              document.getElementById('commentContent').value = ''; 
-              this.showSnackbar('Komentar terkirim!'); 
-          }
+          if (error) { console.error("Supabase Error:", error); this.showSnackbar('Error: ' + error.message); } 
+          else { document.getElementById('commentContent').value = ''; this.showSnackbar('Komentar terkirim!'); }
       },
 
       renderHome() {
@@ -1250,270 +705,103 @@
         const hero = this.data[0];
         document.getElementById('mainHeroCard').innerHTML = this.buildHeroHTML(hero);
         document.getElementById('mainHeroCard').onclick = () => this.openPost(hero.id);
-
         const carouselData = this.data.slice(1, 6);
-        const track = document.getElementById('carouselTrack');
-        const dots = document.getElementById('carouselDots');
+        const track = document.getElementById('carouselTrack'); const dots = document.getElementById('carouselDots');
         track.innerHTML = ''; dots.innerHTML = '';
-        carouselData.forEach((p, i) => {
-          track.innerHTML += this.buildCarouselCard(p);
-          dots.innerHTML += `<button class="w-1.5 h-1.5 rounded-full transition-all ${i===0 ? 'bg-brand-600 w-3' : 'bg-slate-300 dark:bg-slate-700'}" id="dot-${i}"></button>`;
-        });
+        carouselData.forEach((p, i) => { track.innerHTML += this.buildCarouselCard(p); dots.innerHTML += `<button class="w-1.5 h-1.5 rounded-full transition-all ${i===0 ? 'bg-brand-600 w-3' : 'bg-slate-300 dark:bg-slate-700'}" id="dot-${i}"></button>`; });
         this.startCarousel();
-
         const sorotanContainer = document.getElementById('threeColGrid');
-        sorotanContainer.className = "grid grid-cols-1 md:grid-cols-3 gap-5";
-        sorotanContainer.innerHTML = '';
-        
+        sorotanContainer.className = "grid grid-cols-1 md:grid-cols-3 gap-5"; sorotanContainer.innerHTML = '';
         if(this.data[6]) {
             const p = this.data[6];
-            sorotanContainer.innerHTML += `
-              <div onclick="App.openPost(${p.id})" class="md:col-span-2 md:row-span-2 cursor-pointer group relative rounded-2xl overflow-hidden h-64 md:h-full min-h-[300px] shadow-sm active:scale-[0.98] transition-all">
-                <img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
-                <div class="absolute bottom-0 p-5 w-full">
-                   <span class="bg-brand-600 text-white text-[9px] font-bold px-2 py-1 rounded shadow-sm uppercase">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span>
-                   <h3 class="text-lg font-bold text-white mt-2 leading-snug drop-shadow-md line-clamp-3">${p.title.rendered}</h3>
-                </div>
-              </div>`;
+            sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="md:col-span-2 md:row-span-2 cursor-pointer group relative rounded-2xl overflow-hidden h-64 md:h-full min-h-[300px] shadow-sm active:scale-[0.98] transition-all"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div><div class="absolute bottom-0 p-5 w-full"><span class="bg-brand-600 text-white text-[9px] font-bold px-2 py-1 rounded shadow-sm uppercase">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span><h3 class="text-lg font-bold text-white mt-2 leading-snug drop-shadow-md line-clamp-3">${p.title.rendered}</h3></div></div>`;
         }
         this.data.slice(7, 11).forEach(p => {
-            sorotanContainer.innerHTML += `
-              <div onclick="App.openPost(${p.id})" class="cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-3 flex gap-3 items-center shadow-sm active:scale-[0.98] transition-all">
-                <div class="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0">
-                   <img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition">
-                </div>
-                <div class="flex-1 min-w-0">
-                   <span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider block mb-1">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span>
-                   <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${p.title.rendered}</h3>
-                </div>
-              </div>`;
+            sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-3 flex gap-3 items-center shadow-sm active:scale-[0.98] transition-all"><div class="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition"></div><div class="flex-1 min-w-0"><span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider block mb-1">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span><h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${p.title.rendered}</h3></div></div>`;
         });
-
-        const magazineGrid = document.getElementById('magazineGrid');
-        magazineGrid.innerHTML = '';
+        const magazineGrid = document.getElementById('magazineGrid'); magazineGrid.innerHTML = '';
         this.data.slice(12, 18).forEach(p => magazineGrid.appendChild(this.buildMagazineCard(p)));
-
-        const slideTrack = document.getElementById('smallSlideTrack');
-        slideTrack.innerHTML = '';
+        const slideTrack = document.getElementById('smallSlideTrack'); slideTrack.innerHTML = '';
         this.data.slice(18, 28).forEach(p => slideTrack.appendChild(this.buildSmallSlideCard(p)));
-
         lucide.createIcons();
       },
 
-      buildHeroHTML(post) {
-        const img = this.getImageUrl(post);
-        const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Utama';
-        return `
-          <img src="${img}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500">
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-          <div class="relative z-10 p-5 md:p-8 space-y-2 w-full">
-            <span class="bg-brand-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-sm">${cat}</span>
-            <h2 class="text-xl md:text-3xl font-bold text-white leading-snug drop-shadow-md">${post.title.rendered}</h2>
-          </div>`;
-      },
-
-      buildCarouselCard(post) {
-        const img = this.getImageUrl(post);
-        return `
-          <div onclick="App.openPost(${post.id})" class="snap-item shrink-0 w-[70%] sm:w-[45%] md:w-[30%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform">
-            <div class="w-full aspect-[16/10] overflow-hidden bg-slate-100"><img src="${img}" onerror="this.parentElement.classList.add('bg-slate-200')" class="w-full h-full object-cover"></div>
-            <div class="p-3 flex-1 flex flex-col justify-center">
-              <h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${post.title.rendered}</h3>
-            </div>
-          </div>`;
-      },
+      buildHeroHTML(post) { const img = this.getImageUrl(post); const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Utama'; return `<img src="${img}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div><div class="relative z-10 p-5 md:p-8 space-y-2 w-full"><span class="bg-brand-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-sm">${cat}</span><h2 class="text-xl md:text-3xl font-bold text-white leading-snug drop-shadow-md">${post.title.rendered}</h2></div>`; },
+      buildCarouselCard(post) { const img = this.getImageUrl(post); return `<div onclick="App.openPost(${post.id})" class="snap-item shrink-0 w-[70%] sm:w-[45%] md:w-[30%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform"><div class="w-full aspect-[16/10] overflow-hidden bg-slate-100"><img src="${img}" onerror="this.parentElement.classList.add('bg-slate-200')" class="w-full h-full object-cover"></div><div class="p-3 flex-1 flex flex-col justify-center"><h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${post.title.rendered}</h3></div></div>`; },
 
       buildMagazineCard(post) {
-        const img = this.getImageUrl(post);
-        const author = this.getAuthorName(post);
-        const isSaved = this.savedArticles.some(p => p.id === post.id);
+        const img = this.getImageUrl(post); const author = this.getAuthorName(post); const isSaved = this.savedArticles.some(p => p.id === post.id);
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm flex flex-col justify-between active:scale-[0.98] transition-all";
         el.onclick = () => this.openPost(post.id);
-        el.innerHTML = `
-          <div>
-            <div class="w-full aspect-[4/3] overflow-hidden bg-slate-101 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div>
-            <div class="p-5">
-              <h3 class="text-base md:text-lg font-bold font-serif text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-3">${post.title.rendered}</h3>
-              <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Editor : ${author}</span>
-            </div>
-          </div>
-          <div class="px-5 pb-5 flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800/60">
-            <span>Warta Bali</span>
-            <div class="flex items-center gap-2">
-              <button onclick="App.quickToggleBookmark(event, ${JSON.stringify(post).replace(/"/g, '&quot;')})" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-4 h-4 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button>
-              <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
-            </div>
-          </div>`;
+        el.innerHTML = `<div><div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-5"><h3 class="text-base md:text-lg font-bold font-serif text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-3">${post.title.rendered}</h3><span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Editor : ${author}</span></div></div><div class="px-5 pb-5 flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800/60"><span>Balijani.id</span><div class="flex items-center gap-2"><button onclick="App.quickToggleBookmark(event, ${post.id})" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-4 h-4 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div>`;
         return el;
       },
 
       buildSmallSlideCard(post) {
-        const img = this.getImageUrl(post);
-        const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
-        const dateObj = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-        const isSaved = this.savedArticles.some(p => p.id === post.id);
+        const img = this.getImageUrl(post); const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
+        const dateObj = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }); const isSaved = this.savedArticles.some(p => p.id === post.id);
         const el = document.createElement('div');
         el.className = "snap-item shrink-0 w-[48%] sm:w-[32%] md:w-[22%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
-        el.innerHTML = `
-          <div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div>
-          <div class="p-3 flex-1 flex flex-col justify-between">
-            <div>
-              <span class="text-[8px] font-bold text-sky-500 uppercase tracking-wider mb-1 block">${cat}</span>
-              <h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-2">${post.title.rendered}</h3>
-            </div>
-            <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/60">
-              <span class="text-[9px] text-slate-400">${dateObj}</span>
-              <div class="flex items-center gap-1">
-                <button onclick="App.quickToggleBookmark(event, ${JSON.stringify(post).replace(/"/g, '&quot;')})" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-3.5 h-3.5 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button>
-                <button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button>
-              </div>
-            </div>
-          </div>`;
+        el.innerHTML = `<div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div><div class="p-3 flex-1 flex flex-col justify-between"><div><span class="text-[8px] font-bold text-sky-500 uppercase tracking-wider mb-1 block">${cat}</span><h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-2">${post.title.rendered}</h3></div><div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/60"><span class="text-[9px] text-slate-400">${dateObj}</span><div class="flex items-center gap-1"><button onclick="App.quickToggleBookmark(event, ${post.id})" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-3.5 h-3.5 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div></div>`;
         return el;
       },
 
       buildGridCard(post, isGallery) {
-        const img = this.getImageUrl(post);
-        const author = this.getAuthorName(post);
+        const img = this.getImageUrl(post); const author = this.getAuthorName(post);
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
-        el.innerHTML = `
-          <div class="w-full ${isGallery ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-slate-100"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div>
-          <div class="p-3 md:p-4">
-            <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${post.title.rendered}</h3>
-            <span class="text-[9px] text-slate-500 font-medium">Editor : ${author}</span>
-          </div>`;
+        el.innerHTML = `<div class="w-full ${isGallery ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-slate-100"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></div><div class="p-3 md:p-4"><h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${post.title.rendered}</h3><span class="text-[9px] text-slate-500 font-medium">Editor : ${author}</span></div>`;
         return el;
       },
 
-      startCarousel() {
-        this.stopCarousel();
-        const track = document.getElementById('carouselTrack');
-        if(!track || !track.children.length) return;
-        let index = 0;
-        const maxIndex = track.children.length - 1;
-        this.carouselInterval = setInterval(() => {
-          index = (index + 1) > maxIndex ? 0 : index + 1;
-          const itemWidth = track.children[0]?.clientWidth || 0;
-          track.scrollTo({ left: index * (itemWidth + 16), behavior: 'smooth' });
-          document.querySelectorAll('#carouselDots button').forEach((dot, i) => {
-            dot.className = `w-1.5 h-1.5 rounded-full transition-all ${i === index ? 'bg-brand-600 w-3' : 'bg-slate-300 dark:bg-slate-700'}`;
-          });
-        }, 3500);
-      },
-
+      startCarousel() { this.stopCarousel(); const track = document.getElementById('carouselTrack'); if(!track || !track.children.length) return; let index = 0; const maxIndex = track.children.length - 1; this.carouselInterval = setInterval(() => { index = (index + 1) > maxIndex ? 0 : index + 1; const itemWidth = track.children[0]?.clientWidth || 0; track.scrollTo({ left: index * (itemWidth + 16), behavior: 'smooth' }); document.querySelectorAll('#carouselDots button').forEach((dot, i) => { dot.className = `w-1.5 h-1.5 rounded-full transition-all ${i === index ? 'bg-brand-600 w-3' : 'bg-slate-300 dark:bg-slate-700'}`; }); }, 3500); },
       stopCarousel() { if(this.carouselInterval) { clearInterval(this.carouselInterval); this.carouselInterval = null; } },
 
-      renderBookmarks() {
-        const grid = document.getElementById('bookmarkGridContainer');
-        const emptyState = document.getElementById('emptyBookmarkState');
-        grid.innerHTML = '';
-        if (this.savedArticles.length === 0) emptyState.classList.remove('hidden');
-        else { emptyState.classList.add('hidden'); this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true))); }
-      },
+      renderBookmarks() { const grid = document.getElementById('bookmarkGridContainer'); const emptyState = document.getElementById('emptyBookmarkState'); grid.innerHTML = ''; if (this.savedArticles.length === 0) emptyState.classList.remove('hidden'); else { emptyState.classList.add('hidden'); this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true))); } },
 
       async renderAccountPage(session) {
-          if (!session) {
-              session = await this.checkAuthSession();
-          }
-          
-          const loggedOutDiv = document.getElementById('profileLoggedOut');
-          const loggedInDiv = document.getElementById('profileLoggedIn');
-          
+          if (!session) { session = await this.checkAuthSession(); }
+          const loggedOutDiv = document.getElementById('profileLoggedOut'); const loggedInDiv = document.getElementById('profileLoggedIn');
           if (session && session.user) {
-              loggedOutDiv.classList.add('hidden');
-              loggedInDiv.classList.remove('hidden');
-              
-              const metadata = session.user.user_metadata || {};
-              const name = metadata.full_name || 'Pengguna';
-              const email = session.user.email || 'email@tersembunyi.com';
-              
-              document.getElementById('profileName').innerText = name;
-              document.getElementById('profileEmail').innerText = email.replace(/(.{2}).*(@.*)/, "$1***$2");
-              document.getElementById('profileAvatar').innerText = name.charAt(0).toUpperCase();
-              
-              document.getElementById('profileGender').innerText = metadata.gender || 'Belum diisi';
-              document.getElementById('profileCity').innerText = metadata.city || 'Belum diisi';
-              document.getElementById('profileProfession').innerText = metadata.profession || 'Belum diisi';
-
-              const commentList = document.getElementById('userCommentsList');
-              commentList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Memuat...</p>`;
+              loggedOutDiv.classList.add('hidden'); loggedInDiv.classList.remove('hidden');
+              const metadata = session.user.user_metadata || {}; const name = metadata.full_name || 'Pengguna'; const email = session.user.email || 'email@tersembunyi.com';
+              document.getElementById('profileName').innerText = name; document.getElementById('profileEmail').innerText = email.replace(/(.{2}).*(@.*)/, "$1***$2"); document.getElementById('profileAvatar').innerText = name.charAt(0).toUpperCase();
+              document.getElementById('profileGender').innerText = metadata.gender || 'Belum diisi'; document.getElementById('profileCity').innerText = metadata.city || 'Belum diisi'; document.getElementById('profileProfession').innerText = metadata.profession || 'Belum diisi';
+              const commentList = document.getElementById('userCommentsList'); commentList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Memuat...</p>`;
               let { data: userComments } = await supabaseClient.from('comments').select('*').eq('user_id', session.user.id).order('created_at', { ascending: false }).limit(5);
-              
-              if (!userComments || userComments.length === 0) {
-                  commentList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Belum ada komentar.</p>`;
-              } else {
-                  commentList.innerHTML = '';
-                  userComments.forEach(c => {
-                      const dateStr = new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-                      commentList.innerHTML += `
-                        <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer" onclick="App.openPost(${c.post_id})">
-                            <p class="text-xs text-slate-700 dark:text-slate-300 mb-1 line-clamp-2">${c.content}</p>
-                            <span class="text-[9px] text-slate-400">Pada ${dateStr}</span>
-                        </div>`;
-                  });
-              }
-
-              if (!metadata.gender || !metadata.city || !metadata.profession) {
-                  this.showSnackbar('Lengkapi data profil Anda di tombol Edit.');
-              }
-
-          } else {
-              loggedOutDiv.classList.remove('hidden');
-              loggedInDiv.classList.add('hidden');
-          }
+              if (!userComments || userComments.length === 0) { commentList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Belum ada komentar.</p>`; } 
+              else { commentList.innerHTML = ''; userComments.forEach(c => { const dateStr = new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); commentList.innerHTML += `<div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer" onclick="App.openPost(${c.post_id})"><p class="text-xs text-slate-700 dark:text-slate-300 mb-1 line-clamp-2">${c.content}</p><span class="text-[9px] text-slate-400">Pada ${dateStr}</span></div>`; }); }
+              if (!metadata.gender || !metadata.city || !metadata.profession) { this.showSnackbar('Lengkapi data profil Anda di tombol Edit.'); }
+          } else { loggedOutDiv.classList.remove('hidden'); loggedInDiv.classList.add('hidden'); }
           lucide.createIcons();
       },
 
       async openEditProfile() {
-          this.haptic(10);
-          const session = await this.checkAuthSession();
-          if (!session) return;
-          
+          this.haptic(10); const session = await this.checkAuthSession(); if (!session) return;
           const metadata = session.user.user_metadata || {};
-          document.getElementById('editName').value = metadata.full_name || '';
-          document.getElementById('editGender').value = metadata.gender || '';
-          document.getElementById('editCity').value = metadata.city || '';
-          document.getElementById('editProfession').value = metadata.profession || '';
-          
-          document.getElementById('editProfileScrim').classList.add('active');
-          document.getElementById('editProfileModal').classList.add('active');
+          document.getElementById('editName').value = metadata.full_name || ''; document.getElementById('editGender').value = metadata.gender || ''; document.getElementById('editCity').value = metadata.city || ''; document.getElementById('editProfession').value = metadata.profession || '';
+          document.getElementById('editProfileScrim').classList.add('active'); document.getElementById('editProfileModal').classList.add('active');
       },
-
-      closeEditProfile() {
-          document.getElementById('editProfileScrim').classList.remove('active');
-          document.getElementById('editProfileModal').classList.remove('active');
-      },
-
+      closeEditProfile() { document.getElementById('editProfileScrim').classList.remove('active'); document.getElementById('editProfileModal').classList.remove('active'); },
       async saveProfile() {
-          const name = document.getElementById('editName').value.trim();
-          const gender = document.getElementById('editGender').value;
-          const city = document.getElementById('editCity').value.trim();
-          const profession = document.getElementById('editProfession').value.trim();
-          
+          const name = document.getElementById('editName').value.trim(); const gender = document.getElementById('editGender').value; const city = document.getElementById('editCity').value.trim(); const profession = document.getElementById('editProfession').value.trim();
           if (!name) return this.showSnackbar('Nama tidak boleh kosong');
-          
           this.showSnackbar('Menyimpan profil...');
-          const { data, error } = await supabaseClient.auth.updateUser({
-              data: { full_name: name, gender: gender, city: city, profession: profession }
-          });
-          
-          if (error) {
-              this.showSnackbar('Gagal menyimpan profil: ' + error.message);
-          } else {
-              this.showSnackbar('Profil berhasil diperbarui!');
-              this.closeEditProfile();
-              this.renderAccountPage(data);
-          }
+          const { data, error } = await supabaseClient.auth.updateUser({ data: { full_name: name, gender: gender, city: city, profession: profession } });
+          if (error) { this.showSnackbar('Gagal menyimpan profil: ' + error.message); } 
+          else { this.showSnackbar('Profil berhasil diperbarui!'); this.closeEditProfile(); this.renderAccountPage(data); }
       },
 
       navigate(view, query = '', fromPopState = false) {
         if(!fromPopState) this.haptic(10);
-        if (!fromPopState) history.pushState({ view: view, query: query }, '', '#' + view);
+        if (!fromPopState) {
+            let hashUrl = '#' + view;
+            if (view === 'category' && query) hashUrl += '/' + encodeURIComponent(query);
+            history.pushState({ view: view, query: query }, '', hashUrl);
+        }
         if (view !== 'home') this.stopCarousel();
 
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
@@ -1523,27 +811,15 @@
         else if (view === 'account') document.querySelector('.nav-btn:nth-child(4)')?.classList.add('active-tab');
 
         const views = ['homeView', 'categoryView', 'bookmarkView', 'singlePostView', 'accountView'];
-        views.forEach(id => {
-            const el = document.getElementById(id);
-            el.classList.add('hidden');
-            el.classList.remove('view-enter');
-        });
+        views.forEach(id => { const el = document.getElementById(id); el.classList.add('hidden'); el.classList.remove('view-enter'); });
         
-                let activeViewId = view === 'single' ? 'singlePostView' : view + 'View';
+        let activeViewId = view === 'single' ? 'singlePostView' : view + 'View';
         const activeView = document.getElementById(activeViewId);
-        if (activeView) {
-            activeView.classList.remove('hidden');
-            void activeView.offsetWidth; 
-            activeView.classList.add('view-enter');
-        }
+        if (activeView) { activeView.classList.remove('hidden'); void activeView.offsetWidth; activeView.classList.add('view-enter'); }
         
-        if (view === 'home') {
-            this.startCarousel();
-        }
+        if (view === 'home') { this.startCarousel(); }
         else if (view === 'bookmarks') { this.renderBookmarks(); }
-        else if (view === 'account') {
-            this.renderAccountPage();
-        }
+        else if (view === 'account') { this.renderAccountPage(); }
         else if (view === 'category') {
           let filtered = this.data;
           if (query !== 'all') {
@@ -1556,231 +832,94 @@
             });
           }
           document.getElementById('categoryViewTitle').textContent = query === 'all' ? 'Semua Berita' : query;
-          const grid = document.getElementById('archiveGridContainer');
-          grid.innerHTML = '';
+          const grid = document.getElementById('archiveGridContainer'); grid.innerHTML = '';
           if (filtered.length === 0) grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400"><p class="text-sm font-medium">Belum ada warta untuk kategori "${query}".</p></div>`;
           else filtered.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
         } 
-        
         window.scrollTo({ top: 0, behavior: 'instant' });
       },
 
       openPost(id, fromPopState = false) {
         let post = this.data.find(p => p.id === id) || this.savedArticles.find(p => p.id === id);
         if (!post) return;
-        this.currentPost = post;
-        this.markAsRead(id);
-
+        this.currentPost = post; this.markAsRead(id);
         document.getElementById('postHeadline').innerHTML = post.title.rendered;
         document.getElementById('postCategoryBadge').textContent = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
         document.getElementById('postAuthor').textContent = this.getAuthorName(post); 
         document.getElementById('postDate').textContent = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-        
-        const imgUrl = this.getImageUrl(post);
-        const imgEl = document.getElementById('postFeaturedImg');
-        imgEl.src = imgUrl || '';
-        document.getElementById('postImageWrapper').style.display = imgUrl ? 'block' : 'none';
+        const imgUrl = this.getImageUrl(post); const imgEl = document.getElementById('postFeaturedImg');
+        imgEl.src = imgUrl || ''; document.getElementById('postImageWrapper').style.display = imgUrl ? 'block' : 'none';
         imgEl.onerror = () => { imgEl.style.display = 'none'; };
-
-        let html = post.content.rendered
-          .replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '')
-          .replace(/<(p|div|span|figure|figcaption|blockquote)([^>]*)\sstyle="([^"]*)"/gi, '<$1$2') 
-          .replace(/<img /gi, '<img style="max-width: 100% !important; height: auto !important; border-radius: 12px; margin: 1rem auto; display: block;" ');
-
+        let html = post.content.rendered.replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '').replace(/<(p|div|span|figure|figcaption|blockquote)([^>]*)\sstyle="([^"]*)"/gi, '<$1$2').replace(/<img /gi, '<img style="max-width: 100% !important; height: auto !important; border-radius: 12px; margin: 1rem auto; display: block;" ');
         const paragraphs = html.split('</p>');
         if (paragraphs.length > 4 && this.data.length > 1) {
-          const midIndex = Math.floor(paragraphs.length / 2);
-          const randomPost = this.data.find(p => p.id !== id) || this.data[0];
-          const bacaJugaHtml = `
-            <div class="baca-juga-box" onclick="App.openPost(${randomPost.id})">
-              <span class="baca-juga-label">Baca Juga</span>
-              <h4 class="baca-juga-title">${randomPost.title.rendered}</h4>
-            </div>`;
-          paragraphs.splice(midIndex, 0, bacaJugaHtml);
-          html = paragraphs.join('</p>');
+          const midIndex = Math.floor(paragraphs.length / 2); const randomPost = this.data.find(p => p.id !== id) || this.data[0];
+          const bacaJugaHtml = `<div class="baca-juga-box" onclick="App.openPost(${randomPost.id})"><span class="baca-juga-label">Baca Juga</span><h4 class="baca-juga-title">${randomPost.title.rendered}</h4></div>`;
+          paragraphs.splice(midIndex, 0, bacaJugaHtml); html = paragraphs.join('</p>');
         }
         document.getElementById('postRenderedContent').innerHTML = html;
-
-        const relatedGrid = document.getElementById('relatedPostsGrid');
-        relatedGrid.innerHTML = '';
+        const relatedGrid = document.getElementById('relatedPostsGrid'); relatedGrid.innerHTML = '';
         this.data.filter(p => p.id !== id).slice(0, 2).forEach(p => relatedGrid.appendChild(this.buildGridCard(p, true)));
-
-        const popularList = document.getElementById('popularPostsList');
-        popularList.innerHTML = '';
-        this.data.slice(5, 10).forEach(p => {
-          popularList.innerHTML += `
-            <div class="flex gap-3 items-center cursor-pointer group active:scale-95 transition" onclick="App.openPost(${p.id})">
-              <img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0">
-              <h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-600 transition">${p.title.rendered}</h4>
-            </div>`;
-        });
-
+        const popularList = document.getElementById('popularPostsList'); popularList.innerHTML = '';
+        this.data.slice(5, 10).forEach(p => { popularList.innerHTML += `<div class="flex gap-3 items-center cursor-pointer group active:scale-95 transition" onclick="App.openPost(${p.id})"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0"><h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-600 transition">${p.title.rendered}</h4></div>`; });
         this.loadPostInteractions(post.id);
-
         const isSaved = this.savedArticles.some(p => p.id === post.id);
-        const bookmarkText = document.getElementById('bookmarkText');
-        const bookmarkIcon = document.getElementById('bookmarkIcon');
-        if (isSaved) { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500'); }
+        const bookmarkText = document.getElementById('bookmarkText'); const bookmarkIcon = document.getElementById('bookmarkIcon');
+        if (isSaved) { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500'); } 
         else { bookmarkText.textContent = "Simpan"; bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500'); }
-
         if (!fromPopState) history.pushState({ view: 'single', id: id }, '', '#post-' + id);
-        this.navigate('single', '', true);
-        lucide.createIcons();
+        this.navigate('single', '', true); lucide.createIcons();
       },
 
-      toggleTheme() {
-        this.haptic(10);
-        document.documentElement.classList.toggle('dark');
-        const isDark = document.documentElement.classList.contains('dark');
-        document.getElementById('themeColorMeta').setAttribute('content', isDark ? '#0b0f19' : '#ffffff');
-        this.updateAndroidStatusBar(isDark ? '#0b0f19' : '#ffffff', isDark);
-      }
+      toggleTheme() { this.haptic(10); document.documentElement.classList.toggle('dark'); const isDark = document.documentElement.classList.contains('dark'); document.getElementById('themeColorMeta').setAttribute('content', isDark ? '#0b0f19' : '#ffffff'); this.updateAndroidStatusBar(isDark ? '#0b0f19' : '#ffffff', isDark); }
     };
 
     window.setSupabaseSession = async function(accessToken, refreshToken) {
-        const { data, error } = await supabaseClient.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken
-        });
-        if (error) {
-            App.showSnackbar('Gagal menyimpan sesi login.');
-        } else {
-            App.updateAuthUI(data.session);
-            App.showSnackbar('Berhasil login!');
-            App.renderAccountPage(data.session);
-        }
+        const { data, error } = await supabaseClient.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        if (error) { App.showSnackbar('Gagal menyimpan sesi login.'); } 
+        else { App.updateAuthUI(data.session); App.showSnackbar('Berhasil login!'); App.renderAccountPage(data.session); }
     };
 
     App.init();
   </script>
 
   <script>
-    function openWeatherModal() {
-        App.haptic(10);
-        document.getElementById('weatherScrim').classList.add('active');
-        document.getElementById('weatherModal').classList.add('active');
-    }
-    function closeWeatherModal() {
-        document.getElementById('weatherScrim').classList.remove('active');
-        document.getElementById('weatherModal').classList.remove('active');
-    }
-
+    function openWeatherModal() { App.haptic(10); document.getElementById('weatherScrim').classList.add('active'); document.getElementById('weatherModal').classList.add('active'); }
+    function closeWeatherModal() { document.getElementById('weatherScrim').classList.remove('active'); document.getElementById('weatherModal').classList.remove('active'); }
     function getWeatherInfo(code, isDay = 1) {
-        const weatherCodes = {
-            0: { desc: 'Cerah', iconDay: '☀️', iconNight: '🌙' },
-            1: { desc: 'Sebagian Berawan', iconDay: '🌤️', iconNight: '☁️' },
-            2: { desc: 'Berawan', iconDay: '⛅', iconNight: '☁️' },
-            3: { desc: 'Mendung', iconDay: '☁️', iconNight: '☁️' },
-            45: { desc: 'Berkabut', iconDay: '🌫️', iconNight: '🌫️' },
-            48: { desc: 'Kabut Tebal', iconDay: '🌫️', iconNight: '🌫️' },
-            51: { desc: 'Gerimis Ringan', iconDay: '🌦️', iconNight: '🌧️' },
-            53: { desc: 'Gerimis', iconDay: '🌦️', iconNight: '🌧️' },
-            55: { desc: 'Gerimis Deras', iconDay: '🌧️', iconNight: '🌧️' },
-            61: { desc: 'Hujan Ringan', iconDay: '🌦️', iconNight: '🌧️' },
-            63: { desc: 'Hujan', iconDay: '🌧️', iconNight: '🌧️' },
-            65: { desc: 'Hujan Deras', iconDay: '🌧️', iconNight: '🌧️' },
-            71: { desc: 'Salju Ringan', iconDay: '🌨️', iconNight: '🌨️' },
-            73: { desc: 'Salju', iconDay: '❄️', iconNight: '❄️' },
-            80: { desc: 'Hujan Lokal', iconDay: '🌦️', iconNight: '🌧️' },
-            81: { desc: 'Hujan Sedang', iconDay: '🌧️', iconNight: '🌧️' },
-            82: { desc: 'Hujan Deras', iconDay: '⛈️', iconNight: '⛈️' },
-            95: { desc: 'Badai Petir', iconDay: '⛈️', iconNight: '⛈️' },
-            96: { desc: 'Badai Petir & Hujan Es', iconDay: '⛈️', iconNight: '⛈️' },
-            99: { desc: 'Badai Petir Hebat', iconDay: '⛈️', iconNight: '⛈️' }
-        };
+        const weatherCodes = { 0: { desc: 'Cerah', iconDay: '☀️', iconNight: '🌙' }, 1: { desc: 'Sebagian Berawan', iconDay: '🌤️', iconNight: '☁️' }, 2: { desc: 'Berawan', iconDay: '⛅', iconNight: '☁️' }, 3: { desc: 'Mendung', iconDay: '☁️', iconNight: '☁️' }, 45: { desc: 'Berkabut', iconDay: '🌫️', iconNight: '🌫️' }, 48: { desc: 'Kabut Tebal', iconDay: '🌫️', iconNight: '🌫️' }, 51: { desc: 'Gerimis Ringan', iconDay: '🌦️', iconNight: '🌧️' }, 53: { desc: 'Gerimis', iconDay: '🌦️', iconNight: '🌧️' }, 55: { desc: 'Gerimis Deras', iconDay: '🌧️', iconNight: '🌧️' }, 61: { desc: 'Hujan Ringan', iconDay: '🌦️', iconNight: '🌧️' }, 63: { desc: 'Hujan', iconDay: '🌧️', iconNight: '🌧️' }, 65: { desc: 'Hujan Deras', iconDay: '🌧️', iconNight: '🌧️' }, 71: { desc: 'Salju Ringan', iconDay: '🌨️', iconNight: '🌨️' }, 73: { desc: 'Salju', iconDay: '❄️', iconNight: '❄️' }, 80: { desc: 'Hujan Lokal', iconDay: '🌦️', iconNight: '🌧️' }, 81: { desc: 'Hujan Sedang', iconDay: '🌧️', iconNight: '🌧️' }, 82: { desc: 'Hujan Deras', iconDay: '⛈️', iconNight: '⛈️' }, 95: { desc: 'Badai Petir', iconDay: '⛈️', iconNight: '⛈️' }, 96: { desc: 'Badai Petir & Hujan Es', iconDay: '⛈️', iconNight: '⛈️' }, 99: { desc: 'Badai Petir Hebat', iconDay: '⛈️', iconNight: '⛈️' } };
         const w = weatherCodes[code] || { desc: 'Tidak Diketahui', iconDay: '🛰️', iconNight: '🛰️' };
         return { desc: w.desc, icon: isDay === 1 ? w.iconDay : w.iconNight };
     }
-
     async function loadRealtimeWeather(lat, lon) {
         try {
             const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,pressure_msl,wind_speed_10m&hourly=temperature_2m,precipitation_probability,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1`;
-            const res = await fetch(apiUrl);
-            const data = await res.json();
-
+            const res = await fetch(apiUrl); const data = await res.json();
             let cityName = "Lokasi Terkini";
-            try {
-                const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=id`);
-                const geoData = await geoRes.json();
-                cityName = geoData.city || geoData.locality || geoData.principalSubdivision || "Lokasi Terkini";
-            } catch (geoErr) { console.error("Gagal deteksi nama kota", geoErr); }
-
+            try { const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=id`); const geoData = await geoRes.json(); cityName = geoData.city || geoData.locality || geoData.principalSubdivision || "Lokasi Terkini"; } catch (geoErr) { console.error("Gagal deteksi nama kota", geoErr); }
             if (data && data.current) {
-                const temp = Math.round(data.current.temperature_2m);
-                const feelsLike = Math.round(data.current.apparent_temperature);
-                const weatherCode = data.current.weather_code;
-                const isDay = data.current.is_day;
-                const windSpeed = data.current.wind_speed_10m;
-                const humidity = data.current.relative_humidity_2m;
-                const pressure = data.current.pressure_msl;
-                const precip = data.current.precipitation;
-                
+                const temp = Math.round(data.current.temperature_2m); const feelsLike = Math.round(data.current.apparent_temperature); const weatherCode = data.current.weather_code; const isDay = data.current.is_day; const windSpeed = data.current.wind_speed_10m; const humidity = data.current.relative_humidity_2m; const pressure = data.current.pressure_msl; const precip = data.current.precipitation;
                 const weatherInfo = getWeatherInfo(weatherCode, isDay);
-                
-                document.getElementById('w-temp').innerText = `${temp}°`;
-                document.getElementById('w-city').innerText = cityName;
-                document.getElementById('w-desc').innerText = `${weatherInfo.desc}`;
-                document.getElementById('w-icon').innerText = weatherInfo.icon;
-                
-                document.getElementById('modalCityName').innerHTML = `📍 ${cityName}`;
-                document.getElementById('modalTemp').innerText = `${temp}°`;
-                document.getElementById('modalCondition').innerText = weatherInfo.desc;
-                document.getElementById('modalHighLow').innerText = `T: ${Math.round(data.daily.temperature_2m_max[0])}° B: ${Math.round(data.daily.temperature_2m_min[0])}° • Terasa: ${feelsLike}°`;
-                
-                document.getElementById('modalWind').innerText = `${windSpeed} km/j`;
-                document.getElementById('modalHumidity').innerText = `${humidity} %`;
-                document.getElementById('modalPressure').innerText = `${pressure} hPa`;
-                document.getElementById('modalPrecip').innerText = `${precip} mm`;
-
-                const hourlyContainer = document.getElementById('hourlyForecastContainer');
-                hourlyContainer.innerHTML = '';
-                const currentHour = new Date(data.current.time).getHours();
-                
+                document.getElementById('w-temp').innerText = `${temp}°`; document.getElementById('w-city').innerText = cityName; document.getElementById('w-desc').innerText = `${weatherInfo.desc}`; document.getElementById('w-icon').innerText = weatherInfo.icon;
+                document.getElementById('modalCityName').innerHTML = `📍 ${cityName}`; document.getElementById('modalTemp').innerText = `${temp}°`; document.getElementById('modalCondition').innerText = weatherInfo.desc; document.getElementById('modalHighLow').innerText = `T: ${Math.round(data.daily.temperature_2m_max[0])}° B: ${Math.round(data.daily.temperature_2m_min[0])}° • Terasa: ${feelsLike}°`;
+                document.getElementById('modalWind').innerText = `${windSpeed} km/j`; document.getElementById('modalHumidity').innerText = `${humidity} %`; document.getElementById('modalPressure').innerText = `${pressure} hPa`; document.getElementById('modalPrecip').innerText = `${precip} mm`;
+                const hourlyContainer = document.getElementById('hourlyForecastContainer'); hourlyContainer.innerHTML = ''; const currentHour = new Date(data.current.time).getHours();
                 let hourCount = 0;
                 for (let i = 0; i < data.hourly.time.length; i++) {
-                    const hourStr = data.hourly.time[i];
-                    const hour = new Date(hourStr).getHours();
-                    
+                    const hourStr = data.hourly.time[i]; const hour = new Date(hourStr).getHours();
                     if (hour >= currentHour && hourCount < 12) {
-                        const hTemp = Math.round(data.hourly.temperature_2m[i]);
-                        const hCode = data.hourly.weather_code[i];
-                        const hIsDay = data.hourly.is_day[i];
-                        const hPrecipProb = data.hourly.precipitation_probability[i];
-                        const hInfo = getWeatherInfo(hCode, hIsDay);
-                        
+                        const hTemp = Math.round(data.hourly.temperature_2m[i]); const hCode = data.hourly.weather_code[i]; const hIsDay = data.hourly.is_day[i]; const hPrecipProb = data.hourly.precipitation_probability[i]; const hInfo = getWeatherInfo(hCode, hIsDay);
                         const isNow = (hour === currentHour);
-                        
-                        const hourDiv = document.createElement('div');
-                        hourDiv.className = `flex flex-col items-center gap-2 min-w-[55px] p-2 rounded-2xl ${isNow ? 'bg-blue-50 dark:bg-blue-900/30' : 'bg-transparent'}`;
-                        hourDiv.innerHTML = `
-                            <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">${isNow ? 'Sekarang' : hour + ':00'}</span>
-                            <span class="text-xl">${hInfo.icon}</span>
-                            <span class="text-sm font-bold text-slate-800 dark:text-white">${hTemp}°</span>
-                            <span class="text-[9px] text-blue-500 font-medium flex items-center gap-0.5">
-                                <i data-lucide="droplet" class="w-2.5 h-2.5"></i>${hPrecipProb}%
-                            </span>
-                        `;
-                        hourlyContainer.appendChild(hourDiv);
-                        hourCount++;
+                        const hourDiv = document.createElement('div'); hourDiv.className = `flex flex-col items-center gap-2 min-w-[55px] p-2 rounded-2xl ${isNow ? 'bg-blue-50 dark:bg-blue-900/30' : 'bg-transparent'}`;
+                        hourDiv.innerHTML = `<span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">${isNow ? 'Sekarang' : hour + ':00'}</span><span class="text-xl">${hInfo.icon}</span><span class="text-sm font-bold text-slate-800 dark:text-white">${hTemp}°</span><span class="text-[9px] text-blue-500 font-medium flex items-center gap-0.5"><i data-lucide="droplet" class="w-2.5 h-2.5"></i>${hPrecipProb}%</span>`;
+                        hourlyContainer.appendChild(hourDiv); hourCount++;
                     }
                 }
                 lucide.createIcons();
             }
-        } catch (e) { 
-            console.error("Gagal memuat cuaca", e); 
-        }
+        } catch (e) { console.error("Gagal memuat cuaca", e); }
     }
-    
-    function detectUserLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                p => loadRealtimeWeather(p.coords.latitude, p.coords.longitude), 
-                () => loadRealtimeWeather(-6.2088, 106.8456) 
-            );
-        } else {
-            loadRealtimeWeather(-6.2088, 106.8456);
-        }
-    }
+    function detectUserLocation() { if (navigator.geolocation) { navigator.geolocation.getCurrentPosition(p => loadRealtimeWeather(p.coords.latitude, p.coords.longitude), () => loadRealtimeWeather(-6.2088, 106.8456)); } else { loadRealtimeWeather(-6.2088, 106.8456); } }
     detectUserLocation();
   </script>
 </body>
