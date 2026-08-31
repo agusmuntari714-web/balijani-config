@@ -77,6 +77,7 @@
     .weather-refresh-btn.is-spinning svg { animation: smooth-spin 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
     @keyframes smooth-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+    /* STYLE KHUSUS BOX BACA JUGA */
     .article-body .baca-juga-box { background-color: #f1f5f9 !important; border-left: 4px solid #dc2626 !important; padding: 16px !important; border-radius: 0 8px 8px 0 !important; margin-bottom: 24px !important; cursor: pointer !important; transition: background 0.2s !important; }
     .dark .article-body .baca-juga-box { background-color: #1e293b !important; }
     .article-body .baca-juga-box:hover { background-color: #e2e8f0 !important; }
@@ -86,6 +87,7 @@
     .dark .article-body .baca-juga-title { color: #ffffff !important; }
     .article-body .baca-juga-box:hover .baca-juga-title { color: #dc2626 !important; }
 
+    /* Sistem Bottom Sheet Native Android */
     .bottom-sheet-scrim {
         position: fixed; inset: 0; z-index: 200; background: var(--scrim-bg);
         backdrop-filter: blur(4px); opacity: 0; pointer-events: none;
@@ -105,6 +107,7 @@
     .drag-handle { width: 40px; height: 4px; background: #cbd5e1; border-radius: 2px; margin: 8px auto 16px; }
     .dark .drag-handle { background: #334155; }
 
+    /* Sistem Snackbar (Toast Material) */
     .snackbar {
         position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px);
         background: #1e293b; color: white; padding: 12px 20px; border-radius: 8px;
@@ -113,6 +116,19 @@
     }
     .snackbar.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+    /* EFEK NATIVE ANDROID */
+    @keyframes androidFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .view-enter { animation: androidFadeIn 0.25s cubic-bezier(0.22, 1, 0.36, 1); }
+    
+    .nav-btn { transition: color 0.2s, transform 0.1s; position: relative; }
+    .nav-btn:active { transform: scale(0.9); }
+    .nav-btn.active-tab { color: #dc2626 !important; }
+    .nav-btn.active-tab::after {
+        content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+        width: 20px; height: 2px; background: #dc2626; border-radius: 2px;
+    }
+
+    /* Fix Animasi Spinner Pull To Refresh */
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .is-spinning-indicator { animation: spin 0.8s linear infinite; }
   </style>
@@ -120,6 +136,7 @@
 
 <body class="bg-slate-50 dark:bg-[#0b0f19] text-slate-900 dark:text-white flex flex-col min-h-screen select-none">
 
+  <!-- TOAST NOTIFICATION -->
   <div id="inAppToast" class="fixed left-4 right-4 z-[150] transition-all duration-500" style="top: -200%;">
     <div class="max-w-md mx-auto bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-xl shadow-2xl rounded-2xl p-4 flex items-start gap-3 cursor-pointer border border-slate-200/50 dark:border-slate-700/50" onclick="App.openLatestPostFromToast()">
       <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0">
@@ -133,6 +150,7 @@
     </div>
   </div>
 
+  <!-- MODAL DETAIL CUACA (Bottom Sheet) -->
   <div id="weatherScrim" class="bottom-sheet-scrim" onclick="closeWeatherModal()"></div>
   <div id="weatherModal" class="bottom-sheet">
       <div class="drag-handle"></div>
@@ -177,12 +195,14 @@
       </div>
   </div>
 
+  <!-- INDIKATOR PULL-TO-REFRESH -->
   <div id="pullRefreshIndicator" style="top: -60px; left: 50%; transform: translateX(-50%); position: fixed; z-index: 9999; transition: top 0.2s ease;">
       <div style="background: #ffffff; padding: 10px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
           <div id="refreshSpinnerRing" style="width: 22px; height: 22px; border: 3px solid #f1f5f9; border-top: 3px solid #dc2626; border-radius: 50%;"></div>
       </div>
   </div>
 
+  <!-- HEADER UTAMA -->
   <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 relative w-full" style="padding-top: env(safe-area-inset-top);">
     <div class="absolute top-0 left-0 right-0 w-full bg-[#ffffff] dark:bg-[#0b0f19] z-0" style="height: env(safe-area-inset-top);"></div>
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
@@ -235,6 +255,7 @@
     </div>
   </header>
 
+  <!-- PUSAT NOTIFIKASI -->
   <div id="notifPanel" class="hidden fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm flex justify-end">
     <div class="bg-white dark:bg-slate-900 w-full max-w-sm h-full flex flex-col shadow-2xl animate-slide-left">
       <div class="h-14 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 bg-slate-50 dark:bg-slate-900" style="padding-top: env(safe-area-inset-top);">
@@ -310,7 +331,7 @@
             </div>
           </a>
           <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Tiket Pesawat akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration=500">
+            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
             <div class="relative z-10 p-3 w-full text-center">
@@ -319,7 +340,7 @@
             </div>
           </a>
           <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Destinasi Wisata akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration=500">
+            <img src="https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
             <div class="relative z-10 p-3 w-full text-center">
@@ -328,7 +349,7 @@
             </div>
           </a>
           <a href="javascript:void(0)" onclick="App.showSnackbar('Fitur Kuliner Khas akan segera hadir!')" class="group relative rounded-xl overflow-hidden aspect-square flex items-end shadow-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration=500">
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
             <div class="absolute top-2 right-2 bg-amber-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">Segera Hadir</div>
             <div class="relative z-10 p-3 w-full text-center">
@@ -394,7 +415,6 @@
             <i data-lucide="user-circle" class="w-6 h-6 text-brand-600"></i> Akun Saya
         </h1>
         
-        <!-- UI Belum Login -->
         <div id="profileLoggedOut" class="py-10 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
             <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i data-lucide="lock" class="w-8 h-8 text-slate-400"></i>
@@ -406,7 +426,6 @@
             </button>
         </div>
 
-               <!-- UI Sudah Login -->
         <div id="profileLoggedIn" class="hidden space-y-5">
             <div class="flex items-center gap-4 p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
                 <div class="w-16 h-16 rounded-full bg-brand-600 text-white flex items-center justify-center text-2xl font-black uppercase" id="profileAvatar">B</div>
@@ -419,7 +438,6 @@
                 </button>
             </div>
 
-            <!-- DETAIL PROFIL -->
             <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800">
                 <div class="p-4 flex justify-between items-center">
                     <span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> Jenis Kelamin</span>
@@ -463,7 +481,8 @@
             <button onclick="App.logout()" class="w-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-bold text-sm py-3 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer border border-rose-200 dark:border-rose-900/50">
                 <i data-lucide="log-out" class="w-4 h-4"></i> Keluar (Logout)
             </button>
-        </div>    </section>
+        </div>
+    </section>
 
     <article id="singlePostView" class="hidden view-enter max-w-4xl mx-auto bg-white dark:bg-[#0f172a] mt-4 md:mt-6 md:rounded-2xl md:border border-slate-100 dark:border-slate-800 pb-8 flex flex-col md:flex-row gap-6">
       <div class="flex-1 w-full relative">
@@ -564,7 +583,7 @@
 
   <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-50 pb-safe" style="padding-bottom: env(safe-area-inset-bottom);">
     <div class="flex items-center justify-around h-16 text-[10px] font-semibold text-slate-500 dark:text-slate-400" id="bottomNav">
-      <button onclick="App.navigate('home')" class="nav-btn w-1/4 text-brand-600 flex flex-col items-center gap-1 transition"><i data-lucide="home" class="w-5 h-5"></i><span>Beranda</span></button>
+      <button onclick="App.navigate('home')" class="nav-btn active-tab w-1/4 flex flex-col items-center gap-1 transition"><i data-lucide="home" class="w-5 h-5"></i><span>Beranda</span></button>
       <button onclick="App.navigate('category', 'all')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="layout-grid" class="w-5 h-5"></i><span>Arsip</span></button>
       <button onclick="App.navigate('bookmarks')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="bookmark" class="w-5 h-5"></i><span>Tersimpan</span></button>
       <button onclick="App.navigate('account')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="user" class="w-5 h-5"></i><span>Akun</span></button>
@@ -613,7 +632,7 @@
     </div>
   </div>
 
-    <!-- MODAL EDIT PROFIL -->
+  <!-- MODAL EDIT PROFIL -->
   <div id="editProfileScrim" class="bottom-sheet-scrim" onclick="App.closeEditProfile()"></div>
   <div id="editProfileModal" class="bottom-sheet">
     <div class="drag-handle"></div>
@@ -714,9 +733,7 @@
         this.toastTimeout = setTimeout(() => this.closeToast(), 6000);
       },
 
-      closeToast() {
-        document.getElementById('inAppToast').style.top = '-200%';
-      },
+      closeToast() { document.getElementById('inAppToast').style.top = '-200%'; },
 
       openLatestPostFromToast() {
         this.closeToast();
@@ -795,7 +812,7 @@
         this.checkAuthSession();
         supabaseClient.auth.onAuthStateChange((event, session) => {
             this.updateAuthUI(session);
-            if (document.getElementById('accountView') && !document.getElementById('accountView').classList.contains('hidden')) {
+            if (!document.getElementById('accountView').classList.contains('hidden')) {
                 this.renderAccountPage(session);
             }
         });
@@ -804,6 +821,7 @@
       async checkAuthSession() {
           const { data: { session } } = await supabaseClient.auth.getSession();
           this.updateAuthUI(session);
+          return session;
       },
 
       updateAuthUI(session) {
@@ -861,10 +879,8 @@
             localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
             localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
             this.updateNotifBadge();
-            
             this.latestUnreadPostId = newPosts[0].id;
             this.showInAppToast(newPosts[0].title.rendered);
-
             if(!document.getElementById('notifPanel').classList.contains('hidden')) this.renderNotifPanel();
           }
         } catch (e) {}
@@ -1016,6 +1032,17 @@
       },
 
       confirmSocial(platform, url) { window.open(url, '_system') || (window.location.href = url); },
+
+      showOpiniModal() {
+        this.haptic(20);
+        document.getElementById('opiniScrim').classList.add('active');
+        document.getElementById('opiniModal').classList.add('active');
+      },
+
+      closeOpiniModal() {
+        document.getElementById('opiniScrim').classList.remove('active');
+        document.getElementById('opiniModal').classList.remove('active');
+      },
 
       openInAppForm() {
         if (typeof App.closeOpiniModal === 'function') App.closeOpiniModal();
@@ -1306,7 +1333,7 @@
         el.onclick = () => this.openPost(post.id);
         el.innerHTML = `
           <div>
-            <div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div>
+            <div class="w-full aspect-[4/3] overflow-hidden bg-slate-101 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div>
             <div class="p-5">
               <h3 class="text-base md:text-lg font-bold font-serif text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-3">${post.title.rendered}</h3>
               <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Editor : ${author}</span>
@@ -1389,10 +1416,9 @@
         else { emptyState.classList.add('hidden'); this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true))); }
       },
 
-           async renderAccountPage(session) {
+      async renderAccountPage(session) {
           if (!session) {
-              const { data } = await supabaseClient.auth.getSession();
-              session = data.session;
+              session = await this.checkAuthSession();
           }
           
           const loggedOutDiv = document.getElementById('profileLoggedOut');
@@ -1410,12 +1436,10 @@
               document.getElementById('profileEmail').innerText = email.replace(/(.{2}).*(@.*)/, "$1***$2");
               document.getElementById('profileAvatar').innerText = name.charAt(0).toUpperCase();
               
-              // Tampilkan detail profil
               document.getElementById('profileGender').innerText = metadata.gender || 'Belum diisi';
               document.getElementById('profileCity').innerText = metadata.city || 'Belum diisi';
               document.getElementById('profileProfession').innerText = metadata.profession || 'Belum diisi';
 
-              // Load User Comments
               const commentList = document.getElementById('userCommentsList');
               commentList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Memuat...</p>`;
               let { data: userComments } = await supabaseClient.from('comments').select('*').eq('user_id', session.user.id).order('created_at', { ascending: false }).limit(5);
@@ -1434,7 +1458,6 @@
                   });
               }
 
-              // Cek apakah profil belum lengkap, jika ya tampilkan notifikasi
               if (!metadata.gender || !metadata.city || !metadata.profession) {
                   this.showSnackbar('Lengkapi data profil Anda di tombol Edit.');
               }
@@ -1448,7 +1471,7 @@
 
       async openEditProfile() {
           this.haptic(10);
-          const { data: { session } } = await supabaseClient.auth.getSession();
+          const session = await this.checkAuthSession();
           if (!session) return;
           
           const metadata = session.user.user_metadata || {};
@@ -1487,48 +1510,40 @@
               this.renderAccountPage(data);
           }
       },
-              }
-
-              // Load Special Notifications (Reuse app notifications for now)
-              const notifList = document.getElementById('userNotifList');
-              if (this.notifications.length === 0) {
-                  notifList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Belum ada notifikasi.</p>`;
-              } else {
-                  notifList.innerHTML = '';
-                  this.notifications.slice(0, 3).forEach(notif => {
-                      notifList.innerHTML += `
-                        <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer" onclick="App.openPost(${notif.id})">
-                            <p class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 line-clamp-2">${notif.title}</p>
-                            <span class="text-[9px] text-slate-400">${new Date(notif.date).toLocaleDateString('id-ID')}</span>
-                        </div>`;
-                  });
-              }
-
-          } else {
-              loggedOutDiv.classList.remove('hidden');
-              loggedInDiv.classList.add('hidden');
-          }
-          lucide.createIcons();
-      },
 
       navigate(view, query = '', fromPopState = false) {
         if(!fromPopState) this.haptic(10);
         if (!fromPopState) history.pushState({ view: view, query: query }, '', '#' + view);
         if (view !== 'home') this.stopCarousel();
 
-        ['homeView', 'categoryView', 'bookmarkView', 'singlePostView', 'accountView'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
+        if (view === 'home') document.querySelector('.nav-btn:nth-child(1)')?.classList.add('active-tab');
+        else if (view === 'category') document.querySelector('.nav-btn:nth-child(2)')?.classList.add('active-tab');
+        else if (view === 'bookmarks') document.querySelector('.nav-btn:nth-child(3)')?.classList.add('active-tab');
+        else if (view === 'account') document.querySelector('.nav-btn:nth-child(4)')?.classList.add('active-tab');
+
+        const views = ['homeView', 'categoryView', 'bookmarkView', 'singlePostView', 'accountView'];
+        views.forEach(id => {
+            const el = document.getElementById(id);
+            el.classList.add('hidden');
+            el.classList.remove('view-enter');
+        });
+        
+        const activeView = document.getElementById(view + 'View');
+        if (activeView) {
+            activeView.classList.remove('hidden');
+            void activeView.offsetWidth; 
+            activeView.classList.add('view-enter');
+        }
         
         if (view === 'home') {
-            document.getElementById('homeView').classList.remove('hidden');
             this.startCarousel();
         }
-        else if (view === 'bookmarks') { document.getElementById('bookmarkView').classList.remove('hidden'); this.renderBookmarks(); }
+        else if (view === 'bookmarks') { this.renderBookmarks(); }
         else if (view === 'account') {
-            document.getElementById('accountView').classList.remove('hidden');
-            this.checkAuthSession().then(session => this.renderAccountPage(session));
+            this.renderAccountPage();
         }
         else if (view === 'category') {
-          document.getElementById('categoryView').classList.remove('hidden');
           let filtered = this.data;
           if (query !== 'all') {
             const q = query.toLowerCase().trim();
@@ -1545,7 +1560,7 @@
           if (filtered.length === 0) grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400"><p class="text-sm font-medium">Belum ada warta untuk kategori "${query}".</p></div>`;
           else filtered.forEach(p => grid.appendChild(this.buildGridCard(p, true)));
         } 
-        else if (view === 'single') document.getElementById('singlePostView').classList.remove('hidden');
+        
         window.scrollTo({ top: 0, behavior: 'instant' });
       },
 
