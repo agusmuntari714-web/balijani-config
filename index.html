@@ -344,7 +344,7 @@
     <div class="flex items-center justify-around h-16 text-[10px] font-semibold text-slate-500 dark:text-slate-400" id="bottomNav">
       <button onclick="App.navigate('home')" class="nav-btn active-tab w-1/4 flex flex-col items-center gap-1 transition"><i data-lucide="home" class="w-5 h-5"></i><span>Beranda</span></button>
       <button onclick="App.navigate('category', 'all')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="layout-grid" class="w-5 h-5"></i><span>Arsip</span></button>
-      <button onclick="App.navigate('bookmarks')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="bookmark" class="w-5 h-5"></i><span>Tersimpan</span></button>
+      <button onclick="App.navigate('bookmarks')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition relative"><i data-lucide="bookmark" class="w-5 h-5"></i><span>Tersimpan</span><span id="bookmarkBadge" class="absolute top-1 right-3 min-w-[16px] h-4 bg-brand-600 text-white text-[9px] font-bold flex items-center justify-center rounded-full hidden border border-white dark:border-[#0f172a]">0</span></button>
       <button onclick="App.navigate('account')" class="nav-btn w-1/4 flex flex-col items-center gap-1 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="user" class="w-5 h-5"></i><span>Akun</span></button>
     </div>
   </nav>
@@ -353,7 +353,7 @@
   <div id="opiniModal" class="bottom-sheet"><div class="drag-handle"></div><div class="px-6 pb-6 text-center space-y-4"><div class="w-14 h-14 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto"><i data-lucide="pen-tool" class="w-7 h-7"></i></div><div><h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Kirim Opini / Warta</h3><p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sampaikan gagasan, aspirasi, atau tulisan Anda untuk dipublikasikan di balijani.id.</p></div><div class="space-y-2 pt-2"><button onclick="App.openInAppForm()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="file-text" class="w-4 h-4"></i> Buka Formulir Langsung</button><a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeOpiniModal()" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="external-link" class="w-4 h-4"></i> Buka di Web Browser</a></div><button onclick="App.closeOpiniModal()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 pt-2 block w-full cursor-pointer">Batal</button></div></div>
 
   <div id="webFormScrim" class="bottom-sheet-scrim" onclick="App.closeWebForm()"></div>
-  <div id="webFormView" class="bottom-sheet" style="height: 95vh; max-height: 95vh; padding: 0;"><div class="drag-handle"></div><div class="h-[60px] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shadow-sm z-10"><button onclick="App.closeWebForm()" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 active:scale-95 transition cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i> Tutup</button><a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeWebForm()" class="flex items-center gap-1.5 text-[10px] font-bold bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 px-3 py-2 rounded-full border border-brand-500/20 active:scale-95 transition"><span>Lanjut ke web</span> <i data-lucide="external-link" class="w-3 h-3"></i></a></div><div class="flex-1 w-full bg-white dark:bg-slate-900 relative" style="height: calc(95vh - 100px);"><div id="iframeLoader" class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-0"><div class="w-8 h-8 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div></div><iframe id="webFormIframe" src="" class="absolute inset-0 w-full h-full border-none z-10 opacity-0 transition-opacity duration-500" onload="this.style.opacity=1; document.getElementById('iframeLoader').style.display='none';"></iframe></div></div>
+  <div id="webFormView" class="bottom-sheet" style="height: 95vh; max-height: 95vh; padding: 0;"><div class="drag-handle"></div><div class="h-[60px] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shadow-sm z-10"><button onclick="App.closeWebForm()" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-202 active:scale-95 transition cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i> Tutup</button><a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeWebForm()" class="flex items-center gap-1.5 text-[10px] font-bold bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 px-3 py-2 rounded-full border border-brand-500/20 active:scale-95 transition"><span>Lanjut ke web</span> <i data-lucide="external-link" class="w-3 h-3"></i></a></div><div class="flex-1 w-full bg-white dark:bg-slate-900 relative" style="height: calc(95vh - 100px);"><div id="iframeLoader" class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-0"><div class="w-8 h-8 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div></div><iframe id="webFormIframe" src="" class="absolute inset-0 w-full h-full border-none z-10 opacity-0 transition-opacity duration-500" onload="this.style.opacity=1; document.getElementById('iframeLoader').style.display='none';"></iframe></div></div>
 
   <div id="editProfileScrim" class="bottom-sheet-scrim" onclick="App.closeEditProfile()"></div>
   <div id="editProfileModal" class="bottom-sheet"><div class="drag-handle"></div><div class="px-6 pb-6"><h3 class="text-lg font-extrabold mb-4 text-center">Edit Profil</h3><div class="space-y-3"><div><label class="text-xs font-bold text-slate-500">Nama Lengkap</label><input id="editName" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div><div><label class="text-xs font-bold text-slate-500">Jenis Kelamin</label><select id="editGender" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"><option value="">Pilih...</option><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select></div><div><label class="text-xs font-bold text-slate-500">Kota Asal</label><input id="editCity" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div><div><label class="text-xs font-bold text-slate-500">Profesi</label><input id="editProfession" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div></div><button onclick="App.saveProfile()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm py-3 rounded-xl mt-6 active:scale-95 transition">Simpan Perubahan</button><button onclick="App.closeEditProfile()" class="w-full text-slate-500 font-bold text-sm py-3 mt-2">Batal</button></div></div>
@@ -366,30 +366,64 @@
     const SUPABASE_ANON_KEY = "sb_publishable_-qnqxbaPM7ESUUyx6qPrkw_dWhZI4pD"; 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    // === [BUG FIX #3] Helper aman untuk parse localStorage. Mencegah crash total
+    //     jika data di localStorage korup (JSON tidak valid). Sebelumnya:
+    //     JSON.parse(...) langsung tanpa try/catch -> jika korup, seluruh objek App
+    //     gagal di-instantiate -> aplikasi blank. ===
+    function safeParse(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return fallback;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(fallback)) return Array.isArray(parsed) ? parsed : fallback;
+        return parsed;
+      } catch (e) {
+        console.error('[safeParse] Data localStorage [' + key + '] korup, direset:', e);
+        try { localStorage.removeItem(key); } catch (_) {}
+        return fallback;
+      }
+    }
+
+    // === [BUG FIX #7 & #8] Helper escape untuk mencegah XSS. ===
+    function escapeHtml(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+    function escapeJsString(str) {
+      // Escape khusus untuk string literal JS di dalam onclick attribute.
+      if (str == null) return '';
+      return String(str)
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/`/g, '\\`')
+        .replace(/\n/g, '\\n')
+        .replace(/\r/g, '\\r')
+        .replace(/\u2028/g, '\\u2028')
+        .replace(/\u2029/g, '\\u2029');
+    }
+
     const App = {
       API_URL: "https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=50",
       CONFIG_URL: "https://raw.githubusercontent.com/agusmuntari714-web/balijani-config/main/config.json", 
 
-      // Fix Bug #3: Safe JSON Parsing
       data: [],
       currentPost: null,
-      savedArticles: (() => { try { return JSON.parse(localStorage.getItem('balijani_saved_posts') || '[]') } catch(e) { return []; } })(), 
-      likedPosts: (() => { try { return JSON.parse(localStorage.getItem('balijani_liked_posts') || '[]') } catch(e) { return []; } })(), 
+      // === [BUG FIX #3] Pakai safeParse agar tidak crash saat data korup ===
+      savedArticles: safeParse('balijani_saved_posts', []), 
+      likedPosts: safeParse('balijani_liked_posts', []), 
       carouselInterval: null,
       isSearchOpen: false,
       activeCommentChannel: null, 
       
       lastKnownPostId: localStorage.getItem('balijani_last_post_id') || null,
-      notifications: (() => { try { return JSON.parse(localStorage.getItem('balijani_notifs') || '[]') } catch(e) { return []; } })(),
+      notifications: safeParse('balijani_notifs', []),
       latestUnreadPostId: null,
-
-      // Fix Bug #7 & #8: XSS Protection
-      escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-      },
 
       haptic(pattern = 10) { if ('vibrate' in navigator) navigator.vibrate(pattern); },
 
@@ -436,6 +470,8 @@
         this.initPullToRefresh();
         this.initReadingProgress();
         this.updateNotifBadge();
+        // === [BUG FIX #5] Update badge bookmark saat init agar langsung tampil ===
+        this.updateBookmarkBadge();
         await this.loadData();
         this.startNotificationPolling();
 
@@ -488,7 +524,7 @@
 
       updateNotifBadge() { const unreadCount = this.notifications.filter(n => !n.isRead).length; const badge = document.getElementById('notifBadge'); if (unreadCount > 0) { badge.textContent = unreadCount > 99 ? '99+' : unreadCount; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); } },
       toggleNotifPanel() { this.haptic(); document.getElementById('notifPanel').classList.toggle('hidden'); if(!document.getElementById('notifPanel').classList.contains('hidden')) this.renderNotifPanel(); },
-      renderNotifPanel() { const container = document.getElementById('notifListContainer'); container.innerHTML = ''; if (this.notifications.length === 0) { container.innerHTML = `<div class="py-16 text-center text-slate-400"><p class="text-xs font-medium">Belum ada notifikasi baru.</p></div>`; } else { this.notifications.forEach(notif => { container.innerHTML += `<div onclick="App.openNotifPost(${notif.id})" class="flex items-start gap-3 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm"><div class="flex-1"><h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2">${this.escapeHtml(notif.title)}</h4><span class="text-[9px] text-slate-400 mt-1 block">${new Date(notif.date).toLocaleDateString('id-ID')}</span></div></div>`; }); } lucide.createIcons(); },
+      renderNotifPanel() { const container = document.getElementById('notifListContainer'); container.innerHTML = ''; if (this.notifications.length === 0) { container.innerHTML = `<div class="py-16 text-center text-slate-400"><p class="text-xs font-medium">Belum ada notifikasi baru.</p></div>`; } else { this.notifications.forEach(notif => { container.innerHTML += `<div onclick="App.openNotifPost(${notif.id})" class="flex items-start gap-3 p-3.5 rounded-2xl cursor-pointer active:scale-95 transition bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm"><div class="flex-1"><h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2">${notif.title}</h4><span class="text-[9px] text-slate-400 mt-1 block">${new Date(notif.date).toLocaleDateString('id-ID')}</span></div></div>`; }); } lucide.createIcons(); },
       clearReadNotifs() { this.notifications = this.notifications.filter(n => !n.isRead); localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications)); this.renderNotifPanel(); this.updateNotifBadge(); },
       clearAllNotifs() { this.notifications = []; localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications)); this.renderNotifPanel(); this.updateNotifBadge(); },
       openNotifPost(id) { document.getElementById('notifPanel').classList.add('hidden'); this.openPost(id); },
@@ -498,44 +534,52 @@
         try {
           const res = await fetch(this.API_URL); if (!res.ok) throw new Error(); this.data = await res.json();
           if (!this.lastKnownPostId && this.data.length > 0) { this.lastKnownPostId = this.data[0].id; localStorage.setItem('balijani_last_post_id', this.lastKnownPostId); }
-          this.renderHome(); document.getElementById('loadingView').classList.add('hidden');
-          
-          const hash = window.location.hash;
-          if (hash.startsWith('#post-')) { const postId = parseInt(hash.replace('#post-', '')); if (postId) { history.replaceState({ view: 'single', id: postId }, '', '#post-' + postId); this.openPost(postId, true); } else { this.navigate('home', '', true); } } 
-          else if (hash.startsWith('#category')) { const parts = hash.split('/'); const query = parts[1] ? decodeURIComponent(parts[1]) : 'all'; this.navigate('category', query, true); } 
-          else if (hash === '#bookmarks') { this.navigate('bookmarks', '', true); } 
-          else if (hash === '#account') { this.navigate('account', '', true); } 
-          else { this.navigate('home', '', true); }
-        } catch (e) { document.getElementById('loadingView').innerHTML = `<p class="text-rose-500 py-10 text-center font-bold">Gagal terhubung ke Server Warta Balijani.</p>`; }
+          document.getElementById('loadingView').classList.add('hidden');
+          this.renderHome();
+          this._handleInitialHash();
+        } catch (e) {
+          // === [BUG FIX #4] Sebelumnya: loadingView tetap visible dengan teks error,
+          //     tapi tidak masuk daftar views yang di-hide di navigate() -> menumpuk
+          //     view lain. User tidak bisa akses berita tersimpan offline. ===
+          document.getElementById('loadingView').classList.add('hidden');
+          const homeView = document.getElementById('homeView');
+          homeView.classList.remove('hidden');
+          homeView.innerHTML = `
+            <div class="px-4 py-10 text-center">
+              <div class="w-16 h-16 bg-rose-50 dark:bg-rose-900/30 text-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-4"><i data-lucide="wifi-off" class="w-8 h-8"></i></div>
+              <p class="text-base font-bold text-slate-900 dark:text-white mb-1">Tidak ada koneksi internet</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-5 max-w-xs mx-auto">Gagal memuat berita terbaru dari server Balijani. Anda masih bisa membaca berita yang sudah tersimpan secara offline.</p>
+              <div class="flex gap-2 justify-center">
+                <button onclick="App.navigate('bookmarks')" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-sm active:scale-95 transition cursor-pointer">
+                  <i data-lucide="bookmark-check" class="w-4 h-4"></i> Buka Berita Tersimpan
+                </button>
+                <button onclick="App.loadData()" class="inline-flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs px-5 py-3 rounded-xl active:scale-95 transition cursor-pointer">
+                  <i data-lucide="refresh-cw" class="w-4 h-4"></i> Coba Lagi
+                </button>
+              </div>
+            </div>`;
+          lucide.createIcons();
+          // Jika ada berita tersimpan, langsung arahkan ke bookmark view
+          if (this.savedArticles.length > 0) {
+            this.navigate('bookmarks');
+          }
+          console.error('Gagal load data:', e);
+        }
+      },
+
+      // === [BUG FIX #4] Extract handler hash awal ke method terpisah agar bisa
+      //     dipanggil baik saat sukses maupun gagal loadData. ===
+      _handleInitialHash() {
+        const hash = window.location.hash;
+        if (hash.startsWith('#post-')) { const postId = parseInt(hash.replace('#post-', '')); if (postId) { history.replaceState({ view: 'single', id: postId }, '', '#post-' + postId); this.openPost(postId, true); } else { this.navigate('home', '', true); } } 
+        else if (hash.startsWith('#category')) { const parts = hash.split('/'); const query = parts[1] ? decodeURIComponent(parts[1]) : 'all'; this.navigate('category', query, true); } 
+        else if (hash === '#bookmarks') { this.navigate('bookmarks', '', true); } 
+        else if (hash === '#account') { this.navigate('account', '', true); } 
+        else { this.navigate('home', '', true); }
       },
 
       initReadingProgress() { let ticking = false; window.addEventListener('scroll', () => { if (!ticking) { window.requestAnimationFrame(() => { const singleView = document.getElementById('singlePostView'); if (!singleView.classList.contains('hidden')) { document.getElementById('progressBarContainer').classList.remove('hidden'); const winScroll = document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; document.getElementById('progressBar').style.width = (height > 0 ? (winScroll / height) * 100 : 100) + '%'; } else { document.getElementById('progressBarContainer').classList.add('hidden'); } ticking = false; }); ticking = true; } }, { passive: true }); },
-      
-      // Fix Bug #4: Pull-to-refresh gagal terkunci error
-      initPullToRefresh() { 
-        let touchstartY = 0; 
-        const indicator = document.getElementById('pullRefreshIndicator'); 
-        const ring = document.getElementById('refreshSpinnerRing'); 
-        window.addEventListener('touchstart', e => { if (window.scrollY === 0) touchstartY = e.touches[0].clientY; }, {passive: true}); 
-        window.addEventListener('touchend', async e => { 
-          if (window.scrollY === 0 && touchstartY > 0 && e.changedTouches[0].clientY - touchstartY > 90) { 
-            indicator.style.top = `20px`; 
-            ring.classList.add('is-spinning-indicator'); 
-            try {
-                await this.loadData();
-            } catch(err) {
-                console.error("Refresh failed", err);
-            } finally {
-                // Always hide indicator
-                setTimeout(() => { 
-                    indicator.style.top = `-60px`; 
-                    ring.classList.remove('is-spinning-indicator'); 
-                }, 500);
-            }
-          } 
-          touchstartY = 0; 
-        }, {passive: true}); 
-      },
+      initPullToRefresh() { let touchstartY = 0; const indicator = document.getElementById('pullRefreshIndicator'); const ring = document.getElementById('refreshSpinnerRing'); window.addEventListener('touchstart', e => { if (window.scrollY === 0) touchstartY = e.touches[0].clientY; }, {passive: true}); window.addEventListener('touchend', async e => { if (window.scrollY === 0 && touchstartY > 0 && e.changedTouches[0].clientY - touchstartY > 90) { indicator.style.top = `20px`; ring.classList.add('is-spinning-indicator'); await this.loadData(); setTimeout(() => { indicator.style.top = `-60px`; ring.classList.remove('is-spinning-indicator'); }, 500); } touchstartY = 0; }, {passive: true}); },
 
       getAuthorName(post) { return post._embedded?.author?.[0]?.name || post.author || 'Nyoman Sarjana'; },
       getImageUrl(post) { return post._embedded?.['wp:featuredmedia']?.[0]?.source_url || post.img || ''; },
@@ -576,20 +620,15 @@
       },
 
       async loadPostInteractions(postId) {
-          try {
-            let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
-            let count = likeData ? likeData.likes_count : 0;
-            this.updateLikeUI(postId, count);
-          } catch (e) { console.error("Error loading likes:", e); }
-          
-          this.loadComments(postId);
+          let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
+          let count = likeData ? likeData.likes_count : 0;
+          this.updateLikeUI(postId, count); this.loadComments(postId);
           if (this.activeCommentChannel) supabaseClient.removeChannel(this.activeCommentChannel);
           this.activeCommentChannel = supabaseClient.channel('comments_realtime_' + postId).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments', filter: `post_id=eq.${postId}` }, payload => { this.appendCommentToDOM(payload.new); }).subscribe();
       },
 
       async toggleLike() {
           if (!this.currentPost) return; this.haptic(15); const postId = this.currentPost.id;
-          
           const isLiked = this.likedPosts.includes(postId);
           let countEl = document.getElementById('postLikesCountStat'); let currentCount = parseInt(countEl ? countEl.textContent : 0) || 0;
           if (isLiked) { this.likedPosts = this.likedPosts.filter(id => id !== postId); currentCount = Math.max(0, currentCount - 1); } 
@@ -598,128 +637,227 @@
           try { await supabaseClient.from('post_likes').upsert({ post_id: postId, likes_count: currentCount }); } catch (err) { console.error("Gagal sinkron like:", err); }
       },
 
-      // Fix Bug #1, #2, #6: Quota Exceeded, Save Excerpt, Null Reference
       async toggleBookmark() {
-          if (!this.currentPost) return; 
-          this.haptic(15); 
+          if (!this.currentPost) return; this.haptic(15); 
           
           const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
-          
-          // Strip tags and get first 1000 chars to save space (Prevents Quota Exceeded)
-          let htmlContent = this.currentPost.content?.rendered || '';
-          const excerptText = htmlContent.replace(/<[^>]*>/g, '').substring(0, 1000);
-          
           if (isSaved) { 
-              this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id); 
-              this.showSnackbar('Warta dihapus dari simpanan.'); 
+              // === [BUG FIX #1] Backup sebelum mutate untuk rollback jika persist gagal ===
+              const backup = [...this.savedArticles];
+              this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id);
+              if (this.persistSavedArticles()) {
+                  this.showSnackbar('Warta dihapus dari simpanan.');
+                  this.updateBookmarkUI(false);
+                  this.updateBookmarkBadge();
+              } else {
+                  this.savedArticles = backup;
+                  this.showSnackbar('Gagal menyimpan perubahan ke penyimpanan lokal.');
+              }
           } else {
+              // === [BUG FIX #2] Sebelumnya: menyimpan full HTML content (bisa 50-200KB per artikel)
+              //     -> localStorage cepat penuh (~5MB). Sekarang simpan excerpt ringkas (500 char)
+              //     + metadata saja -> ~2KB per artikel. Konten penuh akan di-fetch ulang
+              //     saat user membuka artikel online. ===
+              const fullContent = this.currentPost.content?.rendered || '';
+              const excerpt = (this.currentPost.excerpt?.rendered || fullContent.replace(/<[^>]+>/g, '').trim()).slice(0, 500);
               const lightPost = {
                   id: this.currentPost.id,
                   title: { rendered: this.currentPost.title?.rendered || 'Tanpa Judul' },
                   link: this.currentPost.link,
                   date: this.currentPost.date,
-                  content: { rendered: excerptText || '<p>Konten tidak tersedia.</p>' },
+                  excerpt: excerpt,
+                  // Simpan content lengkap HANYA jika masih muat (akan di-trim otomatis oleh persistSavedArticles jika perlu)
+                  content: { rendered: fullContent },
                   img: this.getImageUrl(this.currentPost),
                   author: this.getAuthorName(this.currentPost),
-                  category: this.currentPost._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'
+                  category: this.currentPost._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta',
+                  savedAt: Date.now()
               };
-              this.savedArticles.unshift(lightPost); 
-              this.showSnackbar('Warta berhasil disimpan.');
-          }
-          
-          try { 
-              localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles)); 
-          } catch (e) { 
-              // Quota Exceeded! Revert state
-              this.showSnackbar('Memori HP penuh. Hapus beberapa berita lama.');
-              if (!isSaved) {
-                  this.savedArticles.shift(); // Remove the one we just added
+              const backup = [...this.savedArticles];
+              this.savedArticles.unshift(lightPost);
+              if (this.persistSavedArticles(lightPost)) {
+                  this.showSnackbar('Warta berhasil disimpan.');
+                  this.updateBookmarkUI(true);
+                  this.updateBookmarkBadge();
               } else {
-                  // If we were trying to delete but it failed? Unlikely, but just in case
-                  this.savedArticles.unshift(this.currentPost);
+                  // === [BUG FIX #1] Rollback state jika persist gagal (e.g. quota exceeded).
+                  //     Sebelumnya: array sudah di-mutate + UI bilang "Tersimpan" + snackbar
+                  //     bilang "berhasil", tapi data tidak tersimpan -> user refresh = data hilang. ===
+                  this.savedArticles = backup;
+                  this.showSnackbar('Memori penyimpanan penuh. Hapus beberapa berita lama untuk menyimpan yang baru.');
               }
-              return; // Stop execution, don't update UI to fake "Tersimpan"
           }
-          
-          const bookmarkText = document.getElementById('bookmarkText'); const bookmarkIcon = document.getElementById('bookmarkIcon');
-          if (isSaved) { bookmarkText.textContent = "Simpan"; bookmarkIcon.style.color = ''; bookmarkIcon.style.fill = 'none'; } 
-          else { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.style.color = '#dc2626'; bookmarkIcon.style.fill = '#dc2626'; }
       },
 
-      // Fix Bug #1, #2, #5, #6: Quick Bookmark without renderHome()
+      // === [BUG FIX #1 & #2] Method baru untuk persist dengan retry trim konten.
+      //     Jika quota penuh, otomatis strip field 'content' (paling besar) dan coba lagi. ===
+      persistSavedArticles() {
+          try {
+              localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
+              return true;
+          } catch (e) {
+              console.warn('[persistSavedArticles] Quota penuh, mencoba trim content...', e);
+              // Coba strip field 'content' (yang paling besar) lalu coba lagi
+              const trimmed = this.savedArticles.map(p => {
+                  const copy = { ...p };
+                  if (copy.content) {
+                      // Ganti full content dengan excerpt sebagai fallback konten offline
+                      copy.content = { rendered: '<p>' + (copy.excerpt || 'Konten tidak tersedia offline. Sambungkan ke internet untuk membaca.') + '</p>' };
+                  }
+                  return copy;
+              });
+              try {
+                  localStorage.setItem('balijani_saved_posts', JSON.stringify(trimmed));
+                  this.savedArticles = trimmed;
+                  this.showSnackbar('Beberapa berita lama diringkas untuk menghemat ruang penyimpanan.');
+                  return true;
+              } catch (e2) {
+                  console.error('[persistSavedArticles] Masih penuh setelah trim:', e2);
+                  return false;
+              }
+          }
+      },
+
+      // === [BUG FIX #6] Method terpisah untuk update UI bookmark dengan null check.
+      //     Sebelumnya: langsung akses bookmarkText.textContent tanpa null check -> TypeError
+      //     jika toggleBookmark dipanggil saat singlePostView tidak dirender. ===
+      updateBookmarkUI(isSaved) {
+          const bookmarkText = document.getElementById('bookmarkText');
+          const bookmarkIcon = document.getElementById('bookmarkIcon');
+          if (!bookmarkText || !bookmarkIcon) return;
+          if (isSaved) {
+              bookmarkText.textContent = "Tersimpan";
+              bookmarkIcon.style.color = '#dc2626';
+              bookmarkIcon.style.fill = '#dc2626';
+          } else {
+              bookmarkText.textContent = "Simpan";
+              bookmarkIcon.style.color = '';
+              bookmarkIcon.style.fill = 'none';
+          }
+      },
+
+      // === [BUG FIX #5] Update badge count di nav "Tersimpan" untuk feedback cepat. ===
+      updateBookmarkBadge() {
+          const badge = document.getElementById('bookmarkBadge');
+          if (!badge) return;
+          const count = this.savedArticles.length;
+          if (count > 0) {
+              badge.textContent = count > 99 ? '99+' : count;
+              badge.classList.remove('hidden');
+          } else {
+              badge.classList.add('hidden');
+          }
+      },
+
       async quickToggleBookmark(event, postId) {
           event.stopPropagation(); this.haptic(10);
           
           const post = this.data.find(p => p.id === postId) || this.savedArticles.find(p => p.id === postId);
           if (!post) return;
+          const index = this.savedArticles.findIndex(p => p.id === post.id);
+          let isNowSaved;
           
-          const isSaved = this.savedArticles.some(p => p.id === post.id);
-          
-          let htmlContent = post.content?.rendered || '';
-          const excerptText = htmlContent.replace(/<[^>]*>/g, '').substring(0, 1000);
-          
-          if (isSaved) { 
-              this.savedArticles = this.savedArticles.filter(p => p.id !== post.id); 
-              this.showSnackbar('Warta dihapus dari simpanan.'); 
+          if (index > -1) { 
+              const backup = [...this.savedArticles];
+              this.savedArticles.splice(index, 1);
+              if (this.persistSavedArticles()) {
+                  this.showSnackbar('Warta dihapus dari simpanan.');
+                  isNowSaved = false;
+              } else {
+                  this.savedArticles = backup;
+                  this.showSnackbar('Gagal menyimpan perubahan.');
+                  return;
+              }
           } else {
+              // === [BUG FIX #2] Simpan excerpt, bukan full content (hemat storage) ===
+              const fullContent = post.content?.rendered || '';
+              const excerpt = (post.excerpt?.rendered || fullContent.replace(/<[^>]+>/g, '').trim()).slice(0, 500);
               const lightPost = {
                   id: post.id,
                   title: { rendered: post.title?.rendered || 'Tanpa Judul' },
                   link: post.link,
                   date: post.date,
-                  content: { rendered: excerptText || '<p>Konten tidak tersedia.</p>' },
+                  excerpt: excerpt,
+                  content: { rendered: fullContent },
                   img: this.getImageUrl(post),
                   author: this.getAuthorName(post),
-                  category: post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'
+                  category: post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta',
+                  savedAt: Date.now()
               };
-              this.savedArticles.unshift(lightPost); 
-              this.showSnackbar('Warta berhasil disimpan.');
-          }
-          
-          try { 
-              localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles)); 
-          } catch (e) { 
-              this.showSnackbar('Memori HP penuh. Hapus beberapa berita lama.');
-              if (!isSaved) {
-                  this.savedArticles.shift();
+              const backup = [...this.savedArticles];
+              this.savedArticles.unshift(lightPost);
+              if (this.persistSavedArticles(lightPost)) {
+                  this.showSnackbar('Warta berhasil disimpan.');
+                  isNowSaved = true;
               } else {
-                  const lightPost = { id: post.id, title: { rendered: post.title?.rendered || 'Tanpa Judul' }, link: post.link, date: post.date, content: { rendered: excerptText }, img: this.getImageUrl(post), author: this.getAuthorName(post) };
-                  this.savedArticles.unshift(lightPost);
-              }
-              return; 
-          }
-          
-          // Update UI (Only update the clicked icon, NO renderHome() to prevent flicker)
-          const btn = event.currentTarget;
-          if (btn) {
-              const isCurrentlySaved = this.savedArticles.some(p => p.id === post.id);
-              if (isCurrentlySaved) {
-                  btn.style.color = '#f43f5e';
-                  btn.style.fill = '#f43f5e';
-              } else {
-                  btn.style.color = '#94a3b8';
-                  btn.style.fill = 'none';
+                  this.savedArticles = backup;
+                  this.showSnackbar('Memori penuh. Hapus berita lama untuk menyimpan baru.');
+                  return;
               }
           }
+          
+          // === [BUG FIX #5] Sebelumnya: this.renderHome() -> scroll reset, carousel
+          //     restart, semua gambar reload. Sekarang: update hanya tombol yang di-tap
+          //     + tombol lain yang menampilkan artikel yg sama. ===
+          this.updateCardBookmarkState(postId, isNowSaved, event.currentTarget);
+          this.updateBookmarkBadge();
+      },
+
+      // === [BUG FIX #5] Update state tombol bookmark pada card tanpa render ulang home. ===
+      updateCardBookmarkState(postId, isSaved, btnEl) {
+          const newStyle = isSaved ? 'color:#f43f5e; fill:#f43f5e;' : 'color:#94a3b8; fill:none;';
+          // Update tombol yang diklik
+          if (btnEl) {
+              btnEl.style.cssText = newStyle;
+          }
+          // Update SEMUA tombol bookmark untuk artikel ini (bisa muncul di magazine grid + slide + related)
+          document.querySelectorAll('[onclick*="quickToggleBookmark(event, ' + postId + ')"]').forEach(btn => {
+              btn.style.cssText = newStyle;
+          });
       },
 
       async loadComments(postId) {
           const container = document.getElementById('commentsList');
           container.innerHTML = `<p class="text-xs text-slate-400 italic">Memuat komentar...</p>`;
-          try {
-            let { data: comments } = await supabaseClient.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: false });
-            container.innerHTML = ''; document.getElementById('commentCount').textContent = comments ? comments.length : 0;
-            if (!comments || comments.length === 0) { container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada komentar. Jadilah yang pertama menanggapi!</p>`; return; }
-            comments.forEach(c => this.appendCommentToDOM(c, false));
-          } catch(e) { console.error("Error loading comments:", e); container.innerHTML = `<p class="text-xs text-slate-400 italic">Gagal memuat komentar.</p>`; }
+          let { data: comments } = await supabaseClient.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: false });
+          container.innerHTML = ''; document.getElementById('commentCount').textContent = comments ? comments.length : 0;
+          if (!comments || comments.length === 0) { container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada komentar. Jadilah yang pertama menanggapi!</p>`; return; }
+          comments.forEach(c => this.appendCommentToDOM(c, false));
       },
       appendCommentToDOM(c, prepend = true) {
           const container = document.getElementById('commentsList');
           if(container.querySelector('p.italic')) container.innerHTML = '';
           const dateStr = new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-          // Fix Bug #8: XSS di komentar
-          const commentHTML = `<div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-1"><div class="flex justify-between items-center"><span class="text-xs font-bold text-slate-900 dark:text-white">${this.escapeHtml(c.author_name)}</span><span class="text-[9px] text-slate-400">${dateStr}</span></div><p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${this.escapeHtml(c.content)}</p></div>`;
-          if(prepend) container.insertAdjacentHTML('afterbegin', commentHTML); else container.insertAdjacentHTML('beforeend', commentHTML);
+          // === [BUG FIX #8] Sebelumnya: bangun HTML string dengan ${c.author_name} & ${c.content}
+          //     langsung tanpa escape -> XSS. User bisa submit komentar berisi
+          //     <img src=x onerror=alert(document.cookie)> -> dieksekusi di browser user lain.
+          //     Sekarang: bangun DOM via createElement + textContent (immutable terhadap HTML). ===
+          const wrapper = document.createElement('div');
+          wrapper.className = 'bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-1';
+          
+          const header = document.createElement('div');
+          header.className = 'flex justify-between items-center';
+          
+          const nameSpan = document.createElement('span');
+          nameSpan.className = 'text-xs font-bold text-slate-900 dark:text-white';
+          nameSpan.textContent = c.author_name;  // textContent = aman XSS
+          
+          const dateSpan = document.createElement('span');
+          dateSpan.className = 'text-[9px] text-slate-400';
+          dateSpan.textContent = dateStr;
+          
+          header.appendChild(nameSpan);
+          header.appendChild(dateSpan);
+          
+          const contentP = document.createElement('p');
+          contentP.className = 'text-xs text-slate-700 dark:text-slate-300 leading-relaxed';
+          contentP.textContent = c.content;  // textContent = aman XSS
+          
+          wrapper.appendChild(header);
+          wrapper.appendChild(contentP);
+          
+          if(prepend) container.insertAdjacentElement('afterbegin', wrapper); 
+          else container.insertAdjacentElement('beforeend', wrapper);
           let countEl = document.getElementById('commentCount'); countEl.textContent = parseInt(countEl.textContent || 0) + 1;
       },
 
@@ -746,8 +884,9 @@
         this.startCarousel();
         const sorotanContainer = document.getElementById('threeColGrid');
         sorotanContainer.className = "grid grid-cols-1 md:grid-cols-3 gap-5"; sorotanContainer.innerHTML = '';
-        if(this.data[6]) { const p = this.data[6]; sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="md:col-span-2 md:row-span-2 cursor-pointer group relative rounded-2xl overflow-hidden h-64 md:h-full min-h-[300px] shadow-sm active:scale-[0.98] transition-all"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div><div class="absolute bottom-0 p-5 w-full"><span class="bg-brand-600 text-white text-[9px] font-bold px-2 py-1 rounded shadow-sm uppercase">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span><h3 class="text-lg font-bold text-white mt-2 leading-snug drop-shadow-md line-clamp-3">${this.escapeHtml(p.title.rendered)}</h3></div></div>`; }
-        this.data.slice(7, 11).forEach(p => { sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-3 flex gap-3 items-center shadow-sm active:scale-[0.98] transition-all"><div class="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition"></div><div class="flex-1 min-w-0"><span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider block mb-1">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span><h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${this.escapeHtml(p.title.rendered)}</h3></div></div>`; });
+        // === [BUG FIX #7] Escape semua title/category di sorotan utama ===
+        if(this.data[6]) { const p = this.data[6]; const pCat = p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'; sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="md:col-span-2 md:row-span-2 cursor-pointer group relative rounded-2xl overflow-hidden h-64 md:h-full min-h-[300px] shadow-sm active:scale-[0.98] transition-all"><img src="${escapeJsString(this.getImageUrl(p))}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div><div class="absolute bottom-0 p-5 w-full"><span class="bg-brand-600 text-white text-[9px] font-bold px-2 py-1 rounded shadow-sm uppercase">${escapeHtml(pCat)}</span><h3 class="text-lg font-bold text-white mt-2 leading-snug drop-shadow-md line-clamp-3">${escapeHtml(p.title.rendered)}</h3></div></div>`; }
+        this.data.slice(7, 11).forEach(p => { const pCat = p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'; sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-3 flex gap-3 items-center shadow-sm active:scale-[0.98] transition-all"><div class="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0"><img src="${escapeJsString(this.getImageUrl(p))}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition"></div><div class="flex-1 min-w-0"><span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider block mb-1">${escapeHtml(pCat)}</span><h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${escapeHtml(p.title.rendered)}</h3></div></div>`; });
         const magazineGrid = document.getElementById('magazineGrid'); magazineGrid.innerHTML = '';
         this.data.slice(12, 18).forEach(p => magazineGrid.appendChild(this.buildMagazineCard(p)));
         const slideTrack = document.getElementById('smallSlideTrack'); slideTrack.innerHTML = '';
@@ -755,16 +894,24 @@
         lucide.createIcons();
       },
 
-      buildHeroHTML(post) { const img = this.getImageUrl(post); const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Utama'; return `<img src="${img}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div><div class="relative z-10 p-5 md:p-8 space-y-2 w-full"><span class="bg-brand-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-sm">${cat}</span><h2 class="text-xl md:text-3xl font-bold text-white leading-snug drop-shadow-md">${this.escapeHtml(post.title.rendered)}</h2></div>`; },
-      buildCarouselCard(post) { const img = this.getImageUrl(post); return `<div onclick="App.openPost(${post.id})" class="snap-item shrink-0 w-[70%] sm:w-[45%] md:w-[30%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform"><div class="w-full aspect-[16/10] overflow-hidden bg-slate-100"><img src="${img}" onerror="this.parentElement.classList.add('bg-slate-200')" class="w-full h-full object-cover"></div><div class="p-3 flex-1 flex flex-col justify-center"><h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${this.escapeHtml(post.title.rendered)}</h3></div></div>`; },
+      buildHeroHTML(post) { const img = this.getImageUrl(post); const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Utama'; return `<img src="${escapeJsString(img)}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div><div class="relative z-10 p-5 md:p-8 space-y-2 w-full"><span class="bg-brand-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-sm">${escapeHtml(cat)}</span><h2 class="text-xl md:text-3xl font-bold text-white leading-snug drop-shadow-md">${escapeHtml(post.title.rendered)}</h2></div>`; },
+      buildCarouselCard(post) { const img = this.getImageUrl(post); return `<div onclick="App.openPost(${post.id})" class="snap-item shrink-0 w-[70%] sm:w-[45%] md:w-[30%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform"><div class="w-full aspect-[16/10] overflow-hidden bg-slate-100"><img src="${escapeJsString(img)}" onerror="this.parentElement.classList.add('bg-slate-200')" class="w-full h-full object-cover"></div><div class="p-3 flex-1 flex flex-col justify-center"><h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${escapeHtml(post.title.rendered)}</h3></div></div>`; },
 
       buildMagazineCard(post) {
         const img = this.getImageUrl(post); const author = this.getAuthorName(post); const isSaved = this.savedArticles.some(p => p.id === post.id);
         const savedStyle = isSaved ? 'color:#f43f5e; fill:#f43f5e;' : 'color:#94a3b8; fill:none;';
+        // === [BUG FIX #7] Escape semua value user-controlled sebelum di-insert ke innerHTML.
+        //     Sebelumnya hanya .replace(/'/g, "\\'") -> tidak cukup, bisa tembus XSS via
+        //     " (double quote), < > tag, atau \u2028 line separator. ===
+        const titleHtml = escapeHtml(post.title.rendered);
+        const titleAttr = escapeJsString(post.title.rendered);
+        const linkAttr = escapeJsString(post.link);
+        const authorHtml = escapeHtml(author);
+        const imgAttr = escapeJsString(img);
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm flex flex-col justify-between active:scale-[0.98] transition-all";
         el.onclick = () => this.openPost(post.id);
-        el.innerHTML = `<div><div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-5"><h3 class="text-base md:text-lg font-bold font-serif text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-3">${this.escapeHtml(post.title.rendered)}</h3><span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Editor : ${author}</span></div></div><div class="px-5 pb-5 flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800/60"><span>Balijani.id</span><div class="flex items-center gap-2"><button onclick="App.quickToggleBookmark(event, ${post.id})" style="${savedStyle}" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${this.escapeHtml(post.title.rendered).replace(/'/g, "\\'")}', '${post.link}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div>`;
+        el.innerHTML = `<div><div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${imgAttr}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-5"><h3 class="text-base md:text-lg font-bold font-serif text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-3">${titleHtml}</h3><span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Editor : ${authorHtml}</span></div></div><div class="px-5 pb-5 flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800/60"><span>Balijani.id</span><div class="flex items-center gap-2"><button onclick="App.quickToggleBookmark(event, ${post.id})" style="${savedStyle}" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${titleAttr}', '${linkAttr}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div>`;
         return el;
       },
 
@@ -772,10 +919,16 @@
         const img = this.getImageUrl(post); const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
         const dateObj = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }); const isSaved = this.savedArticles.some(p => p.id === post.id);
         const savedStyle = isSaved ? 'color:#f43f5e; fill:#f43f5e;' : 'color:#94a3b8; fill:none;';
+        // === [BUG FIX #7] Escape semua value user-controlled ===
+        const titleHtml = escapeHtml(post.title.rendered);
+        const titleAttr = escapeJsString(post.title.rendered);
+        const linkAttr = escapeJsString(post.link);
+        const catHtml = escapeHtml(cat);
+        const imgAttr = escapeJsString(img);
         const el = document.createElement('div');
         el.className = "snap-item shrink-0 w-[48%] sm:w-[32%] md:w-[22%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
-        el.innerHTML = `<div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div><div class="p-3 flex-1 flex flex-col justify-between"><div><span class="text-[8px] font-bold text-sky-500 uppercase tracking-wider mb-1 block">${cat}</span><h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-2">${this.escapeHtml(post.title.rendered)}</h3></div><div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/60"><span class="text-[9px] text-slate-400">${dateObj}</span><div class="flex items-center gap-1"><button onclick="App.quickToggleBookmark(event, ${post.id})" style="${savedStyle}" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${this.escapeHtml(post.title.rendered).replace(/'/g, "\\'")}', '${post.link}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div></div>`;
+        el.innerHTML = `<div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${imgAttr}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div><div class="p-3 flex-1 flex flex-col justify-between"><div><span class="text-[8px] font-bold text-sky-500 uppercase tracking-wider mb-1 block">${catHtml}</span><h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-2">${titleHtml}</h3></div><div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/60"><span class="text-[9px] text-slate-400">${dateObj}</span><div class="flex items-center gap-1"><button onclick="App.quickToggleBookmark(event, ${post.id})" style="${savedStyle}" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${titleAttr}', '${linkAttr}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div></div>`;
         return el;
       },
 
@@ -783,17 +936,18 @@
         if (!post || !post.id) return document.createElement('div');
         let imgUrl = post.img ? post.img : this.getImageUrl(post);
         let author = post.author ? post.author : this.getAuthorName(post);
-        const titleText = (post.title && post.title.rendered) ? post.title.rendered : (post.title || 'Tanpa Judul');
+        const titleText = (post.title && post.title.rendered) ? post.title.rendered : 'Tanpa Judul';
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
+        // === [BUG FIX #7] Escape semua value user-controlled (title, img, author) ===
         el.innerHTML = `
           <div class="w-full ${isGallery ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-slate-100">
-            <img src="${imgUrl}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <img src="${escapeJsString(imgUrl)}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
           </div>
           <div class="p-3 md:p-4">
-            <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${this.escapeHtml(titleText)}</h3>
-            <span class="text-[9px] text-slate-500 font-medium">Editor : ${author}</span>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${escapeHtml(titleText)}</h3>
+            <span class="text-[9px] text-slate-500 font-medium">Editor : ${escapeHtml(author)}</span>
           </div>`;
         return el;
       },
@@ -842,7 +996,29 @@
               const commentList = document.getElementById('userCommentsList'); commentList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Memuat...</p>`;
               let { data: userComments } = await supabaseClient.from('comments').select('*').eq('user_id', session.user.id).order('created_at', { ascending: false }).limit(5);
               if (!userComments || userComments.length === 0) { commentList.innerHTML = `<p class="p-4 text-xs text-slate-400 italic">Belum ada komentar.</p>`; } 
-              else { commentList.innerHTML = ''; userComments.forEach(c => { const dateStr = new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); commentList.innerHTML += `<div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer" onclick="App.openPost(${c.post_id})"><p class="text-xs text-slate-700 dark:text-slate-300 mb-1 line-clamp-2">${this.escapeHtml(c.content)}</p><span class="text-[9px] text-slate-400">Pada ${dateStr}</span></div>`; }); }
+              else {
+                // === [BUG FIX #8] Sebelumnya: ${c.content} langsung ke innerHTML -> XSS.
+                //     Sekarang: bangun DOM pakai createElement + textContent. ===
+                commentList.innerHTML = '';
+                userComments.forEach(c => { 
+                  const dateStr = new Date(c.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                  const row = document.createElement('div');
+                  row.className = 'p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer';
+                  row.onclick = () => App.openPost(c.post_id);
+                  
+                  const contentP = document.createElement('p');
+                  contentP.className = 'text-xs text-slate-700 dark:text-slate-300 mb-1 line-clamp-2';
+                  contentP.textContent = c.content;  // aman XSS
+                  
+                  const dateSpan = document.createElement('span');
+                  dateSpan.className = 'text-[9px] text-slate-400';
+                  dateSpan.textContent = 'Pada ' + dateStr;
+                  
+                  row.appendChild(contentP);
+                  row.appendChild(dateSpan);
+                  commentList.appendChild(row);
+                });
+              }
               if (!metadata.gender || !metadata.city || !metadata.profession) { this.showSnackbar('Lengkapi data profil Anda di tombol Edit.'); }
           } else { loggedOutDiv.classList.remove('hidden'); loggedInDiv.classList.add('hidden'); }
           lucide.createIcons();
@@ -875,10 +1051,15 @@
         else if (view === 'bookmarks') document.querySelector('.nav-btn:nth-child(3)')?.classList.add('active-tab');
         else if (view === 'account') document.querySelector('.nav-btn:nth-child(4)')?.classList.add('active-tab');
 
-        const views = ['homeView', 'categoryView', 'bookmarkView', 'singlePostView', 'accountView'];
+        const views = ['loadingView', 'homeView', 'categoryView', 'bookmarkView', 'singlePostView', 'accountView'];
         views.forEach(id => { const el = document.getElementById(id); el.classList.add('hidden'); el.classList.remove('view-enter'); });
         
         let activeViewId = view === 'single' ? 'singlePostView' : view + 'View';
+        // === [BUG FIX #9] ID mismatch: HTML pakai 'bookmarkView' (singular),
+        //     tapi 'bookmarks' + 'View' = 'bookmarksView' (plural). Sebelumnya
+        //     getElementById('bookmarksView') return null -> tidak ada view yang
+        //     di-show -> layar blank saat user buka menu Tersimpan. ===
+        if (view === 'bookmarks') activeViewId = 'bookmarkView';
         const activeView = document.getElementById(activeViewId);
         if (activeView) { activeView.classList.remove('hidden'); void activeView.offsetWidth; activeView.classList.add('view-enter'); }
         
@@ -908,8 +1089,9 @@
         let post = this.data.find(p => p.id === id) || this.savedArticles.find(p => p.id === id);
         if (!post) return;
         this.currentPost = post; this.markAsRead(id);
-        // Fix Bug #7: XSS di judul artikel
-        document.getElementById('postHeadline').textContent = post.title?.rendered || 'Tanpa Judul';
+        // === [BUG FIX #7] Escape title sebelum innerHTML. Sebelumnya: langsung
+        //     ${post.title.rendered} -> XSS jika judul WP mengandung tag HTML. ===
+        document.getElementById('postHeadline').innerHTML = escapeHtml(post.title.rendered);
         document.getElementById('postCategoryBadge').textContent = post._embedded?.['wp:term']?.[0]?.[0]?.name || post.category || 'Warta';
         document.getElementById('postAuthor').textContent = this.getAuthorName(post); 
         document.getElementById('postDate').textContent = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -918,26 +1100,33 @@
         imgEl.onerror = () => { imgEl.style.display = 'none'; };
         
         let htmlContent = post.content?.rendered || '<p>Konten berita tidak tersedia secara offline. Silakan sambungkan ke internet untuk membaca.</p>';
+        // === [BUG FIX #2] Jika artikel tersimpan dan content rendered tidak ada/cuma excerpt,
+        //     tampilkan excerpt sebagai fallback konten offline. ===
+        if ((!htmlContent || htmlContent.length < 50) && post.excerpt) {
+          htmlContent = '<p>' + escapeHtml(post.excerpt) + '</p><p class="text-xs text-slate-400 italic">Konten lengkap tidak tersimpan. Sambungkan ke internet untuk membaca berita penuh.</p>';
+        }
         let html = htmlContent.replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '').replace(/<(p|div|span|figure|figcaption|blockquote)([^>]*)\sstyle="([^"]*)"/gi, '<$1$2').replace(/<img /gi, '<img style="max-width: 100% !important; height: auto !important; border-radius: 12px; margin: 1rem auto; display: block;" ');
         
         const paragraphs = html.split('</p>');
         if (paragraphs.length > 4 && this.data.length > 1) {
           const midIndex = Math.floor(paragraphs.length / 2); const randomPost = this.data.find(p => p.id !== id) || this.data[0];
-          const bacaJugaHtml = `<div class="baca-juga-box" onclick="App.openPost(${randomPost.id})"><span class="baca-juga-label">Baca Juga</span><h4 class="baca-juga-title">${this.escapeHtml(randomPost.title.rendered)}</h4></div>`;
+          // === [BUG FIX #7] Escape title di baca-juga box ===
+          const bacaJugaHtml = `<div class="baca-juga-box" onclick="App.openPost(${randomPost.id})"><span class="baca-juga-label">Baca Juga</span><h4 class="baca-juga-title">${escapeHtml(randomPost.title.rendered)}</h4></div>`;
           paragraphs.splice(midIndex, 0, bacaJugaHtml); html = paragraphs.join('</p>');
         }
         document.getElementById('postRenderedContent').innerHTML = html;
         const relatedGrid = document.getElementById('relatedPostsGrid'); relatedGrid.innerHTML = '';
         this.data.filter(p => p.id !== id).slice(0, 2).forEach(p => relatedGrid.appendChild(this.buildGridCard(p, true)));
         const popularList = document.getElementById('popularPostsList'); popularList.innerHTML = '';
-        this.data.slice(5, 10).forEach(p => { popularList.innerHTML += `<div class="flex gap-3 items-center cursor-pointer group active:scale-95 transition" onclick="App.openPost(${p.id})"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0"><h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-600 transition">${this.escapeHtml(p.title.rendered)}</h4></div>`; });
+        // === [BUG FIX #7] Escape title & img url di popular posts ===
+        this.data.slice(5, 10).forEach(p => { popularList.innerHTML += `<div class="flex gap-3 items-center cursor-pointer group active:scale-95 transition" onclick="App.openPost(${p.id})"><img src="${escapeJsString(this.getImageUrl(p))}" onerror="this.style.display='none'" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0"><h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-600 transition">${escapeHtml(p.title.rendered)}</h4></div>`; });
         
         this.loadPostInteractions(post.id);
         
+        // === [BUG FIX #6] Pakai updateBookmarkUI() yang sudah ada null check-nya.
+        //     Sebelumnya: langsung akses bookmarkText.textContent -> TypeError jika null. ===
         const isSaved = this.savedArticles.some(p => p.id === post.id);
-        const bookmarkText = document.getElementById('bookmarkText'); const bookmarkIcon = document.getElementById('bookmarkIcon');
-        if (isSaved) { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.style.color = '#dc2626'; bookmarkIcon.style.fill = '#dc2626'; } 
-        else { bookmarkText.textContent = "Simpan"; bookmarkIcon.style.color = ''; bookmarkIcon.style.fill = 'none'; }
+        this.updateBookmarkUI(isSaved);
         
         if (!fromPopState) history.pushState({ view: 'single', id: id }, '', '#post-' + id);
         this.navigate('single', '', true); lucide.createIcons();
