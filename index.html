@@ -406,13 +406,32 @@
             </button>
         </div>
 
-        <!-- UI Sudah Login -->
+               <!-- UI Sudah Login -->
         <div id="profileLoggedIn" class="hidden space-y-5">
             <div class="flex items-center gap-4 p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
                 <div class="w-16 h-16 rounded-full bg-brand-600 text-white flex items-center justify-center text-2xl font-black uppercase" id="profileAvatar">B</div>
-                <div>
+                <div class="flex-1">
                     <h2 id="profileName" class="text-xl font-extrabold text-slate-900 dark:text-white">Nama Pengguna</h2>
                     <p id="profileEmail" class="text-xs text-slate-500 mt-1">email@tersembunyi.com</p>
+                </div>
+                <button onclick="App.openEditProfile()" class="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-slate-600 dark:text-slate-300 active:scale-90 transition">
+                    <i data-lucide="edit-3" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- DETAIL PROFIL -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800">
+                <div class="p-4 flex justify-between items-center">
+                    <span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> Jenis Kelamin</span>
+                    <span id="profileGender" class="text-sm font-bold text-slate-900 dark:text-white">Belum diisi</span>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                    <span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> Kota Asal</span>
+                    <span id="profileCity" class="text-sm font-bold text-slate-900 dark:text-white">Belum diisi</span>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                    <span class="text-xs text-slate-500 flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4"></i> Profesi</span>
+                    <span id="profileProfession" class="text-sm font-bold text-slate-900 dark:text-white">Belum diisi</span>
                 </div>
             </div>
 
@@ -441,21 +460,10 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-                <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
-                    <i data-lucide="bell-ring" class="w-4 h-4 text-rose-500"></i>
-                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Notifikasi Khusus</h3>
-                </div>
-                <div id="userNotifList" class="divide-y divide-slate-100 dark:divide-slate-800">
-                    <p class="p-4 text-xs text-slate-400 italic">Tidak ada notifikasi.</p>
-                </div>
-            </div>
-
             <button onclick="App.logout()" class="w-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-bold text-sm py-3 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 cursor-pointer border border-rose-200 dark:border-rose-900/50">
                 <i data-lucide="log-out" class="w-4 h-4"></i> Keluar (Logout)
             </button>
-        </div>
-    </section>
+        </div>    </section>
 
     <article id="singlePostView" class="hidden view-enter max-w-4xl mx-auto bg-white dark:bg-[#0f172a] mt-4 md:mt-6 md:rounded-2xl md:border border-slate-100 dark:border-slate-800 pb-8 flex flex-col md:flex-row gap-6">
       <div class="flex-1 w-full relative">
@@ -602,6 +610,39 @@
          <div class="w-8 h-8 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div>
       </div>
       <iframe id="webFormIframe" src="" class="absolute inset-0 w-full h-full border-none z-10 opacity-0 transition-opacity duration-500" onload="this.style.opacity=1; document.getElementById('iframeLoader').style.display='none';"></iframe>
+    </div>
+  </div>
+
+    <!-- MODAL EDIT PROFIL -->
+  <div id="editProfileScrim" class="bottom-sheet-scrim" onclick="App.closeEditProfile()"></div>
+  <div id="editProfileModal" class="bottom-sheet">
+    <div class="drag-handle"></div>
+    <div class="px-6 pb-6">
+        <h3 class="text-lg font-extrabold mb-4 text-center">Edit Profil</h3>
+        <div class="space-y-3">
+            <div>
+                <label class="text-xs font-bold text-slate-500">Nama Lengkap</label>
+                <input id="editName" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white">
+            </div>
+            <div>
+                <label class="text-xs font-bold text-slate-500">Jenis Kelamin</label>
+                <select id="editGender" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white">
+                    <option value="">Pilih...</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-slate-500">Kota Asal</label>
+                <input id="editCity" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white">
+            </div>
+            <div>
+                <label class="text-xs font-bold text-slate-500">Profesi</label>
+                <input id="editProfession" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white">
+            </div>
+        </div>
+        <button onclick="App.saveProfile()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm py-3 rounded-xl mt-6 active:scale-95 transition">Simpan Perubahan</button>
+        <button onclick="App.closeEditProfile()" class="w-full text-slate-500 font-bold text-sm py-3 mt-2">Batal</button>
     </div>
   </div>
 
@@ -1348,7 +1389,12 @@
         else { emptyState.classList.add('hidden'); this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true))); }
       },
 
-      async renderAccountPage(session) {
+           async renderAccountPage(session) {
+          if (!session) {
+              const { data } = await supabaseClient.auth.getSession();
+              session = data.session;
+          }
+          
           const loggedOutDiv = document.getElementById('profileLoggedOut');
           const loggedInDiv = document.getElementById('profileLoggedIn');
           
@@ -1356,12 +1402,18 @@
               loggedOutDiv.classList.add('hidden');
               loggedInDiv.classList.remove('hidden');
               
-              const name = session.user.user_metadata?.full_name || 'Pengguna';
+              const metadata = session.user.user_metadata || {};
+              const name = metadata.full_name || 'Pengguna';
               const email = session.user.email || 'email@tersembunyi.com';
               
               document.getElementById('profileName').innerText = name;
               document.getElementById('profileEmail').innerText = email.replace(/(.{2}).*(@.*)/, "$1***$2");
               document.getElementById('profileAvatar').innerText = name.charAt(0).toUpperCase();
+              
+              // Tampilkan detail profil
+              document.getElementById('profileGender').innerText = metadata.gender || 'Belum diisi';
+              document.getElementById('profileCity').innerText = metadata.city || 'Belum diisi';
+              document.getElementById('profileProfession').innerText = metadata.profession || 'Belum diisi';
 
               // Load User Comments
               const commentList = document.getElementById('userCommentsList');
@@ -1380,6 +1432,61 @@
                             <span class="text-[9px] text-slate-400">Pada ${dateStr}</span>
                         </div>`;
                   });
+              }
+
+              // Cek apakah profil belum lengkap, jika ya tampilkan notifikasi
+              if (!metadata.gender || !metadata.city || !metadata.profession) {
+                  this.showSnackbar('Lengkapi data profil Anda di tombol Edit.');
+              }
+
+          } else {
+              loggedOutDiv.classList.remove('hidden');
+              loggedInDiv.classList.add('hidden');
+          }
+          lucide.createIcons();
+      },
+
+      async openEditProfile() {
+          this.haptic(10);
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) return;
+          
+          const metadata = session.user.user_metadata || {};
+          document.getElementById('editName').value = metadata.full_name || '';
+          document.getElementById('editGender').value = metadata.gender || '';
+          document.getElementById('editCity').value = metadata.city || '';
+          document.getElementById('editProfession').value = metadata.profession || '';
+          
+          document.getElementById('editProfileScrim').classList.add('active');
+          document.getElementById('editProfileModal').classList.add('active');
+      },
+
+      closeEditProfile() {
+          document.getElementById('editProfileScrim').classList.remove('active');
+          document.getElementById('editProfileModal').classList.remove('active');
+      },
+
+      async saveProfile() {
+          const name = document.getElementById('editName').value.trim();
+          const gender = document.getElementById('editGender').value;
+          const city = document.getElementById('editCity').value.trim();
+          const profession = document.getElementById('editProfession').value.trim();
+          
+          if (!name) return this.showSnackbar('Nama tidak boleh kosong');
+          
+          this.showSnackbar('Menyimpan profil...');
+          const { data, error } = await supabaseClient.auth.updateUser({
+              data: { full_name: name, gender: gender, city: city, profession: profession }
+          });
+          
+          if (error) {
+              this.showSnackbar('Gagal menyimpan profil: ' + error.message);
+          } else {
+              this.showSnackbar('Profil berhasil diperbarui!');
+              this.closeEditProfile();
+              this.renderAccountPage(data);
+          }
+      },
               }
 
               // Load Special Notifications (Reuse app notifications for now)
