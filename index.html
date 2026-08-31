@@ -1168,7 +1168,7 @@
           countEl.textContent = parseInt(countEl.textContent || 0) + 1;
       },
 
-      async submitComment(e) {
+            async submitComment(e) {
           e.preventDefault();
           if (!this.currentPost) return;
           const { data: { session } } = await supabaseClient.auth.getSession();
@@ -1178,8 +1178,13 @@
           if (!content) return;
 
           const { error } = await supabaseClient.from('comments').insert([{ post_id: this.currentPost.id, author_name: author, content: content }]);
-          if (error) this.showSnackbar('Gagal mengirim komentar.');
-          else { document.getElementById('commentContent').value = ''; this.showSnackbar('Komentar terkirim!'); }
+          if (error) {
+              console.error("Supabase Error:", error);
+              this.showSnackbar('Error: ' + error.message); // Menampilkan pesan error asli dari Supabase
+          } else { 
+              document.getElementById('commentContent').value = ''; 
+              this.showSnackbar('Komentar terkirim!'); 
+          }
       },
 
       renderHome() {
