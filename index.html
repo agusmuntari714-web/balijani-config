@@ -205,7 +205,6 @@
         <div class="relative w-full"><div id="smallSlideTrack" class="flex gap-4 overflow-x-auto snap-container no-scrollbar pb-2 scroll-smooth"></div></div>
       </div>
       
-      <!-- FOOTER HOME -->
       <footer class="mt-10 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-500 dark:text-slate-400 text-xs space-y-4">
           <div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div><span class="font-black text-lg text-slate-900 dark:text-white">BALIJANI</span></div>
           <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 font-semibold text-slate-600 dark:text-slate-300">
@@ -231,12 +230,11 @@
       <div id="archiveGridContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6"></div>
     </section>
 
-       <section id="bookmarkView" class="hidden view-enter pt-4 px-4 md:px-0">
+    <section id="bookmarkView" class="hidden view-enter pt-4 px-4 md:px-0">
       <div class="mb-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
         <div><h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bookmark-check" class="w-6 h-6 text-brand-600"></i> Tersimpan</h1><p class="text-xs text-slate-500 mt-1">Baca kembali warta favorit Anda secara offline.</p></div>
       </div>
       <div id="bookmarkGridContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6"></div>
-      
       <div id="emptyBookmarkState" class="hidden py-16 text-center text-slate-400 flex flex-col items-center">
         <i data-lucide="bookmark-minus" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
         <p class="text-sm font-medium mb-5">Belum ada berita tersimpan.</p>
@@ -311,7 +309,6 @@
             <div id="commentsList" class="space-y-3"><p class="text-xs text-slate-400 italic">Memuat komentar...</p></div>
           </div>
           
-          <!-- FOOTER ARTICLE -->
           <footer class="mt-10 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-500 dark:text-slate-400 text-xs space-y-4">
               <div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div><span class="font-black text-lg text-slate-900 dark:text-white">BALIJANI</span></div>
               <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 font-semibold text-slate-600 dark:text-slate-300">
@@ -334,7 +331,7 @@
           <div id="relatedPostsGrid" class="grid grid-cols-2 md:grid-cols-2 gap-3 mb-8"></div>
         </div>
       </div>
-      <aside class="w-full md:w-72 border-t md:border-t-0 md:border-l border-slate-100 dark:border-slate-800 px-5 pt-6 md:pr-5 md:pl-6 md:pb-6">
+      <aside class="w-full md:w-72 border-t md:border-t-0 md:border-l border-slate-101 dark:border-slate-800 px-5 pt-6 md:pr-5 md:pl-6 md:pb-6">
         <div class="sticky top-20">
           <h3 class="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4 text-amber-500"></i> Terpopuler</h3>
           <div id="popularPostsList" class="flex flex-col gap-4"></div>
@@ -566,15 +563,15 @@
       },
 
       async toggleBookmark() {
-          if (!this.currentPost) return; 
-          this.haptic(15); 
+          if (!this.currentPost) return; this.haptic(15); 
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) return this.showSnackbar('Silakan login untuk menyimpan warta.');
           
           const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
           if (isSaved) { 
               this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id); 
               this.showSnackbar('Warta dihapus dari simpanan.'); 
           } else {
-              // Ambil data sangat ringkas agar memori HP tidak penuh
               const lightPost = {
                   id: this.currentPost.id,
                   title: { rendered: this.currentPost.title?.rendered || 'Tanpa Judul' },
@@ -586,34 +583,21 @@
               this.savedArticles.unshift(lightPost); 
               this.showSnackbar('Warta berhasil disimpan.');
           }
+          try { localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles)); } 
+          catch (e) { this.showSnackbar('Memori HP penuh, gagal menyimpan.'); }
           
-          // Simpan ke memori HP dengan pengecekan error
-          try {
-              localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
-          } catch (e) {
-              this.showSnackbar('Memori HP penuh, gagal menyimpan.');
-          }
-          
-          const bookmarkText = document.getElementById('bookmarkText'); 
-          const bookmarkIcon = document.getElementById('bookmarkIcon');
-          if (isSaved) { 
-              bookmarkText.textContent = "Simpan"; 
-              bookmarkIcon.style.color = ''; 
-              bookmarkIcon.style.fill = 'none'; 
-          } else { 
-              bookmarkText.textContent = "Tersimpan"; 
-              bookmarkIcon.style.color = '#dc2626'; 
-              bookmarkIcon.style.fill = '#dc2626'; 
-          }
+          const bookmarkText = document.getElementById('bookmarkText'); const bookmarkIcon = document.getElementById('bookmarkIcon');
+          if (isSaved) { bookmarkText.textContent = "Simpan"; bookmarkIcon.style.color = ''; bookmarkIcon.style.fill = 'none'; } 
+          else { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.style.color = '#dc2626'; bookmarkIcon.style.fill = '#dc2626'; }
       },
 
       async quickToggleBookmark(event, postId) {
-          event.stopPropagation(); 
-          this.haptic(10);
+          event.stopPropagation(); this.haptic(10);
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) return this.showSnackbar('Silakan login untuk menyimpan warta.');
           
           const post = this.data.find(p => p.id === postId) || this.savedArticles.find(p => p.id === postId);
           if (!post) return;
-          
           const index = this.savedArticles.findIndex(p => p.id === post.id);
           if (index > -1) { 
               this.savedArticles.splice(index, 1); 
@@ -630,12 +614,8 @@
               this.savedArticles.unshift(lightPost); 
               this.showSnackbar('Warta berhasil disimpan.');
           }
-          
-          try {
-              localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
-          } catch (e) {
-              this.showSnackbar('Memori HP penuh, gagal menyimpan.');
-          }
+          try { localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles)); } 
+          catch (e) { this.showSnackbar('Memori HP penuh, gagal menyimpan.'); }
           this.renderHome();
       },
 
@@ -712,20 +692,11 @@
         return el;
       },
 
-                        buildGridCard(post, isGallery) {
+      buildGridCard(post, isGallery) {
         if (!post || !post.id) return document.createElement('div');
-        
-        // Cek apakah data gambar ada di _embedded atau di variabel img langsung
-        let imgUrl = '';
-        if (post.img) { imgUrl = post.img; } 
-        else { imgUrl = this.getImageUrl(post); }
-        
-        let author = 'Redaksi';
-        if (post.author) { author = post.author; } 
-        else { author = this.getAuthorName(post); }
-        
+        let imgUrl = post.img ? post.img : this.getImageUrl(post);
+        let author = post.author ? post.author : this.getAuthorName(post);
         const titleText = (post.title && post.title.rendered) ? post.title.rendered : 'Tanpa Judul';
-        
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
@@ -743,7 +714,7 @@
       startCarousel() { this.stopCarousel(); const track = document.getElementById('carouselTrack'); if(!track || !track.children.length) return; let index = 0; const maxIndex = track.children.length - 1; this.carouselInterval = setInterval(() => { index = (index + 1) > maxIndex ? 0 : index + 1; const itemWidth = track.children[0]?.clientWidth || 0; track.scrollTo({ left: index * (itemWidth + 16), behavior: 'smooth' }); document.querySelectorAll('#carouselDots button').forEach((dot, i) => { dot.className = `w-1.5 h-1.5 rounded-full transition-all ${i === index ? 'bg-brand-600 w-3' : 'bg-slate-300 dark:bg-slate-700'}`; }); }, 3500); },
       stopCarousel() { if(this.carouselInterval) { clearInterval(this.carouselInterval); this.carouselInterval = null; } },
 
-              renderBookmarks() { 
+      renderBookmarks() { 
         const grid = document.getElementById('bookmarkGridContainer'); 
         const emptyState = document.getElementById('emptyBookmarkState'); 
         if (!grid || !emptyState) return;
@@ -751,7 +722,6 @@
         
         try {
             this.savedArticles = (this.savedArticles || []).filter(p => p && p.id);
-            
             if (this.savedArticles.length === 0) {
                 emptyState.classList.remove('hidden');
                 grid.classList.add('hidden');
@@ -773,6 +743,7 @@
             grid.classList.add('hidden');
         }
       },
+
       async renderAccountPage(session) {
           if (!session) { session = await this.checkAuthSession(); }
           const loggedOutDiv = document.getElementById('profileLoggedOut'); const loggedInDiv = document.getElementById('profileLoggedIn');
@@ -858,7 +829,6 @@
         imgEl.src = imgUrl || ''; document.getElementById('postImageWrapper').style.display = imgUrl ? 'block' : 'none';
         imgEl.onerror = () => { imgEl.style.display = 'none'; };
         
-        // Handle content if it's missing (from lightPost bookmark)
         let htmlContent = post.content?.rendered || '<p>Konten berita tidak tersedia secara offline. Silakan sambungkan ke internet untuk membaca.</p>';
         let html = htmlContent.replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '').replace(/<(p|div|span|figure|figcaption|blockquote)([^>]*)\sstyle="([^"]*)"/gi, '<$1$2').replace(/<img /gi, '<img style="max-width: 100% !important; height: auto !important; border-radius: 12px; margin: 1rem auto; display: block;" ');
         
