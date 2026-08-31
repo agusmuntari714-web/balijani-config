@@ -1529,7 +1529,8 @@
             el.classList.remove('view-enter');
         });
         
-        const activeView = document.getElementById(view + 'View');
+                let activeViewId = view === 'single' ? 'singlePostView' : view + 'View';
+        const activeView = document.getElementById(activeViewId);
         if (activeView) {
             activeView.classList.remove('hidden');
             void activeView.offsetWidth; 
