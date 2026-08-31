@@ -692,19 +692,22 @@
         return el;
       },
 
-            buildGridCard(post, isGallery) {
+                  buildGridCard(post, isGallery) {
         if (!post || !post.id) return document.createElement('div'); // Cegah error
         const img = this.getImageUrl(post); 
         const author = this.getAuthorName(post);
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
+        
+        const titleText = (post.title && post.title.rendered) ? post.title.rendered : 'Tanpa Judul';
+        
         el.innerHTML = `
           <div class="w-full ${isGallery ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-slate-100">
             <img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
           </div>
           <div class="p-3 md:p-4">
-            <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${post.title?.rendered || 'Tanpa Judul'}</h3>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${titleText}</h3>
             <span class="text-[9px] text-slate-500 font-medium">Editor : ${author}</span>
           </div>`;
         return el;
@@ -713,20 +716,34 @@
       startCarousel() { this.stopCarousel(); const track = document.getElementById('carouselTrack'); if(!track || !track.children.length) return; let index = 0; const maxIndex = track.children.length - 1; this.carouselInterval = setInterval(() => { index = (index + 1) > maxIndex ? 0 : index + 1; const itemWidth = track.children[0]?.clientWidth || 0; track.scrollTo({ left: index * (itemWidth + 16), behavior: 'smooth' }); document.querySelectorAll('#carouselDots button').forEach((dot, i) => { dot.className = `w-1.5 h-1.5 rounded-full transition-all ${i === index ? 'bg-brand-600 w-3' : 'bg-slate-300 dark:bg-slate-700'}`; }); }, 3500); },
       stopCarousel() { if(this.carouselInterval) { clearInterval(this.carouselInterval); this.carouselInterval = null; } },
 
-          renderBookmarks() { 
+              renderBookmarks() { 
         const grid = document.getElementById('bookmarkGridContainer'); 
         const emptyState = document.getElementById('emptyBookmarkState'); 
+        if (!grid || !emptyState) return;
         grid.innerHTML = ''; 
         
-        // Bersihkan data rusak secara otomatis
-        this.savedArticles = this.savedArticles.filter(p => p && p.id);
-        localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
-
-        if (this.savedArticles.length === 0) {
+        try {
+            this.savedArticles = (this.savedArticles || []).filter(p => p && p.id);
+            
+            if (this.savedArticles.length === 0) {
+                emptyState.classList.remove('hidden');
+                grid.classList.add('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                grid.classList.remove('hidden');
+                this.savedArticles.forEach(p => {
+                    try {
+                        const card = this.buildGridCard(p, true);
+                        if (card) grid.appendChild(card);
+                    } catch (e) { console.error("Error membuat kartu:", e); }
+                });
+            }
+        } catch (e) {
+            console.error("Error render bookmarks:", e);
+            this.savedArticles = [];
+            localStorage.removeItem('balijani_saved_posts');
             emptyState.classList.remove('hidden');
-        } else {
-            emptyState.classList.add('hidden');
-            this.savedArticles.forEach(p => grid.appendChild(this.buildGridCard(p, true))); 
+            grid.classList.add('hidden');
         }
       },
       async renderAccountPage(session) {
