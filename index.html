@@ -606,7 +606,88 @@
   <div id="editProfileModal" class="bottom-sheet"><div class="drag-handle"></div><div class="px-6 pb-6"><h3 class="text-lg font-extrabold mb-4 text-center">Edit Profil</h3><div class="space-y-3"><div><label class="text-xs font-bold text-slate-500">Nama Lengkap</label><input id="editName" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div><div><label class="text-xs font-bold text-slate-500">Jenis Kelamin</label><select id="editGender" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"><option value="">Pilih...</option><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select></div><div><label class="text-xs font-bold text-slate-500">Kota Asal</label><input id="editCity" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div><div><label class="text-xs font-bold text-slate-500">Profesi</label><input id="editProfession" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div></div><button onclick="App.saveProfile()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm py-3 rounded-xl mt-6 active:scale-95 transition">Simpan Perubahan</button><button onclick="App.closeEditProfile()" class="w-full text-slate-500 font-bold text-sm py-3 mt-2">Batal</button></div></div>
 
   <div id="subscribeScrim" class="bottom-sheet-scrim" onclick="App.closeSubscribe()"></div>
-  <div id="subscribeModal" class="bottom-sheet"><div class="drag-handle"></div><div class="px-6 pb-6 text-center space-y-4"><div class="w-14 h-14 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto"><i data-lucide="mail-open" class="w-7 h-7"></i></div><div><h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Berlangganan Newsletter</h3><p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Dapatkan ringkasan warta dan isu eksklusif Bali langsung ke email Anda.</p></div><div class="space-y-2 pt-2"><a href="https://balijani.id/newsletter" target="_blank" onclick="App.closeSubscribe()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="user-plus" class="w-4 h-4"></i> Daftar via Web Balijani</a><button onclick="App.showSnackbar('Fitur langganan dalam aplikasi akan segera hadir!')" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="bell" class="w-4 h-4"></i> Ingatkan Saya Nanti</button></div><button onclick="App.closeSubscribe()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 pt-2 block w-full cursor-pointer">Tutup</button></div></div>
+  <div id="subscribeModal" class="bottom-sheet">
+    <div class="drag-handle"></div>
+    <div class="px-6 pb-6 space-y-4">
+      <!-- Header modal -->
+      <div class="text-center space-y-3">
+        <div class="w-14 h-14 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto"><i data-lucide="mail-check" class="w-7 h-7"></i></div>
+        <div>
+          <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Berlangganan Newsletter</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">Dapatkan ringkasan warta premium Bali langsung ke email Anda. Gratis & bisa berhenti kapan saja.</p>
+        </div>
+      </div>
+
+      <!-- === [REAL SUBSCRIBE] Form berlangganan real memakai Supabase === -->
+      <div id="subscribeFormContainer" class="space-y-3">
+        <form id="subscribeForm" onsubmit="App.handleSubscribe(event)" class="space-y-3">
+          <div class="relative">
+            <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+            <input 
+              type="email" 
+              id="subscribeEmailInput" 
+              placeholder="email@anda.com" 
+              required
+              autocomplete="email"
+              class="w-full bg-slate-100 dark:bg-slate-800 text-sm text-slate-900 dark:text-white placeholder-slate-400 rounded-xl pl-9 pr-4 py-3 outline-none border border-transparent focus:border-brand-500 transition"
+            >
+          </div>
+          <button 
+            type="submit" 
+            id="subscribeSubmitBtn"
+            class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            <span id="subscribeBtnText" class="flex items-center gap-2">
+              <i data-lucide="user-plus" class="w-4 h-4"></i> Berlangganan Sekarang
+            </span>
+            <span id="subscribeBtnSpinner" class="hidden items-center gap-2">
+              <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              Memproses...
+            </span>
+          </button>
+        </form>
+
+        <!-- Privacy notice -->
+        <p class="text-[10px] text-slate-400 dark:text-slate-500 text-center leading-relaxed">
+          Dengan berlangganan, Anda menyetujui menerima email dari Balijani. Email Anda aman, tidak akan dibagikan ke pihak ketiga.
+        </p>
+      </div>
+
+      <!-- === [REAL SUBSCRIBE] State sukses (tersembunyi awalnya) === -->
+      <div id="subscribeSuccessContainer" class="hidden space-y-4 text-center">
+        <div class="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto">
+          <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+        </div>
+        <div>
+          <h4 class="font-extrabold text-slate-900 dark:text-white text-sm mb-1">Hampir Selesai!</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed" id="subscribeSuccessMsg">
+            Kami sudah mengirim email verifikasi ke <strong id="subscribedEmail"></strong>. Buka email dan klik tautan konfirmasi untuk mengaktifkan langganan.
+          </p>
+        </div>
+        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 rounded-xl p-3 text-left">
+          <p class="text-[10px] text-amber-700 dark:text-amber-400 font-bold mb-1 flex items-center gap-1.5">
+            <i data-lucide="info" class="w-3 h-3"></i> Tips
+          </p>
+          <p class="text-[10px] text-amber-600 dark:text-amber-500 leading-relaxed">Cek folder Spam/Promosi jika email tidak masuk dalam 5 menit.</p>
+        </div>
+        <button onclick="App.closeSubscribe()" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition cursor-pointer">Tutup</button>
+      </div>
+
+      <!-- === [REAL SUBSCRIBE] State error (tersembunyi awalnya) === -->
+      <div id="subscribeErrorContainer" class="hidden space-y-3 text-center">
+        <div class="w-14 h-14 bg-rose-50 dark:bg-rose-900/30 text-rose-500 rounded-2xl flex items-center justify-center mx-auto">
+          <i data-lucide="alert-circle" class="w-7 h-7"></i>
+        </div>
+        <div>
+          <h4 class="font-extrabold text-slate-900 dark:text-white text-sm mb-1">Gagal Berlangganan</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed" id="subscribeErrorMsg">Terjadi kesalahan. Silakan coba lagi.</p>
+        </div>
+        <button onclick="App.resetSubscribeForm()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md cursor-pointer">Coba Lagi</button>
+      </div>
+
+      <button onclick="App.closeSubscribe()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 pt-2 block w-full cursor-pointer">Tutup</button>
+    </div>
+  </div>
 
   <script>
     const SUPABASE_URL = "https://vqsshojqwpespanexcyy.supabase.co";
@@ -685,8 +766,266 @@
       showInAppToast(title) { const toast = document.getElementById('inAppToast'); document.getElementById('toastTitle').textContent = title; toast.style.top = '20px'; clearTimeout(this.toastTimeout); this.toastTimeout = setTimeout(() => this.closeToast(), 6000); },
       closeToast() { document.getElementById('inAppToast').style.top = '-200%'; },
       openLatestPostFromToast() { this.closeToast(); if (this.latestUnreadPostId) { this.openPost(this.latestUnreadPostId); this.latestUnreadPostId = null; } },
-      openSubscribe() { this.haptic(10); document.getElementById('subscribeScrim').classList.add('active'); document.getElementById('subscribeModal').classList.add('active'); },
+      openSubscribe() { 
+        this.haptic(10); 
+        // === [REAL SUBSCRIBE] Reset state modal setiap kali dibuka ===
+        this.resetSubscribeForm();
+        document.getElementById('subscribeScrim').classList.add('active'); 
+        document.getElementById('subscribeModal').classList.add('active');
+        // Focus ke input email setelah modal animation selesai
+        setTimeout(() => {
+          const emailInput = document.getElementById('subscribeEmailInput');
+          if (emailInput) emailInput.focus();
+        }, 400);
+      },
       closeSubscribe() { document.getElementById('subscribeScrim').classList.remove('active'); document.getElementById('subscribeModal').classList.remove('active'); },
+
+      // === [REAL SUBSCRIBE] Reset form ke state awal ===
+      resetSubscribeForm() {
+        const form = document.getElementById('subscribeFormContainer');
+        const success = document.getElementById('subscribeSuccessContainer');
+        const error = document.getElementById('subscribeErrorContainer');
+        const btn = document.getElementById('subscribeSubmitBtn');
+        const btnText = document.getElementById('subscribeBtnText');
+        const btnSpinner = document.getElementById('subscribeBtnSpinner');
+        if (form) form.classList.remove('hidden');
+        if (success) success.classList.add('hidden');
+        if (error) error.classList.add('hidden');
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.classList.remove('hidden');
+        if (btnSpinner) btnSpinner.classList.add('hidden');
+      },
+
+      // === [REAL SUBSCRIBE] Tampilkan state loading ===
+      setSubscribeLoading(isLoading) {
+        const btn = document.getElementById('subscribeSubmitBtn');
+        const btnText = document.getElementById('subscribeBtnText');
+        const btnSpinner = document.getElementById('subscribeBtnSpinner');
+        if (isLoading) {
+          btn.disabled = true;
+          btnText.classList.add('hidden');
+          btnSpinner.classList.remove('hidden');
+          btnSpinner.classList.add('flex');
+        } else {
+          btn.disabled = false;
+          btnText.classList.remove('hidden');
+          btnSpinner.classList.add('hidden');
+          btnSpinner.classList.remove('flex');
+        }
+      },
+
+      // === [REAL SUBSCRIBE] Handler form submit ===
+      async handleSubscribe(event) {
+        event.preventDefault();
+        const emailInput = document.getElementById('subscribeEmailInput');
+        const email = emailInput.value.trim().toLowerCase();
+        
+        // Validasi email format
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+          this.showSubscribeError('Format email tidak valid. Contoh: nama@email.com');
+          return;
+        }
+
+        this.setSubscribeLoading(true);
+
+        try {
+          // === [STEP 1] Cek apakah email sudah pernah subscribe ===
+          const { data: existing, error: checkError } = await supabaseClient
+            .from('newsletter_subscribers')
+            .select('email, status')
+            .eq('email', email)
+            .maybeSingle();
+
+          if (checkError) throw checkError;
+
+          if (existing && existing.status === 'subscribed') {
+            // Sudah berlangganan aktif
+            this.showSubscribeSuccess(email, true);
+            return;
+          }
+
+          if (existing && existing.status === 'unsubscribed') {
+            // Pernah unsubscribe, reaktifkan
+            const { error: updateErr } = await supabaseClient
+              .from('newsletter_subscribers')
+              .update({ status: 'pending', updated_at: new Date().toISOString() })
+              .eq('email', email);
+            if (updateErr) throw updateErr;
+          } else if (!existing) {
+            // === [STEP 2] Email baru - insert ke tabel ===
+            const { error: insertErr } = await supabaseClient
+              .from('newsletter_subscribers')
+              .insert([{ 
+                email: email, 
+                status: 'pending',
+                source: 'web_app',
+                created_at: new Date().toISOString()
+              }]);
+            if (insertErr) throw insertErr;
+          }
+
+          // === [STEP 3] Kirim email verifikasi via Supabase Auth OTP ===
+          // Magic link akan otomatis dikirim ke email user oleh Supabase.
+          // Saat user klik link, mereka akan diarahkan kembali ke app dengan
+          // hash #verified=email, yang akan ditangani handler di init().
+          const { error: otpError } = await supabaseClient.auth.signInWithOtp({
+            email: email,
+            options: {
+              emailRedirectTo: window.location.origin + window.location.pathname,
+              data: {
+                newsletter_subscribe: true,
+                source: 'web_app'
+              }
+            }
+          });
+
+          if (otpError) {
+            // Jika OTP gagal (rate limit, dll), tetap simpan email sbg pending
+            console.warn('OTP send failed, but email saved as pending:', otpError);
+            if (otpError.message.includes('rate limit') || otpError.message.includes('too many')) {
+              this.showSubscribeError('Terlalu banyak permintaan. Tunggu beberapa menit sebelum mencoba lagi.');
+              return;
+            }
+            // Untuk error lain, tetap tampilkan sukses karena data sudah tersimpan
+            // Email verifikasi bisa dikirim manual via Supabase dashboard
+          }
+
+          this.showSubscribeSuccess(email, false);
+        } catch (err) {
+          console.error('Subscribe error:', err);
+          let msg = 'Terjadi kesalahan. Silakan coba lagi.';
+          if (err.message && err.message.includes('policy')) {
+            msg = 'Tabel newsletter belum di-setup di Supabase. Hubungi admin.';
+          } else if (err.message && err.message.includes('network')) {
+            msg = 'Tidak ada koneksi internet. Periksa jaringan Anda.';
+          } else if (err.message) {
+            msg = err.message;
+          }
+          this.showSubscribeError(msg);
+        } finally {
+          this.setSubscribeLoading(false);
+        }
+      },
+
+      // === [REAL SUBSCRIBE] Tampilkan state sukses ===
+      showSubscribeSuccess(email, alreadySubscribed) {
+        const form = document.getElementById('subscribeFormContainer');
+        const success = document.getElementById('subscribeSuccessContainer');
+        const error = document.getElementById('subscribeErrorContainer');
+        const emailEl = document.getElementById('subscribedEmail');
+        const msgEl = document.getElementById('subscribeSuccessMsg');
+        const titleEl = success?.querySelector('h4');
+        
+        form?.classList.add('hidden');
+        error?.classList.add('hidden');
+        success?.classList.remove('hidden');
+        
+        if (emailEl) emailEl.textContent = email;
+        
+        if (alreadySubscribed) {
+          if (titleEl) titleEl.textContent = 'Email Sudah Terdaftar!';
+          if (msgEl) msgEl.innerHTML = 'Email <strong>' + escapeHtml(email) + '</strong> sudah aktif berlangganan. Cek folder Spam jika Anda tidak menerima email dari Balijani.';
+        } else {
+          if (titleEl) titleEl.textContent = 'Hampir Selesai!';
+          if (msgEl) msgEl.innerHTML = 'Kami sudah mengirim email verifikasi ke <strong>' + escapeHtml(email) + '</strong>. Buka email dan klik tautan konfirmasi untuk mengaktifkan langganan.';
+        }
+      },
+
+      // === [REAL SUBSCRIBE] Tampilkan state error ===
+      showSubscribeError(msg) {
+        const form = document.getElementById('subscribeFormContainer');
+        const success = document.getElementById('subscribeSuccessContainer');
+        const error = document.getElementById('subscribeErrorContainer');
+        const msgEl = document.getElementById('subscribeErrorMsg');
+        
+        form?.classList.add('hidden');
+        success?.classList.add('hidden');
+        error?.classList.remove('hidden');
+        if (msgEl) msgEl.textContent = msg;
+      },
+
+      // === [REAL SUBSCRIBE] Handle email verifikasi (saat user klik link di email) ===
+      // Dipanggil di init() - cek URL hash untuk #verified=email
+      async handleEmailVerification() {
+        const hash = window.location.hash;
+        const params = new URLSearchParams(window.location.search);
+        
+        // Cek apakah ini redirect dari Supabase Auth magic link
+        // Supabase biasanya pakai query params: ?type=signup&access_token=xxx
+        if (params.get('type') === 'signup' || params.get('type') === 'recovery' || hash.includes('access_token')) {
+          // Tunggu session Supabase terbentuk
+          setTimeout(async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session && session.user) {
+              const email = session.user.email;
+              // Update status subscriber jadi 'subscribed'
+              try {
+                await supabaseClient
+                  .from('newsletter_subscribers')
+                  .update({ 
+                    status: 'subscribed', 
+                    verified_at: new Date().toISOString(),
+                    user_id: session.user.id
+                  })
+                  .eq('email', email);
+                
+                this.showSnackbar('🎉 Email berhasil diverifikasi! Langganan aktif.');
+                
+                // Bersihkan URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                // Logout otomatis (karena ini hanya verifikasi newsletter, bukan login app)
+                // supabaseClient.auth.signOut(); // Opsional, uncomment jika tidak ingin auto-login
+              } catch (e) {
+                console.error('Failed to update subscriber status:', e);
+              }
+            }
+          }, 1500);
+        }
+      },
+
+      // === [REAL SUBSCRIBE] Handle unsubscribe via URL hash: #unsubscribe=email ===
+      async handleUnsubscribe() {
+        const hash = window.location.hash;
+        if (!hash.startsWith('#unsubscribe=')) return;
+        
+        const email = decodeURIComponent(hash.replace('#unsubscribe=', ''));
+        if (!email) return;
+        
+        // Tampilkan konfirmasi
+        const confirmed = confirm('Anda yakin ingin berhenti berlangganan newsletter Balijani dengan email: ' + email + '?');
+        if (!confirmed) {
+          window.location.hash = '';
+          return;
+        }
+        
+        try {
+          const { error } = await supabaseClient
+            .from('newsletter_subscribers')
+            .update({ status: 'unsubscribed', updated_at: new Date().toISOString() })
+            .eq('email', email);
+          
+          if (error) throw error;
+          
+          // Tampilkan halaman sukses unsubscribe
+          document.body.innerHTML = `
+            <div class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#0b0f19] p-6">
+              <div class="max-w-md w-full bg-white dark:bg-slate-900 rounded-3xl shadow-xl p-8 text-center space-y-4">
+                <div class="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto">
+                  <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h1 class="text-xl font-extrabold text-slate-900 dark:text-white">Berhenti Berlangganan Berhasil</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Email <strong class="text-slate-900 dark:text-white">${escapeHtml(email)}</strong> telah dihapus dari daftar newsletter Balijani. Anda tidak akan menerima email lagi.</p>
+                <a href="${window.location.pathname}" class="inline-block bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm px-6 py-3 rounded-xl transition">Kembali ke Beranda</a>
+              </div>
+            </div>
+          `;
+        } catch (err) {
+          console.error('Unsubscribe failed:', err);
+          alert('Gagal berhenti berlangganan. Silakan coba lagi atau hubungi: redaksi@balijani.id');
+        }
+      },
 
       async fetchRemoteConfig() {
         if (!this.CONFIG_URL) return;
@@ -724,6 +1063,10 @@
 
         this.checkAuthSession();
         supabaseClient.auth.onAuthStateChange((event, session) => { this.updateAuthUI(session); if (!document.getElementById('accountView').classList.contains('hidden')) { this.renderAccountPage(session); } });
+
+        // === [REAL SUBSCRIBE] Cek apakah user datang dari link verifikasi email / unsubscribe ===
+        this.handleEmailVerification();
+        this.handleUnsubscribe();
       },
 
       async checkAuthSession() { const { data: { session } } = await supabaseClient.auth.getSession(); this.updateAuthUI(session); return session; },
