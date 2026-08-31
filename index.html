@@ -958,30 +958,69 @@
           setTimeout(async () => {
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (session && session.user) {
-              const email = session.user.email;
-              // Update status subscriber jadi 'subscribed'
-              try {
-                await supabaseClient
-                  .from('newsletter_subscribers')
-                  .update({ 
-                    status: 'subscribed', 
-                    verified_at: new Date().toISOString(),
-                    user_id: session.user.id
-                  })
-                  .eq('email', email);
-                
-                this.showSnackbar('🎉 Email berhasil diverifikasi! Langganan aktif.');
-                
-                // Bersihkan URL
-                window.history.replaceState({}, document.title, window.location.pathname);
-                
-                // Logout otomatis (karena ini hanya verifikasi newsletter, bukan login app)
-                // supabaseClient.auth.signOut(); // Opsional, uncomment jika tidak ingin auto-login
-              } catch (e) {
-                console.error('Failed to update subscriber status:', e);
-              }
+              await this.verifyNewsletterSubscriber(session);
             }
           }, 1500);
+        }
+      },
+
+      // === [REAL SUBSCRIBE] Update status subscriber ke 'subscribed' setelah verifikasi ===
+      // Dipanggil dari onAuthStateChange saat event SIGNED_IN
+      async verifyNewsletterSubscriber(session) {
+        if (!session || !session.user || !session.user.email) return;
+        
+        const email = session.user.email;
+        console.log('[Newsletter] Verifying subscriber for email:', email);
+        
+        try {
+          // Cek apakah email ini ada di tabel newsletter_subscribers
+          const { data: existing, error: checkErr } = await supabaseClient
+            .from('newsletter_subscribers')
+            .select('email, status')
+            .eq('email', email)
+            .maybeSingle();
+          
+          if (checkErr) {
+            console.error('[Newsletter] Check error:', checkErr);
+            return;
+          }
+          
+          if (!existing) {
+            // Email tidak ada di tabel newsletter_subscribers - ini login biasa (bukan newsletter)
+            return;
+          }
+          
+          // Email ditemukan - update status ke 'subscribed' jika belum
+          if (existing.status === 'subscribed') {
+            console.log('[Newsletter] Already subscribed:', email);
+            return;
+          }
+          
+          const { error: updateErr } = await supabaseClient
+            .from('newsletter_subscribers')
+            .update({ 
+              status: 'subscribed', 
+              verified_at: new Date().toISOString(),
+              user_id: session.user.id,
+              updated_at: new Date().toISOString()
+            })
+            .eq('email', email);
+          
+          if (updateErr) {
+            console.error('[Newsletter] Update error:', updateErr);
+            this.showSnackbar('Gagal verifikasi langganan: ' + updateErr.message);
+            return;
+          }
+          
+          console.log('[Newsletter] Successfully verified:', email);
+          this.showSnackbar('🎉 Email berhasil diverifikasi! Langganan aktif.');
+          
+          // Bersihkan URL (hapus query params Supabase)
+          if (window.location.search || window.location.hash.includes('access_token')) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        } catch (err) {
+          console.error('[Newsletter] Verification failed:', err);
         }
       },
 
@@ -1062,7 +1101,22 @@
         this.startNotificationPolling();
 
         this.checkAuthSession();
-        supabaseClient.auth.onAuthStateChange((event, session) => { this.updateAuthUI(session); if (!document.getElementById('accountView').classList.contains('hidden')) { this.renderAccountPage(session); } });
+        supabaseClient.auth.onAuthStateChange((event, session) => { 
+          this.updateAuthUI(session); 
+          if (!document.getElementById('accountView').classList.contains('hidden')) { 
+            this.renderAccountPage(session); 
+          } 
+          // === [REAL SUBSCRIBE] Saat user SIGNED_IN (dari magic link verifikasi email),
+          //     otomatis update status subscriber ke 'subscribed'. Ini lebih reliable
+          //     daripada handleEmailVerification() yang pakai setTimeout. ===
+          if (event === 'SIGNED_IN' && session && session.user) {
+            this.verifyNewsletterSubscriber(session);
+          }
+          // === [REAL SUBSCRIBE] Saat user sign out, reset UI jika perlu ===
+          if (event === 'SIGNED_OUT') {
+            // Tidak ada action khusus untuk newsletter saat sign out
+          }
+        });
 
         // === [REAL SUBSCRIBE] Cek apakah user datang dari link verifikasi email / unsubscribe ===
         this.handleEmailVerification();
