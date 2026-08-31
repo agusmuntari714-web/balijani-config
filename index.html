@@ -566,56 +566,76 @@
       },
 
       async toggleBookmark() {
-          if (!this.currentPost) return; this.haptic(15); 
-          const { data: { session } } = await supabaseClient.auth.getSession();
-          if (!session) return this.showSnackbar('Silakan login untuk menyimpan warta.');
+          if (!this.currentPost) return; 
+          this.haptic(15); 
           
           const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
-          if (isSaved) { this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id); this.showSnackbar('Warta dihapus dari simpanan.'); } 
-          else {
-              // Hanya simpan data ringkas agar LocalStorage tidak penuh (Quota Exceeded)
+          if (isSaved) { 
+              this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id); 
+              this.showSnackbar('Warta dihapus dari simpanan.'); 
+          } else {
+              // Ambil data sangat ringkas agar memori HP tidak penuh
               const lightPost = {
                   id: this.currentPost.id,
-                  title: { rendered: this.currentPost.title.rendered },
-                  _embedded: {
-                      'wp:featuredmedia': this.currentPost._embedded?.['wp:featuredmedia'] ? [this.currentPost._embedded['wp:featuredmedia'][0]] : [],
-                      author: this.currentPost._embedded?.author ? [this.currentPost._embedded.author[0]] : []
-                  },
+                  title: { rendered: this.currentPost.title?.rendered || 'Tanpa Judul' },
+                  link: this.currentPost.link,
                   date: this.currentPost.date,
-                  link: this.currentPost.link
+                  img: this.getImageUrl(this.currentPost),
+                  author: this.getAuthorName(this.currentPost)
               };
-              this.savedArticles.unshift(lightPost); this.showSnackbar('Warta berhasil disimpan.');
+              this.savedArticles.unshift(lightPost); 
+              this.showSnackbar('Warta berhasil disimpan.');
           }
-          localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
           
-          const bookmarkText = document.getElementById('bookmarkText'); const bookmarkIcon = document.getElementById('bookmarkIcon');
-          if (isSaved) { bookmarkText.textContent = "Simpan"; bookmarkIcon.style.color = ''; bookmarkIcon.style.fill = 'none'; } 
-          else { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.style.color = '#dc2626'; bookmarkIcon.style.fill = '#dc2626'; }
+          // Simpan ke memori HP dengan pengecekan error
+          try {
+              localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
+          } catch (e) {
+              this.showSnackbar('Memori HP penuh, gagal menyimpan.');
+          }
+          
+          const bookmarkText = document.getElementById('bookmarkText'); 
+          const bookmarkIcon = document.getElementById('bookmarkIcon');
+          if (isSaved) { 
+              bookmarkText.textContent = "Simpan"; 
+              bookmarkIcon.style.color = ''; 
+              bookmarkIcon.style.fill = 'none'; 
+          } else { 
+              bookmarkText.textContent = "Tersimpan"; 
+              bookmarkIcon.style.color = '#dc2626'; 
+              bookmarkIcon.style.fill = '#dc2626'; 
+          }
       },
 
       async quickToggleBookmark(event, postId) {
-          event.stopPropagation(); this.haptic(10);
-          const { data: { session } } = await supabaseClient.auth.getSession();
-          if (!session) return this.showSnackbar('Silakan login untuk menyimpan warta.');
+          event.stopPropagation(); 
+          this.haptic(10);
           
           const post = this.data.find(p => p.id === postId) || this.savedArticles.find(p => p.id === postId);
           if (!post) return;
+          
           const index = this.savedArticles.findIndex(p => p.id === post.id);
-          if (index > -1) { this.savedArticles.splice(index, 1); this.showSnackbar('Warta dihapus dari simpanan.'); } 
-          else {
+          if (index > -1) { 
+              this.savedArticles.splice(index, 1); 
+              this.showSnackbar('Warta dihapus dari simpanan.'); 
+          } else {
               const lightPost = {
                   id: post.id,
-                  title: { rendered: post.title.rendered },
-                  _embedded: {
-                      'wp:featuredmedia': post._embedded?.['wp:featuredmedia'] ? [post._embedded['wp:featuredmedia'][0]] : [],
-                      author: post._embedded?.author ? [post._embedded.author[0]] : []
-                  },
+                  title: { rendered: post.title?.rendered || 'Tanpa Judul' },
+                  link: post.link,
                   date: post.date,
-                  link: post.link
+                  img: this.getImageUrl(post),
+                  author: this.getAuthorName(post)
               };
-              this.savedArticles.unshift(lightPost); this.showSnackbar('Warta berhasil disimpan.');
+              this.savedArticles.unshift(lightPost); 
+              this.showSnackbar('Warta berhasil disimpan.');
           }
-          localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
+          
+          try {
+              localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
+          } catch (e) {
+              this.showSnackbar('Memori HP penuh, gagal menyimpan.');
+          }
           this.renderHome();
       },
 
@@ -692,19 +712,26 @@
         return el;
       },
 
-                  buildGridCard(post, isGallery) {
-        if (!post || !post.id) return document.createElement('div'); // Cegah error
-        const img = this.getImageUrl(post); 
-        const author = this.getAuthorName(post);
-        const el = document.createElement('article');
-        el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
-        el.onclick = () => this.openPost(post.id);
+                        buildGridCard(post, isGallery) {
+        if (!post || !post.id) return document.createElement('div');
+        
+        // Cek apakah data gambar ada di _embedded atau di variabel img langsung
+        let imgUrl = '';
+        if (post.img) { imgUrl = post.img; } 
+        else { imgUrl = this.getImageUrl(post); }
+        
+        let author = 'Redaksi';
+        if (post.author) { author = post.author; } 
+        else { author = this.getAuthorName(post); }
         
         const titleText = (post.title && post.title.rendered) ? post.title.rendered : 'Tanpa Judul';
         
+        const el = document.createElement('article');
+        el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
+        el.onclick = () => this.openPost(post.id);
         el.innerHTML = `
           <div class="w-full ${isGallery ? 'aspect-square' : 'aspect-video'} overflow-hidden bg-slate-100">
-            <img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <img src="${imgUrl}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
           </div>
           <div class="p-3 md:p-4">
             <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-3 leading-snug mb-2">${titleText}</h3>
