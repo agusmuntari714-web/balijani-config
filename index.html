@@ -134,8 +134,8 @@
   <div id="weatherScrim" class="bottom-sheet-scrim" onclick="closeWeatherModal()"></div>
   <div id="weatherModal" class="bottom-sheet">
       <div class="drag-handle"></div>
-      <div class="px-6">
-          <div class="flex justify-between items-center mb-6 border-b border-slate-200 dark:border-slate-800 pb-4">
+      <div class="px-6 pb-8">
+          <div class="flex justify-between items-center mb-4 border-b border-slate-200 dark:border-slate-800 pb-4">
               <div>
                   <h3 class="text-xl font-extrabold flex items-center gap-2" id="modalCityName">📍 Memuat...</h3>
                   <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="modalSubDate">Perkiraan cuaca lokal terkini</p>
@@ -144,13 +144,21 @@
                   <i data-lucide="x" class="w-5 h-5"></i>
               </button>
           </div>
-          <div class="flex items-center justify-between bg-slate-100 dark:bg-slate-800/60 p-4 rounded-2xl mb-6 border border-slate-200 dark:border-slate-700/50">
-              <div>
-                  <div class="text-4xl font-black tracking-tight" id="modalTemp">--°C</div>
-                  <div class="text-sm font-semibold text-sky-500 dark:text-sky-400 mt-1" id="modalCondition">Memuat kondisi...</div>
-              </div>
-              <div class="text-5xl" id="modalBigIcon">⛅</div>
+          
+          <!-- Suhu Utama -->
+          <div class="text-center my-6">
+              <div class="text-7xl font-black tracking-tighter" id="modalTemp">--°</div>
+              <div class="text-base font-semibold text-sky-500 dark:text-sky-400 mt-2" id="modalCondition">Memuat kondisi...</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium" id="modalHighLow">T: --° B: --° • Terasa: --°</div>
           </div>
+
+          <!-- Prakiraan Per Jam (Realtime) -->
+          <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Prakiraan 12 Jam</h4>
+          <div id="hourlyForecastContainer" class="flex gap-2 overflow-x-auto no-scrollbar pb-4 mb-6 border-b border-slate-200 dark:border-slate-800">
+              <p class="text-xs text-slate-400 italic w-full text-center py-4">Memuat prakiraan...</p>
+          </div>
+
+          <!-- Grid Metrik -->
           <div class="grid grid-cols-2 gap-3 mb-6">
               <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
                   <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="wind" class="w-3.5 h-3.5 text-sky-400"></i> Angin</div>
@@ -165,10 +173,11 @@
                   <div class="text-base font-bold" id="modalPressure">-- hPa</div>
               </div>
               <div class="bg-slate-100 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="sun" class="w-3.5 h-3.5 text-yellow-400"></i> UV</div>
-                  <div class="text-base font-bold">Aman</div>
+                  <div class="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5"><i data-lucide="cloud-rain" class="w-3.5 h-3.5 text-indigo-400"></i> Curah Hujan</div>
+                  <div class="text-base font-bold" id="modalPrecip">-- mm</div>
               </div>
           </div>
+          
           <button onclick="closeWeatherModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-lg">Tutup</button>
       </div>
   </div>
@@ -284,10 +293,10 @@
       <!-- WIDGET CUACA -->
       <div id="weather-widget" class="weather-card" onclick="openWeatherModal()">
           <div class="weather-left">
-              <div class="weather-temp" id="w-temp">--°C</div>
+              <div class="weather-temp" id="w-temp">--°</div>
               <div class="weather-info">
                   <div class="weather-city" id="w-city">Mendeteksi Lokasi...</div>
-                  <div class="weather-desc" id="w-desc">Memuat zona waktu...</div>
+                  <div class="weather-desc" id="w-desc">Memuat data cuaca...</div>
               </div>
           </div>
           <div style="display: flex; align-items: center; gap: 12px;">
@@ -1441,7 +1450,7 @@
     App.init();
   </script>
 
-    <!-- SCRIPT WIDGET CUACA -->
+  <!-- SCRIPT WIDGET CUACA -->
   <script>
     function openWeatherModal() {
         App.haptic(10);
@@ -1453,40 +1462,42 @@
         document.getElementById('weatherModal').classList.remove('active');
     }
 
-    // Fungsi untuk mendapatkan deskripsi dan ikon berdasarkan kode cuaca WMO
-    function getWeatherInfo(code) {
+    // Data ikon dinamis (Siang & Malam)
+    function getWeatherInfo(code, isDay = 1) {
         const weatherCodes = {
-            0: { desc: 'Cerah', icon: '☀️' },
-            1: { desc: 'Sebagian Berawan', icon: '🌤️' },
-            2: { desc: 'Berawan', icon: '⛅' },
-            3: { desc: 'Mendung', icon: '☁️' },
-            45: { desc: 'Berkabut', icon: '🌫️' },
-            48: { desc: 'Kabut Tebal', icon: '🌫️' },
-            51: { desc: 'Gerimis Ringan', icon: '🌦️' },
-            53: { desc: 'Gerimis', icon: '🌦️' },
-            55: { desc: 'Gerimis Deras', icon: '🌧️' },
-            61: { desc: 'Hujan Ringan', icon: '🌦️' },
-            63: { desc: 'Hujan', icon: '🌧️' },
-            65: { desc: 'Hujan Deras', icon: '🌧️' },
-            71: { desc: 'Salju Ringan', icon: '🌨️' },
-            73: { desc: 'Salju', icon: '❄️' },
-            80: { desc: 'Hujan Lokal', icon: '🌦️' },
-            81: { desc: 'Hujan Sedang', icon: '🌧️' },
-            82: { desc: 'Hujan Deras', icon: '⛈️' },
-            95: { desc: 'Badai Petir', icon: '⛈️' },
-            96: { desc: 'Badai Petir & Hujan Es', icon: '⛈️' },
-            99: { desc: 'Badai Petir Hebat', icon: '⛈️' }
+            0: { desc: 'Cerah', iconDay: '☀️', iconNight: '🌙' },
+            1: { desc: 'Sebagian Berawan', iconDay: '🌤️', iconNight: '☁️' },
+            2: { desc: 'Berawan', iconDay: '⛅', iconNight: '☁️' },
+            3: { desc: 'Mendung', iconDay: '☁️', iconNight: '☁️' },
+            45: { desc: 'Berkabut', iconDay: '🌫️', iconNight: '🌫️' },
+            48: { desc: 'Kabut Tebal', iconDay: '🌫️', iconNight: '🌫️' },
+            51: { desc: 'Gerimis Ringan', iconDay: '🌦️', iconNight: '🌧️' },
+            53: { desc: 'Gerimis', iconDay: '🌦️', iconNight: '🌧️' },
+            55: { desc: 'Gerimis Deras', iconDay: '🌧️', iconNight: '🌧️' },
+            61: { desc: 'Hujan Ringan', iconDay: '🌦️', iconNight: '🌧️' },
+            63: { desc: 'Hujan', iconDay: '🌧️', iconNight: '🌧️' },
+            65: { desc: 'Hujan Deras', iconDay: '🌧️', iconNight: '🌧️' },
+            71: { desc: 'Salju Ringan', iconDay: '🌨️', iconNight: '🌨️' },
+            73: { desc: 'Salju', iconDay: '❄️', iconNight: '❄️' },
+            80: { desc: 'Hujan Lokal', iconDay: '🌦️', iconNight: '🌧️' },
+            81: { desc: 'Hujan Sedang', iconDay: '🌧️', iconNight: '🌧️' },
+            82: { desc: 'Hujan Deras', iconDay: '⛈️', iconNight: '⛈️' },
+            95: { desc: 'Badai Petir', iconDay: '⛈️', iconNight: '⛈️' },
+            96: { desc: 'Badai Petir & Hujan Es', iconDay: '⛈️', iconNight: '⛈️' },
+            99: { desc: 'Badai Petir Hebat', iconDay: '⛈️', iconNight: '⛈️' }
         };
-        return weatherCodes[code] || { desc: 'Tidak Diketahui', icon: '🛰️' };
+        const w = weatherCodes[code] || { desc: 'Tidak Diketahui', iconDay: '🛰️', iconNight: '🛰️' };
+        return { desc: w.desc, icon: isDay === 1 ? w.iconDay : w.iconNight };
     }
 
     async function loadRealtimeWeather(lat, lon) {
         try {
-            // 1. Ambil Data Cuaca dari Open-Meteo (Suhu, Angin, Kelembapan, Tekanan)
-            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relative_humidity_2m,pressure_msl`);
+            // API diperkaya: current_weather diganti dengan parameter current lengkap + daily + hourly
+            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,pressure_msl,wind_speed_10m&hourly=temperature_2m,precipitation_probability,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1`;
+            const res = await fetch(apiUrl);
             const data = await res.json();
 
-            // 2. Ambil Nama Kota (Reverse Geocoding) 
+            // Deteksi Wilayah
             let cityName = "Lokasi Terkini";
             try {
                 const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=id`);
@@ -1494,32 +1505,70 @@
                 cityName = geoData.city || geoData.locality || geoData.principalSubdivision || "Lokasi Terkini";
             } catch (geoErr) { console.error("Gagal deteksi nama kota", geoErr); }
 
-            if (data && data.current_weather) {
-                const temp = Math.round(data.current_weather.temperature);
-                const weatherCode = data.current_weather.weathercode;
-                const windSpeed = data.current_weather.windspeed;
-                const weatherInfo = getWeatherInfo(weatherCode);
+            if (data && data.current) {
+                const temp = Math.round(data.current.temperature_2m);
+                const feelsLike = Math.round(data.current.apparent_temperature);
+                const weatherCode = data.current.weather_code;
+                const isDay = data.current.is_day;
+                const windSpeed = data.current.wind_speed_10m;
+                const humidity = data.current.relative_humidity_2m;
+                const pressure = data.current.pressure_msl;
+                const precip = data.current.precipitation;
                 
-                // Update Tampilan Widget Kecil
-                document.getElementById('w-temp').innerText = `${temp}°C`;
+                const weatherInfo = getWeatherInfo(weatherCode, isDay);
+                
+                // Update Widget Utama
+                document.getElementById('w-temp').innerText = `${temp}°`;
                 document.getElementById('w-city').innerText = cityName;
-                document.getElementById('w-desc').innerText = `${weatherInfo.desc} • ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'short'})}`;
+                document.getElementById('w-desc').innerText = `${weatherInfo.desc}`;
                 document.getElementById('w-icon').innerText = weatherInfo.icon;
                 
-                // Update Modal Cuaca Lengkap
+                // Update Modal Cuaca
                 document.getElementById('modalCityName').innerHTML = `📍 ${cityName}`;
-                document.getElementById('modalTemp').innerText = `${temp}°C`;
+                document.getElementById('modalTemp').innerText = `${temp}°`;
                 document.getElementById('modalCondition').innerText = weatherInfo.desc;
-                document.getElementById('modalBigIcon').innerText = weatherInfo.icon;
-                document.getElementById('modalWind').innerText = `${windSpeed} km/j`;
+                document.getElementById('modalHighLow').innerText = `T: ${Math.round(data.daily.temperature_2m_max[0])}° B: ${Math.round(data.daily.temperature_2m_min[0])}° • Terasa: ${feelsLike}°`;
                 
-                // Cari index jam saat ini untuk mengambil kelembapan & tekanan
-                const currentTime = data.current_weather.time;
-                const hourIndex = data.hourly.time.findIndex(t => t === currentTime);
-                if (hourIndex !== -1) {
-                    document.getElementById('modalHumidity').innerText = `${data.hourly.relative_humidity_2m[hourIndex]} %`;
-                    document.getElementById('modalPressure').innerText = `${data.hourly.pressure_msl[hourIndex]} hPa`;
+                document.getElementById('modalWind').innerText = `${windSpeed} km/j`;
+                document.getElementById('modalHumidity').innerText = `${humidity} %`;
+                document.getElementById('modalPressure').innerText = `${pressure} hPa`;
+                document.getElementById('modalPrecip').innerText = `${precip} mm`;
+
+                // Render Prakiraan 12 Jam
+                const hourlyContainer = document.getElementById('hourlyForecastContainer');
+                hourlyContainer.innerHTML = '';
+                const currentHour = new Date(data.current.time).getHours();
+                
+                let hourCount = 0;
+                for (let i = 0; i < data.hourly.time.length; i++) {
+                    const hourStr = data.hourly.time[i];
+                    const hour = new Date(hourStr).getHours();
+                    
+                    // Tampilkan dari jam saat ini hingga 11 jam berikutnya
+                    if (hour >= currentHour && hourCount < 12) {
+                        const hTemp = Math.round(data.hourly.temperature_2m[i]);
+                        const hCode = data.hourly.weather_code[i];
+                        const hIsDay = data.hourly.is_day[i];
+                        const hPrecipProb = data.hourly.precipitation_probability[i];
+                        const hInfo = getWeatherInfo(hCode, hIsDay);
+                        
+                        const isNow = (hour === currentHour);
+                        
+                        const hourDiv = document.createElement('div');
+                        hourDiv.className = `flex flex-col items-center gap-2 min-w-[55px] p-2 rounded-2xl ${isNow ? 'bg-blue-50 dark:bg-blue-900/30' : 'bg-transparent'}`;
+                        hourDiv.innerHTML = `
+                            <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">${isNow ? 'Sekarang' : hour + ':00'}</span>
+                            <span class="text-xl">${hInfo.icon}</span>
+                            <span class="text-sm font-bold text-slate-800 dark:text-white">${hTemp}°</span>
+                            <span class="text-[9px] text-blue-500 font-medium flex items-center gap-0.5">
+                                <i data-lucide="droplet" class="w-2.5 h-2.5"></i>${hPrecipProb}%
+                            </span>
+                        `;
+                        hourlyContainer.appendChild(hourDiv);
+                        hourCount++;
+                    }
                 }
+                lucide.createIcons();
             }
         } catch (e) { 
             console.error("Gagal memuat cuaca", e); 
@@ -1527,22 +1576,15 @@
     }
     
     function detectUserLocation() {
-        // Coba ambil lokasi asli pengguna
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 p => loadRealtimeWeather(p.coords.latitude, p.coords.longitude), 
-                () => {
-                    // Fallback ke Jakarta jika pengguna menolak izin lokasi
-                    loadRealtimeWeather(-6.2088, 106.8456);
-                }
+                () => loadRealtimeWeather(-6.2088, 106.8456) 
             );
         } else {
-            // Fallback jika device tidak mendukung GPS
             loadRealtimeWeather(-6.2088, 106.8456);
         }
     }
-    
-    // Eksekusi otomatis saat aplikasi dibuka
     detectUserLocation();
   </script>
 </body>
