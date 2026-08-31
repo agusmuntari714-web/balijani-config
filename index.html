@@ -79,6 +79,17 @@
     .weather-refresh-btn.is-spinning svg { animation: smooth-spin 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
     @keyframes smooth-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+    /* STYLE KHUSUS BOX BACA JUGA */
+    .article-body .baca-juga-box { background-color: #f1f5f9 !important; border-left: 4px solid #dc2626 !important; padding: 16px !important; border-radius: 0 8px 8px 0 !important; margin-bottom: 24px !important; cursor: pointer !important; transition: background 0.2s !important; }
+    .dark .article-body .baca-juga-box { background-color: #1e293b !important; }
+    .article-body .baca-juga-box:hover { background-color: #e2e8f0 !important; }
+    .dark .article-body .baca-juga-box:hover { background-color: #334155 !important; }
+    .article-body .baca-juga-label { color: #dc2626 !important; font-weight: 800 !important; font-size: 10px !important; text-transform: uppercase !important; margin-bottom: 4px !important; display: block !important; }
+    .article-body .baca-juga-title { color: #0f172a !important; font-weight: 700 !important; font-size: 14px !important; line-height: 1.4 !important; }
+    .dark .article-body .baca-juga-title { color: #ffffff !important; }
+    .article-body .baca-juga-box:hover .baca-juga-title { color: #dc2626 !important; }
+    /* AKHIR STYLE BACA JUGA */
+
     /* Sistem Bottom Sheet Native Android */
     .bottom-sheet-scrim {
         position: fixed; inset: 0; z-index: 200; background: var(--scrim-bg);
@@ -466,7 +477,7 @@
               <i data-lucide="message-square" class="w-4 h-4 text-brand-600"></i> Kolom Komentar Publik (<span id="commentCount">0</span>)
             </h3>
             
-                      <div id="oauthLoginContainer" class="hidden mb-6 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 text-center shadow-sm">
+            <div id="oauthLoginContainer" class="hidden mb-6 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 text-center shadow-sm">
                 <p class="text-xs font-medium text-slate-600 dark:text-slate-300 mb-3">Silakan masuk atau daftar menggunakan Email untuk menulis komentar:</p>
                 <div class="flex flex-wrap gap-2.5 justify-center items-center">
                     <button type="button" onclick="App.loginWithGoogle()" class="inline-flex items-center gap-2 bg-white text-gray-700 border border-gray-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm hover:bg-gray-50 transition active:scale-95 cursor-pointer">
@@ -606,7 +617,6 @@
 
   <!-- SCRIPT UTAMA APLIKASI -->
   <script>
-    // WARNING: Pastikan SUPABASE_ANON_KEY adalah "anon public" key (format JWT/eyJ...), bukan secret key.
     const SUPABASE_URL = "https://vqsshojqwpespanexcyy.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_-qnqxbaPM7ESUUyx6qPrkw_dWhZI4pD"; 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -643,13 +653,12 @@
         this.snackbarTimeout = setTimeout(() => sb.classList.remove('show'), 3000);
       },
 
-      // [NEW] Logika Toast Notifikasi Melayang
       showInAppToast(title) {
         const toast = document.getElementById('inAppToast');
         document.getElementById('toastTitle').textContent = title;
-        toast.style.top = '20px'; // Muncul dari atas
+        toast.style.top = '20px';
         clearTimeout(this.toastTimeout);
-        this.toastTimeout = setTimeout(() => this.closeToast(), 6000); // Hilang otomatis 6 detik
+        this.toastTimeout = setTimeout(() => this.closeToast(), 6000);
       },
 
       closeToast() {
@@ -664,7 +673,6 @@
         }
       },
 
-      // [NEW] Logika Tombol Langganan
       openSubscribe() {
         this.haptic(10);
         document.getElementById('subscribeScrim').classList.add('active');
@@ -759,11 +767,9 @@
       },
 
       async loginWithGoogle() {
-          // Cek jika dibuka di Aplikasi Android
           if (typeof AndroidBridge !== "undefined" && AndroidBridge.showLoginDialog) {
               AndroidBridge.showLoginDialog();
           } else {
-              // Fallback jika dibuka di browser biasa
               const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
               const { data, error } = await supabaseClient.auth.signInWithOAuth({
                   provider: 'google', options: { redirectTo: redirectUrl, skipBrowserRedirect: false }
@@ -774,11 +780,9 @@
       },
 
       async loginWithFacebook() {
-          // Cek jika dibuka di Aplikasi Android
           if (typeof AndroidBridge !== "undefined" && AndroidBridge.showLoginDialog) {
               AndroidBridge.showLoginDialog();
           } else {
-              // Fallback jika dibuka di browser biasa
               const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
               const { data, error } = await supabaseClient.auth.signInWithOAuth({
                   provider: 'facebook', options: { redirectTo: redirectUrl, skipBrowserRedirect: false }
@@ -814,7 +818,6 @@
             localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
             this.updateNotifBadge();
             
-            // [FIX] Memicu Toast Melayang saat ada post baru
             this.latestUnreadPostId = newPosts[0].id;
             this.showInAppToast(newPosts[0].title.rendered);
 
@@ -869,7 +872,6 @@
       },
 
       openNotifPost(id) {
-        // [FIX] Tutup panel secara paksa sebelum membuka post
         document.getElementById('notifPanel').classList.add('hidden');
         this.openPost(id);
       },
@@ -1164,7 +1166,7 @@
           countEl.textContent = parseInt(countEl.textContent || 0) + 1;
       },
 
-            async submitComment(e) {
+      async submitComment(e) {
           e.preventDefault();
           if (!this.currentPost) return;
           const { data: { session } } = await supabaseClient.auth.getSession();
@@ -1176,7 +1178,7 @@
           const { error } = await supabaseClient.from('comments').insert([{ post_id: this.currentPost.id, author_name: author, content: content }]);
           if (error) {
               console.error("Supabase Error:", error);
-              this.showSnackbar('Error: ' + error.message); // Menampilkan pesan error asli dari Supabase
+              this.showSnackbar('Error: ' + error.message); 
           } else { 
               document.getElementById('commentContent').value = ''; 
               this.showSnackbar('Komentar terkirim!'); 
@@ -1415,9 +1417,9 @@
           const midIndex = Math.floor(paragraphs.length / 2);
           const randomPost = this.data.find(p => p.id !== id) || this.data[0];
           const bacaJugaHtml = `
-            <div class="my-8 p-4 border-l-4 border-brand-600 bg-slate-50 dark:bg-slate-800/50 rounded-r-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition group" onclick="App.openPost(${randomPost.id})">
-              <span class="block text-[10px] font-bold text-brand-600 uppercase tracking-wider mb-1">Baca Juga</span>
-              <h4 class="font-bold text-sm text-slate-800 dark:text-slate-101 line-clamp-2 leading-snug group-hover:text-brand-600 transition">${randomPost.title.rendered}</h4>
+            <div class="baca-juga-box" onclick="App.openPost(${randomPost.id})">
+              <span class="baca-juga-label">Baca Juga</span>
+              <h4 class="baca-juga-title">${randomPost.title.rendered}</h4>
             </div>`;
           paragraphs.splice(midIndex, 0, bacaJugaHtml);
           html = paragraphs.join('</p>');
@@ -1460,7 +1462,6 @@
       }
     };
 
-    // Fungsi penerima token dari Android Native
     window.setSupabaseSession = async function(accessToken, refreshToken) {
         const { data, error } = await supabaseClient.auth.setSession({
             access_token: accessToken,
@@ -1489,7 +1490,6 @@
         document.getElementById('weatherModal').classList.remove('active');
     }
 
-    // Data ikon dinamis (Siang & Malam)
     function getWeatherInfo(code, isDay = 1) {
         const weatherCodes = {
             0: { desc: 'Cerah', iconDay: '☀️', iconNight: '🌙' },
@@ -1519,12 +1519,10 @@
 
     async function loadRealtimeWeather(lat, lon) {
         try {
-            // API diperkaya: current_weather diganti dengan parameter current lengkap + daily + hourly
             const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,pressure_msl,wind_speed_10m&hourly=temperature_2m,precipitation_probability,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1`;
             const res = await fetch(apiUrl);
             const data = await res.json();
 
-            // Deteksi Wilayah
             let cityName = "Lokasi Terkini";
             try {
                 const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=id`);
@@ -1544,13 +1542,11 @@
                 
                 const weatherInfo = getWeatherInfo(weatherCode, isDay);
                 
-                // Update Widget Utama
                 document.getElementById('w-temp').innerText = `${temp}°`;
                 document.getElementById('w-city').innerText = cityName;
                 document.getElementById('w-desc').innerText = `${weatherInfo.desc}`;
                 document.getElementById('w-icon').innerText = weatherInfo.icon;
                 
-                // Update Modal Cuaca
                 document.getElementById('modalCityName').innerHTML = `📍 ${cityName}`;
                 document.getElementById('modalTemp').innerText = `${temp}°`;
                 document.getElementById('modalCondition').innerText = weatherInfo.desc;
@@ -1561,7 +1557,6 @@
                 document.getElementById('modalPressure').innerText = `${pressure} hPa`;
                 document.getElementById('modalPrecip').innerText = `${precip} mm`;
 
-                // Render Prakiraan 12 Jam
                 const hourlyContainer = document.getElementById('hourlyForecastContainer');
                 hourlyContainer.innerHTML = '';
                 const currentHour = new Date(data.current.time).getHours();
@@ -1571,7 +1566,6 @@
                     const hourStr = data.hourly.time[i];
                     const hour = new Date(hourStr).getHours();
                     
-                    // Tampilkan dari jam saat ini hingga 11 jam berikutnya
                     if (hour >= currentHour && hourCount < 12) {
                         const hTemp = Math.round(data.hourly.temperature_2m[i]);
                         const hCode = data.hourly.weather_code[i];
