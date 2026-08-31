@@ -9,12 +9,8 @@
   <script>
     (function() {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (prefersDark) {
-        document.documentElement.classList.add('dark');
-        document.getElementById('themeColorMeta')?.setAttribute('content', '#0b0f19');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      if (prefersDark) { document.documentElement.classList.add('dark'); document.getElementById('themeColorMeta')?.setAttribute('content', '#0b0f19'); } 
+      else { document.documentElement.classList.remove('dark'); }
     })();
   </script>
 
@@ -26,12 +22,7 @@
   <script>
     tailwind.config = {
       darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'], serif: ['Merriweather', 'serif'] },
-          colors: { brand: { 50: '#fef2f2', 100: '#fee2e2', 500: '#ef4444', 600: '#dc2626', 700: '#b91c1c', 800: '#991b1b', 900: '#7f1d1d' } }
-        }
-      }
+      theme: { extend: { fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'], serif: ['Merriweather', 'serif'] }, colors: { brand: { 50: '#fef2f2', 100: '#fee2e2', 500: '#ef4444', 600: '#dc2626', 700: '#b91c1c', 800: '#991b1b', 900: '#7f1d1d' } } } }
     }
   </script>
 
@@ -40,34 +31,19 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
-    .article-body p, .article-body div, .article-body span, .article-body figcaption {
-        margin-bottom: 1.5rem; line-height: 1.8; border: none !important;
-        box-shadow: none !important; background: transparent !important; color: inherit !important;
-    }
+    .article-body p, .article-body div, .article-body span, .article-body figcaption { margin-bottom: 1.5rem; line-height: 1.8; border: none !important; box-shadow: none !important; background: transparent !important; color: inherit !important; }
     .article-body hr { display: none !important; }
-    .article-body img, .article-body figure img {
-        max-width: 100% !important; height: auto !important; width: auto !important;
-        border-radius: 12px; margin: 1rem auto; display: block;
-    }
+    .article-body img, .article-body figure img { max-width: 100% !important; height: auto !important; width: auto !important; border-radius: 12px; margin: 1rem auto; display: block; }
     .article-body figure { margin: 1rem auto !important; max-width: 100% !important; }
 
-    .weather-card {
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #ffffff; padding: 16px 20px; border-radius: 20px;
-        display: flex; justify-content: space-between; align-items: center; margin: 16px 0;
-        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        cursor: pointer; transition: transform 0.2s ease;
-    }
+    .weather-card { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #ffffff; padding: 16px 20px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; margin: 16px 0; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; cursor: pointer; transition: transform 0.2s ease; }
     .weather-card:active { transform: scale(0.98); }
     .weather-left { display: flex; align-items: center; gap: 16px; }
     .weather-temp { font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
     .weather-city { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
     .weather-desc { font-size: 11px; opacity: 0.9; font-weight: 500; text-transform: capitalize; }
     .weather-icon { font-size: 40px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2)); }
-    .weather-refresh-btn {
-        background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
-        transition: all 0.3s ease; backdrop-filter: blur(4px);
-    }
+    .weather-refresh-btn { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(4px); }
     .weather-refresh-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.9); }
     .weather-refresh-btn.is-spinning svg { animation: smooth-spin 0.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
     @keyframes smooth-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -109,10 +85,7 @@
   <div id="inAppToast" class="fixed left-4 right-4 z-[150] transition-all duration-500" style="top: -200%;">
     <div class="max-w-md mx-auto bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-xl shadow-2xl rounded-2xl p-4 flex items-start gap-3 cursor-pointer border border-slate-200/50 dark:border-slate-700/50" onclick="App.openLatestPostFromToast()">
       <div class="bg-brand-100 dark:bg-brand-900/30 text-brand-600 rounded-full p-2 shrink-0"><i data-lucide="bell-ring" class="w-5 h-5 animate-pulse"></i></div>
-      <div class="flex-1">
-        <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Berita Baru Dirilis</h4>
-        <p id="toastTitle" class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug"></p>
-      </div>
+      <div class="flex-1"><h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Berita Baru Dirilis</h4><p id="toastTitle" class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug"></p></div>
       <button onclick="event.stopPropagation(); App.closeToast();" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
     </div>
   </div>
@@ -122,17 +95,10 @@
       <div class="drag-handle"></div>
       <div class="px-6 pb-8">
           <div class="flex justify-between items-center mb-4 border-b border-slate-200 dark:border-slate-800 pb-4">
-              <div>
-                  <h3 class="text-xl font-extrabold flex items-center gap-2" id="modalCityName">📍 Memuat...</h3>
-                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="modalSubDate">Perkiraan cuaca lokal terkini</p>
-              </div>
+              <div><h3 class="text-xl font-extrabold flex items-center gap-2" id="modalCityName">📍 Memuat...</h3><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="modalSubDate">Perkiraan cuaca lokal terkini</p></div>
               <button onclick="closeWeatherModal()" class="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
           </div>
-          <div class="text-center my-6">
-              <div class="text-7xl font-black tracking-tighter" id="modalTemp">--°</div>
-              <div class="text-base font-semibold text-sky-500 dark:text-sky-400 mt-2" id="modalCondition">Memuat kondisi...</div>
-              <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium" id="modalHighLow">T: --° B: --° • Terasa: --°</div>
-          </div>
+          <div class="text-center my-6"><div class="text-7xl font-black tracking-tighter" id="modalTemp">--°</div><div class="text-base font-semibold text-sky-500 dark:text-sky-400 mt-2" id="modalCondition">Memuat kondisi...</div><div class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium" id="modalHighLow">T: --° B: --° • Terasa: --°</div></div>
           <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Prakiraan 12 Jam</h4>
           <div id="hourlyForecastContainer" class="flex gap-2 overflow-x-auto no-scrollbar pb-4 mb-6 border-b border-slate-200 dark:border-slate-800"><p class="text-xs text-slate-400 italic w-full text-center py-4">Memuat prakiraan...</p></div>
           <div class="grid grid-cols-2 gap-3 mb-6">
@@ -154,10 +120,7 @@
     <div class="max-w-md md:max-w-7xl mx-auto px-4 h-14 flex items-center justify-between relative z-10">
       <a href="javascript:void(0)" onclick="App.navigate('home')" class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
-        <div class="flex items-center gap-2 mt-0.5">
-          <span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span>
-          <div class="relative flex items-center justify-center"><span class="absolute inline-flex h-full w-full rounded bg-brand-500 opacity-40 scale-110 animate-pulse"></span><span class="relative inline-flex bg-brand-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest shadow-sm">APPS</span></div>
-        </div>
+        <div class="flex items-center gap-2 mt-0.5"><span id="dynamicLogoText" class="font-black text-xl tracking-tight text-slate-900 dark:text-white">BALI<span class="text-brand-600">JANI</span></span><div class="relative flex items-center justify-center"><span class="absolute inline-flex h-full w-full rounded bg-brand-500 opacity-40 scale-110 animate-pulse"></span><span class="relative inline-flex bg-brand-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-widest shadow-sm">APPS</span></div></div>
       </a>
       <div class="flex items-center gap-1">
         <button id="subscribeBtn" onclick="App.openSubscribe()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-brand-600 dark:text-brand-400 transition relative cursor-pointer"><i data-lucide="mail-open" class="w-5 h-5"></i></button>
@@ -244,10 +207,7 @@
       
       <!-- FOOTER HOME -->
       <footer class="mt-10 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-500 dark:text-slate-400 text-xs space-y-4">
-          <div class="flex items-center justify-center gap-2 mb-3">
-              <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
-              <span class="font-black text-lg text-slate-900 dark:text-white">BALIJANI</span>
-          </div>
+          <div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div><span class="font-black text-lg text-slate-900 dark:text-white">BALIJANI</span></div>
           <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 font-semibold text-slate-600 dark:text-slate-300">
               <a href="https://balijani.id/redaksi" target="_blank" class="hover:text-brand-600 transition">Redaksi</a>
               <a href="https://balijani.id/disclaimer" target="_blank" class="hover:text-brand-600 transition">Disclaimer</a>
@@ -267,16 +227,12 @@
 
     <section id="categoryView" class="hidden view-enter pt-4 px-4 md:px-0">
       <div id="opiniBannerContainer" class="hidden mb-6"></div>
-      <div class="mb-6 flex items-center justify-between">
-        <div><h1 id="categoryViewTitle" class="text-2xl font-extrabold text-slate-900 dark:text-white">Arsip</h1><p id="categoryViewSubtitle" class="text-xs text-slate-500 mt-1">Hasil pencarian arsip data.</p></div>
-      </div>
+      <div class="mb-6 flex items-center justify-between"><div><h1 id="categoryViewTitle" class="text-2xl font-extrabold text-slate-900 dark:text-white">Arsip</h1><p id="categoryViewSubtitle" class="text-xs text-slate-500 mt-1">Hasil pencarian arsip data.</p></div></div>
       <div id="archiveGridContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6"></div>
     </section>
 
     <section id="bookmarkView" class="hidden view-enter pt-4 px-4 md:px-0">
-      <div class="mb-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
-        <div><h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bookmark-check" class="w-6 h-6 text-brand-600"></i> Tersimpan</h1><p class="text-xs text-slate-500 mt-1">Baca kembali warta favorit Anda secara offline.</p></div>
-      </div>
+      <div class="mb-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4"><div><h1 class="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bookmark-check" class="w-6 h-6 text-brand-600"></i> Tersimpan</h1><p class="text-xs text-slate-500 mt-1">Baca kembali warta favorit Anda secara offline.</p></div></div>
       <div id="bookmarkGridContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6"></div>
       <div id="emptyBookmarkState" class="hidden py-16 text-center text-slate-400"><i data-lucide="bookmark-minus" class="w-12 h-12 mx-auto mb-3 opacity-30"></i><p class="text-sm font-medium">Belum ada warta yang disimpan.</p></div>
     </section>
@@ -348,10 +304,7 @@
           
           <!-- FOOTER ARTICLE -->
           <footer class="mt-10 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-slate-500 dark:text-slate-400 text-xs space-y-4">
-              <div class="flex items-center justify-center gap-2 mb-3">
-                  <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div>
-                  <span class="font-black text-lg text-slate-900 dark:text-white">BALIJANI</span>
-              </div>
+              <div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-black text-lg shadow-md">B</div><span class="font-black text-lg text-slate-900 dark:text-white">BALIJANI</span></div>
               <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 font-semibold text-slate-600 dark:text-slate-300">
                   <a href="https://balijani.id/redaksi" target="_blank" class="hover:text-brand-600 transition">Redaksi</a>
                   <a href="https://balijani.id/disclaimer" target="_blank" class="hover:text-brand-600 transition">Disclaimer</a>
@@ -361,7 +314,7 @@
               </div>
               <div class="flex items-center justify-center gap-4 pt-2">
                   <button onclick="App.confirmSocial('YouTube', 'https://www.youtube.com/@balijani')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-red-600" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></button>
-                  <button onclick="App.confirmSocial('Instagram', 'https://www.instagram.com/balijaninews/')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-pink-600" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></button>
+                  <button onclick="App.confirmSocial('Instagram', 'https://www.instagram.com/balijaninews/')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-pink-600" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1  0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></button>
                   <button onclick="App.confirmSocial('Facebook', 'https://www.facebook.com/redaksi.balijani.id/')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-blue-600" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg></button>
                   <button onclick="App.confirmSocial('TikTok', 'https://www.tiktok.com/@balijaniid')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:scale-110 transition-all"><svg class="w-5 h-5 fill-current text-slate-900 dark:text-white" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg></button>
               </div>
@@ -433,66 +386,35 @@
         this.snackbarTimeout = setTimeout(() => sb.classList.remove('show'), 3000);
       },
 
-      showInAppToast(title) {
-        const toast = document.getElementById('inAppToast');
-        document.getElementById('toastTitle').textContent = title;
-        toast.style.top = '20px';
-        clearTimeout(this.toastTimeout);
-        this.toastTimeout = setTimeout(() => this.closeToast(), 6000);
-      },
-
+      showInAppToast(title) { const toast = document.getElementById('inAppToast'); document.getElementById('toastTitle').textContent = title; toast.style.top = '20px'; clearTimeout(this.toastTimeout); this.toastTimeout = setTimeout(() => this.closeToast(), 6000); },
       closeToast() { document.getElementById('inAppToast').style.top = '-200%'; },
-
       openLatestPostFromToast() { this.closeToast(); if (this.latestUnreadPostId) { this.openPost(this.latestUnreadPostId); this.latestUnreadPostId = null; } },
-
       openSubscribe() { this.haptic(10); document.getElementById('subscribeScrim').classList.add('active'); document.getElementById('subscribeModal').classList.add('active'); },
       closeSubscribe() { document.getElementById('subscribeScrim').classList.remove('active'); document.getElementById('subscribeModal').classList.remove('active'); },
 
       async fetchRemoteConfig() {
         if (!this.CONFIG_URL) return;
-        try {
-          const res = await fetch(this.CONFIG_URL);
-          if (res.ok) {
-            const config = await res.json();
-            if (config.apiEndpoint) this.API_URL = config.apiEndpoint;
-            const logoEl = document.getElementById('dynamicLogoText');
-            if (logoEl && config.appName1) { logoEl.innerHTML = `${config.appName1}<span class="text-brand-600">${config.appName2 || 'JANI'}</span>`; }
-          }
-        } catch (e) { console.error("Config fetch failed", e); }
+        try { const res = await fetch(this.CONFIG_URL); if (res.ok) { const config = await res.json(); if (config.apiEndpoint) this.API_URL = config.apiEndpoint; const logoEl = document.getElementById('dynamicLogoText'); if (logoEl && config.appName1) { logoEl.innerHTML = `${config.appName1}<span class="text-brand-600">${config.appName2 || 'JANI'}</span>`; } } } catch (e) { console.error("Config fetch failed", e); }
       },
 
       updateAndroidStatusBar(color, isDarkMode) { if (typeof AndroidBridge !== "undefined") { AndroidBridge.ubahWarnaStatusBar(color, isDarkMode ? "dark" : "light"); } },
 
       async init() {
-        const applySystemTheme = () => {
-          const isDark = document.documentElement.classList.contains('dark');
-          document.getElementById('themeColorMeta').setAttribute('content', isDark ? '#0b0f19' : '#ffffff');
-          this.updateAndroidStatusBar(isDark ? '#0b0f19' : '#ffffff', isDark);
-        };
+        const applySystemTheme = () => { const isDark = document.documentElement.classList.contains('dark'); document.getElementById('themeColorMeta').setAttribute('content', isDark ? '#0b0f19' : '#ffffff'); this.updateAndroidStatusBar(isDark ? '#0b0f19' : '#ffffff', isDark); };
         applySystemTheme();
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (e.matches) document.documentElement.classList.add('dark');
-            else document.documentElement.classList.remove('dark');
-            applySystemTheme();
-        });
-
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => { if (e.matches) document.documentElement.classList.add('dark'); else document.documentElement.classList.remove('dark'); applySystemTheme(); });
         window.addEventListener('popstate', (e) => {
-            if (e.state && e.state.view) {
-                if (e.state.view === 'single') this.openPost(e.state.id, true);
-                else this.navigate(e.state.view, e.state.query || '', true);
-            } else {
+            if (e.state && e.state.view) { if (e.state.view === 'single') this.openPost(e.state.id, true); else this.navigate(e.state.view, e.state.query || '', true); } 
+            else {
                 const hash = window.location.hash;
-                if (hash.startsWith('#post-')) { this.openPost(parseInt(hash.replace('#post-', '')), true); }
-                else if (hash.startsWith('#category')) { const parts = hash.split('/'); this.navigate('category', parts[1] ? decodeURIComponent(parts[1]) : 'all', true); }
-                else if (hash === '#bookmarks') { this.navigate('bookmarks', '', true); }
-                else if (hash === '#account') { this.navigate('account', '', true); }
+                if (hash.startsWith('#post-')) { this.openPost(parseInt(hash.replace('#post-', '')), true); } 
+                else if (hash.startsWith('#category')) { const parts = hash.split('/'); this.navigate('category', parts[1] ? decodeURIComponent(parts[1]) : 'all', true); } 
+                else if (hash === '#bookmarks') { this.navigate('bookmarks', '', true); } 
+                else if (hash === '#account') { this.navigate('account', '', true); } 
                 else { this.navigate('home', '', true); }
             }
         });
-
         if (!window.location.hash) { history.replaceState({ view: 'home', query: '' }, '', '#home'); }
-
         document.getElementById('currentYear').innerText = new Date().getFullYear();
 
         await this.fetchRemoteConfig();
@@ -503,10 +425,7 @@
         this.startNotificationPolling();
 
         this.checkAuthSession();
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            this.updateAuthUI(session);
-            if (!document.getElementById('accountView').classList.contains('hidden')) { this.renderAccountPage(session); }
-        });
+        supabaseClient.auth.onAuthStateChange((event, session) => { this.updateAuthUI(session); if (!document.getElementById('accountView').classList.contains('hidden')) { this.renderAccountPage(session); } });
       },
 
       async checkAuthSession() { const { data: { session } } = await supabaseClient.auth.getSession(); this.updateAuthUI(session); return session; },
@@ -528,12 +447,7 @@
 
       async loginWithGoogle() {
           if (typeof AndroidBridge !== "undefined" && AndroidBridge.showLoginDialog) { AndroidBridge.showLoginDialog(); } 
-          else {
-              const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href;
-              const { data, error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: redirectUrl, skipBrowserRedirect: false } });
-              if (error) return this.showSnackbar('Gagal login Google: ' + error.message);
-              if (data?.url) window.location.href = data.url;
-          }
+          else { const redirectUrl = window.location.origin.includes('localhost') ? 'https://balijani.id' : window.location.href; const { data, error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: redirectUrl, skipBrowserRedirect: false } }); if (error) return this.showSnackbar('Gagal login Google: ' + error.message); if (data?.url) window.location.href = data.url; }
       },
 
       async logout() { await supabaseClient.auth.signOut(); this.updateAuthUI(null); this.showSnackbar('Berhasil keluar.'); this.renderAccountPage(null); },
@@ -544,18 +458,14 @@
         try {
           if (!this.lastKnownPostId) return; 
           const res = await fetch("https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=5", { cache: "no-store" });
-          if (!res.ok) return;
-          const latestData = await res.json();
-          if (!latestData || latestData.length === 0) return;
+          if (!res.ok) return; const latestData = await res.json(); if (!latestData || latestData.length === 0) return;
           const newPosts = latestData.filter(post => parseInt(post.id) > parseInt(this.lastKnownPostId));
           if (newPosts.length > 0) {
             newPosts.reverse().forEach(post => { this.notifications.unshift({ id: post.id, title: post.title.rendered, date: post.date, isRead: false }); });
             this.lastKnownPostId = newPosts[newPosts.length - 1].id;
             localStorage.setItem('balijani_last_post_id', this.lastKnownPostId);
             localStorage.setItem('balijani_notifs', JSON.stringify(this.notifications));
-            this.updateNotifBadge();
-            this.latestUnreadPostId = newPosts[0].id;
-            this.showInAppToast(newPosts[0].title.rendered);
+            this.updateNotifBadge(); this.latestUnreadPostId = newPosts[0].id; this.showInAppToast(newPosts[0].title.rendered);
             if(!document.getElementById('notifPanel').classList.contains('hidden')) this.renderNotifPanel();
           }
         } catch (e) {}
@@ -571,24 +481,15 @@
 
       async loadData() {
         try {
-          const res = await fetch(this.API_URL);
-          if (!res.ok) throw new Error();
-          this.data = await res.json();
+          const res = await fetch(this.API_URL); if (!res.ok) throw new Error(); this.data = await res.json();
           if (!this.lastKnownPostId && this.data.length > 0) { this.lastKnownPostId = this.data[0].id; localStorage.setItem('balijani_last_post_id', this.lastKnownPostId); }
-          this.renderHome();
-          document.getElementById('loadingView').classList.add('hidden');
+          this.renderHome(); document.getElementById('loadingView').classList.add('hidden');
           
           const hash = window.location.hash;
-          if (hash.startsWith('#post-')) {
-              const postId = parseInt(hash.replace('#post-', ''));
-              if (postId) { history.replaceState({ view: 'single', id: postId }, '', '#post-' + postId); this.openPost(postId, true); }
-              else { this.navigate('home', '', true); }
-          } else if (hash.startsWith('#category')) {
-              const parts = hash.split('/');
-              const query = parts[1] ? decodeURIComponent(parts[1]) : 'all';
-              this.navigate('category', query, true);
-          } else if (hash === '#bookmarks') { this.navigate('bookmarks', '', true); }
-          else if (hash === '#account') { this.navigate('account', '', true); }
+          if (hash.startsWith('#post-')) { const postId = parseInt(hash.replace('#post-', '')); if (postId) { history.replaceState({ view: 'single', id: postId }, '', '#post-' + postId); this.openPost(postId, true); } else { this.navigate('home', '', true); } } 
+          else if (hash.startsWith('#category')) { const parts = hash.split('/'); const query = parts[1] ? decodeURIComponent(parts[1]) : 'all'; this.navigate('category', query, true); } 
+          else if (hash === '#bookmarks') { this.navigate('bookmarks', '', true); } 
+          else if (hash === '#account') { this.navigate('account', '', true); } 
           else { this.navigate('home', '', true); }
         } catch (e) { document.getElementById('loadingView').innerHTML = `<p class="text-rose-500 py-10 text-center font-bold">Gagal terhubung ke Server Warta Balijani.</p>`; }
       },
@@ -609,9 +510,7 @@
       closeWebForm() { document.getElementById('webFormScrim').classList.remove('active'); document.getElementById('webFormView').classList.remove('active'); },
 
       share() {
-        if (!this.currentPost) return;
-        this.haptic(15);
-        const shareUrl = this.currentPost.link; const shareTitle = this.currentPost.title.rendered;
+        if (!this.currentPost) return; this.haptic(15); const shareUrl = this.currentPost.link; const shareTitle = this.currentPost.title.rendered;
         if (typeof AndroidBridge !== "undefined") { AndroidBridge.bagikanBerita(shareTitle, shareUrl); return; }
         if (navigator.share) { navigator.share({ title: shareTitle, url: shareUrl }).catch(() => {}); return; }
         let scrim = document.getElementById('shareScrim'); let sheet = document.getElementById('shareSheet');
@@ -624,14 +523,16 @@
         document.getElementById('shareModalTitleText').textContent = shareTitle; document.getElementById('shareUrlInput').value = shareUrl;
         scrim.classList.add('active'); sheet.classList.add('active'); lucide.createIcons();
       },
-
       quickShare(event, title, url) { event.stopPropagation(); if (navigator.share) { navigator.share({ title: title, url: url }).catch(() => {}); } else { this.currentPost = { title: { rendered: title }, link: url }; this.share(); } },
 
       updateLikeUI(postId, count) {
           const isLiked = this.likedPosts.includes(postId);
           const likeCountText = document.getElementById('likeCountText'); const likeIcon = document.getElementById('likeIcon'); const postLikesCountStat = document.getElementById('postLikesCountStat');
           if (likeCountText) likeCountText.textContent = `Suka (${count})`; if (postLikesCountStat) postLikesCountStat.textContent = count;
-          if (likeIcon) { if (isLiked) { likeIcon.classList.add('text-rose-500', 'fill-rose-500'); likeIcon.classList.remove('text-slate-700', 'dark:text-slate-200'); } else { likeIcon.classList.remove('text-rose-500', 'fill-rose-500'); likeIcon.classList.add('text-slate-700', 'dark:text-slate-200'); } }
+          if (likeIcon) {
+              if (isLiked) { likeIcon.style.color = '#f43f5e'; likeIcon.style.fill = '#f43f5e'; } 
+              else { likeIcon.style.color = ''; likeIcon.style.fill = 'none'; }
+          }
       },
 
       async loadPostInteractions(postId) {
@@ -643,30 +544,68 @@
       },
 
       async toggleLike() {
-          if (!this.currentPost) return; this.haptic(15); const postId = this.currentPost.id; const isLiked = this.likedPosts.includes(postId);
+          if (!this.currentPost) return; this.haptic(15); const postId = this.currentPost.id;
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) return this.showSnackbar('Silakan login untuk menyukai warta.');
+          
+          const isLiked = this.likedPosts.includes(postId);
           let countEl = document.getElementById('postLikesCountStat'); let currentCount = parseInt(countEl ? countEl.textContent : 0) || 0;
-          if (isLiked) { this.likedPosts = this.likedPosts.filter(id => id !== postId); currentCount = Math.max(0, currentCount - 1); } else { this.likedPosts.push(postId); currentCount += 1; }
+          if (isLiked) { this.likedPosts = this.likedPosts.filter(id => id !== postId); currentCount = Math.max(0, currentCount - 1); } 
+          else { this.likedPosts.push(postId); currentCount += 1; }
           localStorage.setItem('balijani_liked_posts', JSON.stringify(this.likedPosts)); this.updateLikeUI(postId, currentCount);
           try { await supabaseClient.from('post_likes').upsert({ post_id: postId, likes_count: currentCount }); } catch (err) { console.error("Gagal sinkron like:", err); }
       },
 
       async toggleBookmark() {
-          if (!this.currentPost) return; this.haptic(15); const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
+          if (!this.currentPost) return; this.haptic(15); 
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) return this.showSnackbar('Silakan login untuk menyimpan warta.');
+          
+          const isSaved = this.savedArticles.some(p => p.id === this.currentPost.id);
           if (isSaved) { this.savedArticles = this.savedArticles.filter(p => p.id !== this.currentPost.id); this.showSnackbar('Warta dihapus dari simpanan.'); } 
-          else { this.savedArticles.unshift(this.currentPost); this.showSnackbar('Warta berhasil disimpan.'); }
+          else {
+              // Hanya simpan data ringkas agar LocalStorage tidak penuh (Quota Exceeded)
+              const lightPost = {
+                  id: this.currentPost.id,
+                  title: { rendered: this.currentPost.title.rendered },
+                  _embedded: {
+                      'wp:featuredmedia': this.currentPost._embedded?.['wp:featuredmedia'] ? [this.currentPost._embedded['wp:featuredmedia'][0]] : [],
+                      author: this.currentPost._embedded?.author ? [this.currentPost._embedded.author[0]] : []
+                  },
+                  date: this.currentPost.date,
+                  link: this.currentPost.link
+              };
+              this.savedArticles.unshift(lightPost); this.showSnackbar('Warta berhasil disimpan.');
+          }
           localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
+          
           const bookmarkText = document.getElementById('bookmarkText'); const bookmarkIcon = document.getElementById('bookmarkIcon');
-          if (isSaved) { bookmarkText.textContent = "Simpan"; bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500'); } 
-          else { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500'); }
+          if (isSaved) { bookmarkText.textContent = "Simpan"; bookmarkIcon.style.color = ''; bookmarkIcon.style.fill = 'none'; } 
+          else { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.style.color = '#dc2626'; bookmarkIcon.style.fill = '#dc2626'; }
       },
 
-      quickToggleBookmark(event, postId) {
+      async quickToggleBookmark(event, postId) {
           event.stopPropagation(); this.haptic(10);
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (!session) return this.showSnackbar('Silakan login untuk menyimpan warta.');
+          
           const post = this.data.find(p => p.id === postId) || this.savedArticles.find(p => p.id === postId);
           if (!post) return;
           const index = this.savedArticles.findIndex(p => p.id === post.id);
           if (index > -1) { this.savedArticles.splice(index, 1); this.showSnackbar('Warta dihapus dari simpanan.'); } 
-          else { this.savedArticles.unshift(post); this.showSnackbar('Warta berhasil disimpan.'); }
+          else {
+              const lightPost = {
+                  id: post.id,
+                  title: { rendered: post.title.rendered },
+                  _embedded: {
+                      'wp:featuredmedia': post._embedded?.['wp:featuredmedia'] ? [post._embedded['wp:featuredmedia'][0]] : [],
+                      author: post._embedded?.author ? [post._embedded.author[0]] : []
+                  },
+                  date: post.date,
+                  link: post.link
+              };
+              this.savedArticles.unshift(lightPost); this.showSnackbar('Warta berhasil disimpan.');
+          }
           localStorage.setItem('balijani_saved_posts', JSON.stringify(this.savedArticles));
           this.renderHome();
       },
@@ -679,7 +618,6 @@
           if (!comments || comments.length === 0) { container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada komentar. Jadilah yang pertama menanggapi!</p>`; return; }
           comments.forEach(c => this.appendCommentToDOM(c, false));
       },
-
       appendCommentToDOM(c, prepend = true) {
           const container = document.getElementById('commentsList');
           if(container.querySelector('p.italic')) container.innerHTML = '';
@@ -712,13 +650,8 @@
         this.startCarousel();
         const sorotanContainer = document.getElementById('threeColGrid');
         sorotanContainer.className = "grid grid-cols-1 md:grid-cols-3 gap-5"; sorotanContainer.innerHTML = '';
-        if(this.data[6]) {
-            const p = this.data[6];
-            sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="md:col-span-2 md:row-span-2 cursor-pointer group relative rounded-2xl overflow-hidden h-64 md:h-full min-h-[300px] shadow-sm active:scale-[0.98] transition-all"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div><div class="absolute bottom-0 p-5 w-full"><span class="bg-brand-600 text-white text-[9px] font-bold px-2 py-1 rounded shadow-sm uppercase">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span><h3 class="text-lg font-bold text-white mt-2 leading-snug drop-shadow-md line-clamp-3">${p.title.rendered}</h3></div></div>`;
-        }
-        this.data.slice(7, 11).forEach(p => {
-            sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-3 flex gap-3 items-center shadow-sm active:scale-[0.98] transition-all"><div class="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition"></div><div class="flex-1 min-w-0"><span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider block mb-1">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span><h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${p.title.rendered}</h3></div></div>`;
-        });
+        if(this.data[6]) { const p = this.data[6]; sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="md:col-span-2 md:row-span-2 cursor-pointer group relative rounded-2xl overflow-hidden h-64 md:h-full min-h-[300px] shadow-sm active:scale-[0.98] transition-all"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div><div class="absolute bottom-0 p-5 w-full"><span class="bg-brand-600 text-white text-[9px] font-bold px-2 py-1 rounded shadow-sm uppercase">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span><h3 class="text-lg font-bold text-white mt-2 leading-snug drop-shadow-md line-clamp-3">${p.title.rendered}</h3></div></div>`; }
+        this.data.slice(7, 11).forEach(p => { sorotanContainer.innerHTML += `<div onclick="App.openPost(${p.id})" class="cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-3 flex gap-3 items-center shadow-sm active:scale-[0.98] transition-all"><div class="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition"></div><div class="flex-1 min-w-0"><span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider block mb-1">${p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta'}</span><h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition">${p.title.rendered}</h3></div></div>`; });
         const magazineGrid = document.getElementById('magazineGrid'); magazineGrid.innerHTML = '';
         this.data.slice(12, 18).forEach(p => magazineGrid.appendChild(this.buildMagazineCard(p)));
         const slideTrack = document.getElementById('smallSlideTrack'); slideTrack.innerHTML = '';
@@ -731,20 +664,22 @@
 
       buildMagazineCard(post) {
         const img = this.getImageUrl(post); const author = this.getAuthorName(post); const isSaved = this.savedArticles.some(p => p.id === post.id);
+        const savedStyle = isSaved ? 'color:#f43f5e; fill:#f43f5e;' : 'color:#94a3b8; fill:none;';
         const el = document.createElement('article');
         el.className = "cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm flex flex-col justify-between active:scale-[0.98] transition-all";
         el.onclick = () => this.openPost(post.id);
-        el.innerHTML = `<div><div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-5"><h3 class="text-base md:text-lg font-bold font-serif text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-3">${post.title.rendered}</h3><span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Editor : ${author}</span></div></div><div class="px-5 pb-5 flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800/60"><span>Balijani.id</span><div class="flex items-center gap-2"><button onclick="App.quickToggleBookmark(event, ${post.id})" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-4 h-4 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div>`;
+        el.innerHTML = `<div><div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div><div class="p-5"><h3 class="text-base md:text-lg font-bold font-serif text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-3">${post.title.rendered}</h3><span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Editor : ${author}</span></div></div><div class="px-5 pb-5 flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800/60"><span>Balijani.id</span><div class="flex items-center gap-2"><button onclick="App.quickToggleBookmark(event, ${post.id})" style="${savedStyle}" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div>`;
         return el;
       },
 
       buildSmallSlideCard(post) {
         const img = this.getImageUrl(post); const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
         const dateObj = new Date(post.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }); const isSaved = this.savedArticles.some(p => p.id === post.id);
+        const savedStyle = isSaved ? 'color:#f43f5e; fill:#f43f5e;' : 'color:#94a3b8; fill:none;';
         const el = document.createElement('div');
         el.className = "snap-item shrink-0 w-[48%] sm:w-[32%] md:w-[22%] cursor-pointer group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm flex flex-col active:scale-95 transition-transform";
         el.onclick = () => this.openPost(post.id);
-        el.innerHTML = `<div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div><div class="p-3 flex-1 flex flex-col justify-between"><div><span class="text-[8px] font-bold text-sky-500 uppercase tracking-wider mb-1 block">${cat}</span><h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-2">${post.title.rendered}</h3></div><div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/60"><span class="text-[9px] text-slate-400">${dateObj}</span><div class="flex items-center gap-1"><button onclick="App.quickToggleBookmark(event, ${post.id})" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition ${isSaved ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}"><svg class="w-3.5 h-3.5 ${isSaved ? 'fill-current' : ''}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div></div>`;
+        el.innerHTML = `<div class="w-full aspect-[4/3] overflow-hidden bg-slate-100 relative"><img src="${img}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div><div class="p-3 flex-1 flex flex-col justify-between"><div><span class="text-[8px] font-bold text-sky-500 uppercase tracking-wider mb-1 block">${cat}</span><h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-brand-600 transition mb-2">${post.title.rendered}</h3></div><div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/60"><span class="text-[9px] text-slate-400">${dateObj}</span><div class="flex items-center gap-1"><button onclick="App.quickToggleBookmark(event, ${post.id})" style="${savedStyle}" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></button><button onclick="App.quickShare(event, '${post.title.rendered.replace(/'/g, "\\'")}', '${post.link}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg></button></div></div></div>`;
         return el;
       },
 
@@ -797,11 +732,7 @@
 
       navigate(view, query = '', fromPopState = false) {
         if(!fromPopState) this.haptic(10);
-        if (!fromPopState) {
-            let hashUrl = '#' + view;
-            if (view === 'category' && query) hashUrl += '/' + encodeURIComponent(query);
-            history.pushState({ view: view, query: query }, '', hashUrl);
-        }
+        if (!fromPopState) { let hashUrl = '#' + view; if (view === 'category' && query) hashUrl += '/' + encodeURIComponent(query); history.pushState({ view: view, query: query }, '', hashUrl); }
         if (view !== 'home') this.stopCarousel();
 
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-tab'));
@@ -850,7 +781,11 @@
         const imgUrl = this.getImageUrl(post); const imgEl = document.getElementById('postFeaturedImg');
         imgEl.src = imgUrl || ''; document.getElementById('postImageWrapper').style.display = imgUrl ? 'block' : 'none';
         imgEl.onerror = () => { imgEl.style.display = 'none'; };
-        let html = post.content.rendered.replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '').replace(/<(p|div|span|figure|figcaption|blockquote)([^>]*)\sstyle="([^"]*)"/gi, '<$1$2').replace(/<img /gi, '<img style="max-width: 100% !important; height: auto !important; border-radius: 12px; margin: 1rem auto; display: block;" ');
+        
+        // Handle content if it's missing (from lightPost bookmark)
+        let htmlContent = post.content?.rendered || '<p>Konten berita tidak tersedia secara offline. Silakan sambungkan ke internet untuk membaca.</p>';
+        let html = htmlContent.replace(/width="[0-9]+"/gi, '').replace(/height="[0-9]+"/gi, '').replace(/<(p|div|span|figure|figcaption|blockquote)([^>]*)\sstyle="([^"]*)"/gi, '<$1$2').replace(/<img /gi, '<img style="max-width: 100% !important; height: auto !important; border-radius: 12px; margin: 1rem auto; display: block;" ');
+        
         const paragraphs = html.split('</p>');
         if (paragraphs.length > 4 && this.data.length > 1) {
           const midIndex = Math.floor(paragraphs.length / 2); const randomPost = this.data.find(p => p.id !== id) || this.data[0];
@@ -862,11 +797,14 @@
         this.data.filter(p => p.id !== id).slice(0, 2).forEach(p => relatedGrid.appendChild(this.buildGridCard(p, true)));
         const popularList = document.getElementById('popularPostsList'); popularList.innerHTML = '';
         this.data.slice(5, 10).forEach(p => { popularList.innerHTML += `<div class="flex gap-3 items-center cursor-pointer group active:scale-95 transition" onclick="App.openPost(${p.id})"><img src="${this.getImageUrl(p)}" onerror="this.style.display='none'" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0"><h4 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-2 group-hover:text-brand-600 transition">${p.title.rendered}</h4></div>`; });
+        
         this.loadPostInteractions(post.id);
+        
         const isSaved = this.savedArticles.some(p => p.id === post.id);
         const bookmarkText = document.getElementById('bookmarkText'); const bookmarkIcon = document.getElementById('bookmarkIcon');
-        if (isSaved) { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.classList.add('fill-brand-500', 'text-brand-500'); } 
-        else { bookmarkText.textContent = "Simpan"; bookmarkIcon.classList.remove('fill-brand-500', 'text-brand-500'); }
+        if (isSaved) { bookmarkText.textContent = "Tersimpan"; bookmarkIcon.style.color = '#dc2626'; bookmarkIcon.style.fill = '#dc2626'; } 
+        else { bookmarkText.textContent = "Simpan"; bookmarkIcon.style.color = ''; bookmarkIcon.style.fill = 'none'; }
+        
         if (!fromPopState) history.pushState({ view: 'single', id: id }, '', '#post-' + id);
         this.navigate('single', '', true); lucide.createIcons();
       },
