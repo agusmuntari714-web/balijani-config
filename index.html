@@ -353,7 +353,7 @@
   <div id="opiniModal" class="bottom-sheet"><div class="drag-handle"></div><div class="px-6 pb-6 text-center space-y-4"><div class="w-14 h-14 bg-brand-50 dark:bg-brand-900/30 text-brand-600 rounded-2xl flex items-center justify-center mx-auto"><i data-lucide="pen-tool" class="w-7 h-7"></i></div><div><h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Kirim Opini / Warta</h3><p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sampaikan gagasan, aspirasi, atau tulisan Anda untuk dipublikasikan di balijani.id.</p></div><div class="space-y-2 pt-2"><button onclick="App.openInAppForm()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="file-text" class="w-4 h-4"></i> Buka Formulir Langsung</button><a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeOpiniModal()" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer active:scale-95"><i data-lucide="external-link" class="w-4 h-4"></i> Buka di Web Browser</a></div><button onclick="App.closeOpiniModal()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 pt-2 block w-full cursor-pointer">Batal</button></div></div>
 
   <div id="webFormScrim" class="bottom-sheet-scrim" onclick="App.closeWebForm()"></div>
-  <div id="webFormView" class="bottom-sheet" style="height: 95vh; max-height: 95vh; padding: 0;"><div class="drag-handle"></div><div class="h-[60px] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shadow-sm z-10"><button onclick="App.closeWebForm()" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-202 active:scale-95 transition cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i> Tutup</button><a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeWebForm()" class="flex items-center gap-1.5 text-[10px] font-bold bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 px-3 py-2 rounded-full border border-brand-500/20 active:scale-95 transition"><span>Lanjut ke web</span> <i data-lucide="external-link" class="w-3 h-3"></i></a></div><div class="flex-1 w-full bg-white dark:bg-slate-900 relative" style="height: calc(95vh - 100px);"><div id="iframeLoader" class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-0"><div class="w-8 h-8 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div></div><iframe id="webFormIframe" src="" class="absolute inset-0 w-full h-full border-none z-10 opacity-0 transition-opacity duration-500" onload="this.style.opacity=1; document.getElementById('iframeLoader').style.display='none';"></iframe></div></div>
+  <div id="webFormView" class="bottom-sheet" style="height: 95vh; max-height: 95vh; padding: 0;"><div class="drag-handle"></div><div class="h-[60px] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 shadow-sm z-10"><button onclick="App.closeWebForm()" class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 active:scale-95 transition cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i> Tutup</button><a href="https://balijani.id/form-opini/" target="_blank" onclick="App.closeWebForm()" class="flex items-center gap-1.5 text-[10px] font-bold bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 px-3 py-2 rounded-full border border-brand-500/20 active:scale-95 transition"><span>Lanjut ke web</span> <i data-lucide="external-link" class="w-3 h-3"></i></a></div><div class="flex-1 w-full bg-white dark:bg-slate-900 relative" style="height: calc(95vh - 100px);"><div id="iframeLoader" class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-0"><div class="w-8 h-8 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div></div><iframe id="webFormIframe" src="" class="absolute inset-0 w-full h-full border-none z-10 opacity-0 transition-opacity duration-500" onload="this.style.opacity=1; document.getElementById('iframeLoader').style.display='none';"></iframe></div></div>
 
   <div id="editProfileScrim" class="bottom-sheet-scrim" onclick="App.closeEditProfile()"></div>
   <div id="editProfileModal" class="bottom-sheet"><div class="drag-handle"></div><div class="px-6 pb-6"><h3 class="text-lg font-extrabold mb-4 text-center">Edit Profil</h3><div class="space-y-3"><div><label class="text-xs font-bold text-slate-500">Nama Lengkap</label><input id="editName" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div><div><label class="text-xs font-bold text-slate-500">Jenis Kelamin</label><select id="editGender" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"><option value="">Pilih...</option><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select></div><div><label class="text-xs font-bold text-slate-500">Kota Asal</label><input id="editCity" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div><div><label class="text-xs font-bold text-slate-500">Profesi</label><input id="editProfession" type="text" class="w-full bg-slate-100 dark:bg-slate-800 text-sm rounded-xl px-4 py-2.5 mt-1 outline-none border border-transparent focus:border-brand-500 transition text-slate-900 dark:text-white"></div></div><button onclick="App.saveProfile()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm py-3 rounded-xl mt-6 active:scale-95 transition">Simpan Perubahan</button><button onclick="App.closeEditProfile()" class="w-full text-slate-500 font-bold text-sm py-3 mt-2">Batal</button></div></div>
@@ -542,15 +542,20 @@
       },
 
       async loadPostInteractions(postId) {
-          let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
-          let count = likeData ? likeData.likes_count : 0;
-          this.updateLikeUI(postId, count); this.loadComments(postId);
+          try {
+            let { data: likeData } = await supabaseClient.from('post_likes').select('likes_count').eq('post_id', postId).single();
+            let count = likeData ? likeData.likes_count : 0;
+            this.updateLikeUI(postId, count);
+          } catch (e) { console.error("Error loading likes:", e); }
+          
+          this.loadComments(postId);
           if (this.activeCommentChannel) supabaseClient.removeChannel(this.activeCommentChannel);
           this.activeCommentChannel = supabaseClient.channel('comments_realtime_' + postId).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments', filter: `post_id=eq.${postId}` }, payload => { this.appendCommentToDOM(payload.new); }).subscribe();
       },
 
       async toggleLike() {
           if (!this.currentPost) return; this.haptic(15); const postId = this.currentPost.id;
+          
           const isLiked = this.likedPosts.includes(postId);
           let countEl = document.getElementById('postLikesCountStat'); let currentCount = parseInt(countEl ? countEl.textContent : 0) || 0;
           if (isLiked) { this.likedPosts = this.likedPosts.filter(id => id !== postId); currentCount = Math.max(0, currentCount - 1); } 
@@ -619,10 +624,12 @@
       async loadComments(postId) {
           const container = document.getElementById('commentsList');
           container.innerHTML = `<p class="text-xs text-slate-400 italic">Memuat komentar...</p>`;
-          let { data: comments } = await supabaseClient.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: false });
-          container.innerHTML = ''; document.getElementById('commentCount').textContent = comments ? comments.length : 0;
-          if (!comments || comments.length === 0) { container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada komentar. Jadilah yang pertama menanggapi!</p>`; return; }
-          comments.forEach(c => this.appendCommentToDOM(c, false));
+          try {
+            let { data: comments } = await supabaseClient.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: false });
+            container.innerHTML = ''; document.getElementById('commentCount').textContent = comments ? comments.length : 0;
+            if (!comments || comments.length === 0) { container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada komentar. Jadilah yang pertama menanggapi!</p>`; return; }
+            comments.forEach(c => this.appendCommentToDOM(c, false));
+          } catch(e) { console.error("Error loading comments:", e); container.innerHTML = `<p class="text-xs text-slate-400 italic">Gagal memuat komentar.</p>`; }
       },
       appendCommentToDOM(c, prepend = true) {
           const container = document.getElementById('commentsList');
