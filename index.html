@@ -737,7 +737,7 @@
     }
 
     const App = {
-      API_URL: "https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=50",
+      API_URL: "https://balijani.id/wp-json/wp/v2/posts?_embed&per_page=100",
       CONFIG_URL: "https://raw.githubusercontent.com/agusmuntari714-web/balijani-config/main/config.json", 
 
       data: [],
@@ -1545,7 +1545,7 @@
         const container = document.getElementById('editorPickTrack');
         if (!container) return;
         container.innerHTML = '';
-        const picks = this.data.slice(10, 16);
+        const picks = this.data.slice(10, 20);
         picks.forEach(p => {
           const img = this.getImageUrl(p);
           const cat = p._embedded?.['wp:term']?.[0]?.[0]?.name || 'Warta';
